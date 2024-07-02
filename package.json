@@ -1,9 +1,13 @@
 {
-  "name": "@stella/framework",
+  "name": "@StellaDiscord/stella",
   "version": "1.0.0",
   "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/StellaDiscord/stella.git"
+  },
   "publishConfig": {
-    "@StellaDiscord:registry": "https://npm.pkg.github.com"
+    "registry": "https://npm.pkg.github.com"
   },
   "author": "Tweenty_",
   "license": "ISC",
