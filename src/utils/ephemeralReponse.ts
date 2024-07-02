@@ -1,4 +1,4 @@
-import type { BaseMessageOptions, RepliableInteraction } from "discord.js";
+import { type BaseMessageOptions, type RepliableInteraction } from "discord.js";
 
 export const ephemeralFollowUpResponse = async (interaction: RepliableInteraction, data: string | BaseMessageOptions, automaticDeletion: boolean = false) => {
     if (!interaction.deferred) {

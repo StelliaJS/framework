@@ -1,16 +1,16 @@
-import type {
-    AnySelectMenuInteraction,
-    AutocompleteInteraction,
-    Awaitable,
-    ButtonInteraction,
-    ChatInputCommandInteraction,
-    ContextMenuCommandBuilder,
-    MessageContextMenuCommandInteraction,
-    ModalSubmitInteraction,
-    SlashCommandBuilder,
-    UserContextMenuCommandInteraction
+import {
+    type AnySelectMenuInteraction,
+    type AutocompleteInteraction,
+    type Awaitable,
+    type ButtonInteraction,
+    type ChatInputCommandInteraction,
+    type ContextMenuCommandBuilder,
+    type MessageContextMenuCommandInteraction,
+    type ModalSubmitInteraction,
+    type SlashCommandBuilder,
+    type UserContextMenuCommandInteraction
 } from "discord.js";
-import { StellaClient } from "@client/index.js";
+import { type StellaClient } from "@client/index.js";
 
 export interface AutoCompleteStructure {
     data: DefaultDataStructure;

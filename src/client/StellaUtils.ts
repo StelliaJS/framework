@@ -13,13 +13,13 @@ import {
     type UserContextMenuCommandInteraction
 } from "discord.js";
 import { DISCORD_API_VERSION } from "@constants/index.js";
-import type {
-    AutoCompleteStructure,
-    ButtonStructure,
-    CommandStructure,
-    ContextMenuStructure,
-    ModalStructure,
-    SelectMenuStructure
+import {
+    type AutoCompleteStructure,
+    type ButtonStructure,
+    type CommandStructure,
+    type ContextMenuStructure,
+    type ModalStructure,
+    type SelectMenuStructure
 } from "@structures/index.js";
 
 export class StellaUtils {

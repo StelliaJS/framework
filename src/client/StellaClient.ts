@@ -5,9 +5,9 @@ import {
     CommandManager,
     ContextMenuManager,
     EventManager,
-    SelectMenuManager,
+    type ManagerOptions,
     ModalManager,
-    ManagerOptions
+    SelectMenuManager
 } from "@managers/index.js";
 
 export class StellaClient extends Client {
