@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "strictPropertyInitialization": false,
+    "target": "ES2023",
+    "module": "NodeNext",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "paths": {
+      "@client/*": [
+        "./src/client/*"
+      ],
+      "@constants/*": [
+        "./src/constants/*"
+      ],
+      "@managers/*": [
+        "./src/managers/*"
+      ],
+      "@structures/*": [
+        "./src/structures/*"
+      ],
+      "@typescript/*": [
+          "./src/typescript/*"
+      ],
+      "@utils/*": [
+        "./src/utils/*"
+      ]
+    }
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
+}
