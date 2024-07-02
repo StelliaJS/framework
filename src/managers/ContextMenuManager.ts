@@ -1,9 +1,9 @@
 import { Collection } from "discord.js";
 import { type StellaClient } from "@client/index.js";
 import { BaseManager } from "@managers/index.js";
-import { ContextMenuStructure } from "@structures/index.js";
+import { type ContextMenuStructure } from "@structures/index.js";
 import { type CustomId } from "@typescript/index.js";
-import { loadFiles, requiredFiles } from "@utils/index.js";
+import { requiredFiles } from "@utils/index.js";
 
 export class ContextMenuManager extends BaseManager {
     public contextMenus: Collection<CustomId, ContextMenuStructure> = new Collection();
@@ -12,8 +12,8 @@ export class ContextMenuManager extends BaseManager {
         super(client, directory);
     }
 
-    public loadData(): void {
-        const contextMenus = requiredFiles<ContextMenuStructure>(this.directory, loadFiles);
+    public async loadData(): Promise<void> {
+        const contextMenus = await requiredFiles<ContextMenuStructure>(this.directoryPath);
         this.contextMenus = contextMenus;
     }
 

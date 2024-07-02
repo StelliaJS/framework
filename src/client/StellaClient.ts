@@ -6,7 +6,8 @@ import {
     ContextMenuManager,
     EventManager,
     SelectMenuManager,
-    ModalManager
+    ModalManager,
+    ManagerOptions
 } from "@managers/index.js";
 
 export class StellaClient extends Client {
@@ -20,13 +21,13 @@ export class StellaClient extends Client {
 
     public constructor(clientOptions: ClientOptions, stellaOptions: StellaOptions) {
         super(clientOptions);
-        this.autoCompletes = new AutoCompleteManager(this, stellaOptions.autoCompletes.directory);
-        this.buttons = new ButtonManager(this, stellaOptions.buttons.directory);
-        this.commands = new CommandManager(this, stellaOptions.commands.directory);
-        this.contextMenus = new ContextMenuManager(this, stellaOptions.contextMenus.directory);
-        this.events = new EventManager(this, stellaOptions.events.directory);
-        this.selectMenus = new SelectMenuManager(this, stellaOptions.selectMenus.directory);
-        this.modals = new ModalManager(this, stellaOptions.modals.directory);
+        this.autoCompletes = new AutoCompleteManager(this, stellaOptions.autoCompletes.directoryPath);
+        this.buttons = new ButtonManager(this, stellaOptions.buttons.directoryPath);
+        this.commands = new CommandManager(this, stellaOptions.commands.directoryPath);
+        this.contextMenus = new ContextMenuManager(this, stellaOptions.contextMenus.directoryPath);
+        this.events = new EventManager(this, stellaOptions.events.directoryPath);
+        this.selectMenus = new SelectMenuManager(this, stellaOptions.selectMenus.directoryPath);
+        this.modals = new ModalManager(this, stellaOptions.modals.directoryPath);
     }
 
     public connect = async (token: string): Promise<void> => {
@@ -40,25 +41,11 @@ export class StellaClient extends Client {
 }
 
 interface StellaOptions {
-    autoCompletes: {
-        directory: string;
-    },
-    buttons: {
-        directory: string;
-    },
-    commands: {
-        directory: string;
-    },
-    contextMenus: {
-        directory: string;
-    },
-    events: {
-        directory: string;
-    },
-    selectMenus: {
-        directory: string;
-    },
-    modals: {
-        directory: string;
-    }
+    autoCompletes: ManagerOptions;
+    buttons: ManagerOptions;
+    commands: ManagerOptions;
+    contextMenus: ManagerOptions;
+    events: ManagerOptions;
+    selectMenus: ManagerOptions;
+    modals: ManagerOptions;
 }

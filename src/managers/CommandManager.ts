@@ -1,9 +1,9 @@
 import { Collection } from "discord.js";
 import { type StellaClient } from "@client/index.js";
 import { BaseManager } from "@managers/index.js";
-import { CommandStructure } from "@structures/index.js";
+import { type CommandStructure } from "@structures/index.js";
 import { type CustomId } from "@typescript/index.js";
-import { loadFiles, requiredFiles } from "@utils/index.js";
+import { requiredFiles } from "@utils/index.js";
 
 export class CommandManager extends BaseManager {
     public commands: Collection<CustomId, CommandStructure> = new Collection();
@@ -12,8 +12,8 @@ export class CommandManager extends BaseManager {
         super(client, directory);
     }
 
-    public loadData(): void {
-        const commands = requiredFiles<CommandStructure>(this.directory, loadFiles);
+    public async loadData(): Promise<void> {
+        const commands = await requiredFiles<CommandStructure>(this.directoryPath);
         this.commands = commands;
     }
 

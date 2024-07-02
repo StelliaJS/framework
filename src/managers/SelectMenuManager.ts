@@ -1,9 +1,9 @@
 import { Collection } from "discord.js";
 import { type StellaClient } from "@client/index.js";
 import { BaseManager } from "@managers/index.js";
-import { SelectMenuStructure } from "@structures/index.js";
+import { type SelectMenuStructure } from "@structures/index.js";
 import { type CustomId } from "@typescript/index.js";
-import { loadFiles, requiredFiles } from "@utils/index.js";
+import { requiredFiles } from "@utils/index.js";
 
 export class SelectMenuManager extends BaseManager {
     public selectMenus: Collection<CustomId, SelectMenuStructure> = new Collection();
@@ -12,8 +12,8 @@ export class SelectMenuManager extends BaseManager {
         super(client, directory);
     }
 
-    public loadData(): void {
-        const selectMenus = requiredFiles<SelectMenuStructure>(this.directory, loadFiles);
+    public async loadData(): Promise<void> {
+        const selectMenus = await requiredFiles<SelectMenuStructure>(this.directoryPath);
         this.selectMenus = selectMenus;
     }
 

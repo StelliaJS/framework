@@ -1,9 +1,9 @@
 import { Collection } from "discord.js";
 import { type StellaClient } from "@client/index.js";
 import { BaseManager } from "@managers/index.js";
-import { ButtonStructure } from "@structures/index.js";
+import { type ButtonStructure } from "@structures/index.js";
 import { type CustomId } from "@typescript/index.js";
-import { loadFiles, requiredFiles } from "@utils/index.js";
+import { requiredFiles } from "@utils/index.js";
 
 export class ButtonManager extends BaseManager {
     public buttons: Collection<CustomId, ButtonStructure> = new Collection();
@@ -12,8 +12,8 @@ export class ButtonManager extends BaseManager {
         super(client, directory);
     }
 
-    public loadData(): void {
-        const buttons = requiredFiles<ButtonStructure>(this.directory, loadFiles);
+    public async loadData(): Promise<void> {
+        const buttons = await requiredFiles<ButtonStructure>(this.directoryPath);
         this.buttons = buttons;
     }
 

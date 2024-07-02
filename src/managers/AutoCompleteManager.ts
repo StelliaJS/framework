@@ -1,9 +1,9 @@
 import { Collection } from "discord.js";
 import { type StellaClient } from "@client/index.js";
 import { BaseManager } from "@managers/index.js";
-import { AutoCompleteStructure } from "@structures/index.js";
+import { type AutoCompleteStructure } from "@structures/index.js";
 import { type CustomId } from "@typescript/index.js";
-import { loadFiles, requiredFiles } from "@utils/index.js";
+import { requiredFiles } from "@utils/index.js";
 
 export class AutoCompleteManager extends BaseManager {
     private autoCompletes: Collection<CustomId, AutoCompleteStructure> = new Collection();
@@ -12,8 +12,8 @@ export class AutoCompleteManager extends BaseManager {
         super(client, directory);
     }
 
-    public loadData(): void {
-        const autoCompletes = requiredFiles<AutoCompleteStructure>(this.directory, loadFiles);
+    public async loadData(): Promise<void> {
+        const autoCompletes = await requiredFiles<AutoCompleteStructure>(this.directoryPath);
         this.autoCompletes = autoCompletes;
     }
 

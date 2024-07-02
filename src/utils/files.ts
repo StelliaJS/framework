@@ -1,29 +1,28 @@
 import { Collection } from "discord.js";
 import { readdirSync, statSync } from "fs";
 import path from "path";
-import { CustomId } from "@typescript/index.js";
+import { type AnyInteractionStructure } from "@structures/Interaction.js";
+import { type CustomId } from "@typescript/index.js";
 
-type LoadFunction = <T>(collection: Collection<CustomId, T>, filePath: string) => void;
-
-export const requiredFiles = <T>(directoryPath: string, loadFunction: LoadFunction): Collection<CustomId, T> => {
-    const collection = new Collection<CustomId, T>();
-    const filesPath = getAllFilesPath(directoryPath).filter((file) => file.endsWith(".js"));
-    filesPath.forEach((filePath) => loadFunction(collection, filePath));
+export const requiredFiles = async <InteractionStructure extends AnyInteractionStructure>(directoryPath: string): Promise<Collection<CustomId, InteractionStructure>> => {
+    const collection = new Collection<CustomId, InteractionStructure>();
+    const filesPath = getAllFilesPath(directoryPath).filter((file) => file.endsWith(".ts"));
+    for (const filePath of filesPath) {
+        const data = await loadInteraction<InteractionStructure>(filePath);
+        collection.set(data.data.name, data);
+    }
 
     return collection;
 }
 
-export const loadFiles = <T>(collection: Collection<CustomId, T>, filePath: string): Collection<CustomId, T> => {
+const loadInteraction = async <InteractionStructure extends AnyInteractionStructure>(filePath: string): Promise<InteractionStructure> => {
     try {
-        import(`file://${filePath}`).then(({ default: interactionOrEvent }) => {
-            const name = interactionOrEvent.data.name;
-            collection.set(name, interactionOrEvent);
-        });
+        const module = await import(`file://${filePath}`);
+        const data: InteractionStructure = module.default;
+        return data;
     } catch (error) {
         throw error;
     }
-
-    return collection;
 }
 
 const getAllFilesPath = (dirPath: string, arrayOfFiles: string[] = []): string[] => {

@@ -1,16 +1,16 @@
-import {StellaClient} from "@client/index.js";
+import { type StellaClient } from "@client/index.js";
 import {
-    AnySelectMenuInteraction,
+    type AnySelectMenuInteraction,
     ApplicationCommandType,
-    AutocompleteInteraction,
-    ButtonInteraction,
-    ChatInputCommandInteraction,
-    ContextMenuCommandInteraction,
-    MessageContextMenuCommandInteraction,
-    ModalSubmitInteraction,
+    type AutocompleteInteraction,
+    type ButtonInteraction,
+    type ChatInputCommandInteraction,
+    type ContextMenuCommandInteraction,
+    type MessageContextMenuCommandInteraction,
+    type ModalSubmitInteraction,
     REST,
     Routes,
-    UserContextMenuCommandInteraction
+    type UserContextMenuCommandInteraction
 } from "discord.js";
 import { DISCORD_API_VERSION } from "@constants/index.js";
 import type {
