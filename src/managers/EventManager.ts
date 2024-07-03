@@ -1,5 +1,5 @@
 import { Collection } from "discord.js";
-import { type StellaClient } from "@client/index.js";
+import { type StelliaClient } from "@client/index.js";
 import { BaseManager } from "@managers/index.js";
 import { type EventStructure } from "@structures/index.js";
 import { type CustomId } from "@typescript/index.js";
@@ -8,7 +8,7 @@ import { requiredFiles } from "@utils/index.js";
 export class EventManager extends BaseManager {
     public events: Collection<CustomId, EventStructure> = new Collection();
 
-    constructor(client: StellaClient, directoryPath: string) {
+    constructor(client: StelliaClient, directoryPath: string) {
         super(client, directoryPath);
     }
 

@@ -1,5 +1,5 @@
 import { Collection } from "discord.js";
-import { type StellaClient } from "@client/index.js";
+import { type StelliaClient } from "@client/index.js";
 import { type CustomId } from "@typescript/index.js";
 import { type AnyInteractionStructure } from "@structures/Interaction.js";
 
@@ -8,10 +8,10 @@ export interface ManagerOptions {
 }
 
 export abstract class BaseManager {
-    public readonly client: StellaClient;
+    public readonly client: StelliaClient;
     public readonly directoryPath: string;
 
-    constructor(client: StellaClient, directory: string) {
+    constructor(client: StelliaClient, directory: string) {
         this.client = client;
         this.directoryPath = directory;
         this.loadData();

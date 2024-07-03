@@ -1,4 +1,4 @@
-import { type StellaClient } from "@client/index.js";
+import { type StelliaClient } from "@client/index.js";
 import {
     type AnySelectMenuInteraction,
     ApplicationCommandType,
@@ -22,10 +22,10 @@ import {
     type SelectMenuStructure
 } from "@structures/index.js";
 
-export class StellaUtils {
-    public readonly client: StellaClient;
+export class StelliaUtils {
+    public readonly client: StelliaClient;
 
-    constructor(client: StellaClient) {
+    constructor(client: StelliaClient) {
         this.client = client;
     }
 

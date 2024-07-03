@@ -1,5 +1,5 @@
 import { Collection } from "discord.js";
-import { type StellaClient } from "@client/index.js";
+import { type StelliaClient } from "@client/index.js";
 import { BaseManager } from "@managers/index.js";
 import { type SelectMenuStructure } from "@structures/index.js";
 import { type CustomId } from "@typescript/index.js";
@@ -8,7 +8,7 @@ import { requiredFiles } from "@utils/index.js";
 export class SelectMenuManager extends BaseManager {
     public selectMenus: Collection<CustomId, SelectMenuStructure> = new Collection();
 
-    constructor(client: StellaClient, directory: string) {
+    constructor(client: StelliaClient, directory: string) {
         super(client, directory);
     }
 

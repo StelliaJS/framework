@@ -1,2 +1,2 @@
-export * from "@client/StellaClient.js";
-export * from "@client/StellaUtils.js";
+export * from "@client/StelliaClient.js";
+export * from "@client/StelliaUtils.js";

@@ -1,5 +1,5 @@
 import { Collection } from "discord.js";
-import { type StellaClient } from "@client/index.js";
+import { type StelliaClient } from "@client/index.js";
 import { BaseManager } from "@managers/index.js";
 import { type CommandStructure } from "@structures/index.js";
 import { type CustomId } from "@typescript/index.js";
@@ -8,7 +8,7 @@ import { requiredFiles } from "@utils/index.js";
 export class CommandManager extends BaseManager {
     public commands: Collection<CustomId, CommandStructure> = new Collection();
 
-    constructor(client: StellaClient, directory: string) {
+    constructor(client: StelliaClient, directory: string) {
         super(client, directory);
     }
 
