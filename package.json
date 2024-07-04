@@ -1,5 +1,5 @@
 {
-  "name": "@stelliajs/stellia-framework",
+  "name": "@stelliajs/framework",
   "version": "1.0.1",
   "main": "./src/index.ts",
   "scripts": {
@@ -7,7 +7,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/stelliajs/stellia-framework.git"
+    "url": "https://github.com/stelliajs/framework.git"
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/@stelliajs"
