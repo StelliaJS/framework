@@ -1,10 +1,10 @@
 {
   "name": "@stelliajs/framework",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc && tsc-alias"
   },
   "repository": {
     "type": "git",
@@ -16,11 +16,12 @@
   "author": "Tweenty_",
   "license": "ISC",
   "dependencies": {
-    "discord.js": "^14.15.3",
-    "discord-api-types": "^0.37.92"
+    "discord-api-types": "^0.37.92",
+    "discord.js": "^14.15.3"
   },
   "devDependencies": {
-    "ts-node": "^10.9.2"
+    "ts-node": "^10.9.2",
+    "tsc-alias": "^1.8.10"
   },
   "type": "module"
 }
