@@ -1,6 +1,6 @@
 {
   "name": "@stelliajs/framework",
-  "version": "1.0.2",
+  "version": "0.0.2",
   "main": "./src/index.ts",
   "scripts": {
     "build": "tsc"
@@ -16,7 +16,7 @@
   "license": "ISC",
   "dependencies": {
     "discord.js": "^14.15.3",
-    "discord-api-types": "^0.37.90"
+    "discord-api-types": "^0.37.92"
   },
   "type": "module"
 }
