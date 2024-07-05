@@ -25,7 +25,7 @@ import { AnyInteraction, InteractionType } from "@typescript/index.js";
 
 export class StelliaUtils {
     public readonly client: StelliaClient;
-    private interactionHandlers: Map<InteractionType, (interaction: AnyInteraction) => Promise<void>>;
+    private readonly interactionHandlers: Map<InteractionType, (interaction: AnyInteraction) => Promise<void>>;
 
     constructor(client: StelliaClient) {
         this.client = client;

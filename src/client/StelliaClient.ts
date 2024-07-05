@@ -9,8 +9,10 @@ import {
     ModalManager,
     SelectMenuManager
 } from "@managers/index.js";
+import { StelliaUtils } from "@client/index.js";
 
 export class StelliaClient extends Client {
+    public utils: StelliaUtils;
     public readonly autoCompletes: AutoCompleteManager;
     public readonly buttons: ButtonManager;
     public readonly commands: CommandManager;
@@ -21,6 +23,7 @@ export class StelliaClient extends Client {
 
     public constructor(clientOptions: ClientOptions, stelliaOptions: StelliaOptions) {
         super(clientOptions);
+        this.utils = new StelliaUtils(this);
         this.autoCompletes = new AutoCompleteManager(this, stelliaOptions.autoCompletes.directoryPath);
         this.buttons = new ButtonManager(this, stelliaOptions.buttons.directoryPath);
         this.commands = new CommandManager(this, stelliaOptions.commands.directoryPath);
