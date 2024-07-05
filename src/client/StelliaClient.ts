@@ -10,9 +10,10 @@ import {
     SelectMenuManager
 } from "@managers/index.js";
 import { StelliaUtils } from "@client/index.js";
+import { type AnyInteraction } from "@typescript/types.js";
 
 export class StelliaClient extends Client {
-    public utils: StelliaUtils;
+    private readonly utils: StelliaUtils;
     public readonly autoCompletes: AutoCompleteManager;
     public readonly buttons: ButtonManager;
     public readonly commands: CommandManager;
@@ -40,6 +41,14 @@ export class StelliaClient extends Client {
         process.on("unhandledRejection", (error: string) => {
             console.error(`Unhandled promise rejection: ${error}`);
         });
+    }
+
+    public initializeCommands = async (): Promise<void> => {
+        await this.utils.initializeCommands();
+    }
+
+    public handleInteraction = async (interaction: AnyInteraction): Promise<void> => {
+        await this.utils.handleInteraction(interaction);
     }
 }
 
