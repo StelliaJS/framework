@@ -1,7 +1,7 @@
 import { Collection } from "discord.js";
 import { readdirSync, statSync } from "fs";
 import path from "path";
-import { type AnyInteractionStructure } from "@structures/Interaction.js";
+import { type AnyInteractionStructure } from "@structures/index.js";
 import { type CustomId } from "@typescript/index.js";
 
 export const requiredFiles = async <InteractionStructure extends AnyInteractionStructure>(directoryPath: string): Promise<Collection<CustomId, InteractionStructure>> => {

@@ -10,9 +10,9 @@ import {
     SelectMenuManager
 } from "@managers/index.js";
 import { StelliaUtils } from "@client/index.js";
-import { type AnyInteraction } from "@typescript/types.js";
+import { type AnyInteraction } from "@typescript/index.js";
 
-export class StelliaClient<Ready = boolean> extends Client {
+export class StelliaClient<Ready extends boolean = boolean> extends Client<Ready> {
     private readonly utils: StelliaUtils;
     public readonly autoCompletes: AutoCompleteManager;
     public readonly buttons: ButtonManager;

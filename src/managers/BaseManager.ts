@@ -1,7 +1,7 @@
 import { Collection } from "discord.js";
 import { type StelliaClient } from "@client/index.js";
 import { type CustomId } from "@typescript/index.js";
-import { type AnyInteractionStructure } from "@structures/Interaction.js";
+import { type AnyInteractionStructure } from "@structures/index.js";
 
 export interface ManagerOptions {
     directoryPath: string;
