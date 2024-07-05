@@ -12,7 +12,7 @@ import {
 import { StelliaUtils } from "@client/index.js";
 import { type AnyInteraction } from "@typescript/types.js";
 
-export class StelliaClient extends Client {
+export class StelliaClient<Ready = boolean> extends Client {
     private readonly utils: StelliaUtils;
     public readonly autoCompletes: AutoCompleteManager;
     public readonly buttons: ButtonManager;
@@ -61,3 +61,4 @@ interface StelliaOptions {
     selectMenus: ManagerOptions;
     modals: ManagerOptions;
 }
+
