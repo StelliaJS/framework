@@ -27,3 +27,5 @@ export enum InteractionType {
     SelectMenu = "SelectMenu",
     Unknown = "Unknown"
 }
+
+export type InteractionData = Record<string, string>;
