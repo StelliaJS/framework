@@ -19,6 +19,9 @@
       "@managers/*": [
         "./src/managers/*"
       ],
+      "@parsers/*": [
+        "./src/parsers/*"
+      ],
       "@structures/*": [
         "./src/structures/*"
       ],
