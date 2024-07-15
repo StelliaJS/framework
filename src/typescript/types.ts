@@ -27,35 +27,3 @@ export enum InteractionType {
     SelectMenu = "SelectMenu",
     Unknown = "Unknown"
 }
-
-export type InteractionData = {
-    commandName: string;
-    commandOptions?: CommandOptions;
-    autoCompletes?: AutoCompletes;
-    buttons?: Buttons;
-    modals?: Modals;
-    selectMenus?: SelectMenus;
-}
-
-type CommandOptions = {
-    [key: string]: string;
-}
-
-type AutoCompletes = {
-    [key: string]: string;
-}
-
-type Buttons = {
-    [key: string]: string;
-}
-
-type Modals = {
-    [key: string]: {
-        customId: string;
-        [key: string]: string;
-    };
-}
-
-type SelectMenus = {
-    [key: string]: string;
-}
