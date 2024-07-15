@@ -10,28 +10,43 @@ import {
     SelectMenuManager
 } from "@managers/index.js";
 import { StelliaUtils } from "@client/index.js";
-import { type AnyInteraction } from "@typescript/index.js";
+import { type AnyInteraction, type Managers } from "@typescript/index.js";
 
 export class StelliaClient<Ready extends boolean = boolean> extends Client<Ready> {
     private readonly utils: StelliaUtils;
-    public readonly autoCompletes: AutoCompleteManager;
-    public readonly buttons: ButtonManager;
-    public readonly commands: CommandManager;
-    public readonly contextMenus: ContextMenuManager;
-    public readonly events: EventManager;
-    public readonly selectMenus: SelectMenuManager;
-    public readonly modals: ModalManager;
+    public readonly managers: Managers;
 
-    public constructor(clientOptions: ClientOptions, stelliaOptions: StelliaOptions) {
+    public constructor(clientOptions: ClientOptions, stelliaOptions?: StelliaOptions) {
         super(clientOptions);
         this.utils = new StelliaUtils(this);
-        this.autoCompletes = new AutoCompleteManager(this, stelliaOptions.autoCompletes.directoryPath);
-        this.buttons = new ButtonManager(this, stelliaOptions.buttons.directoryPath);
-        this.commands = new CommandManager(this, stelliaOptions.commands.directoryPath);
-        this.contextMenus = new ContextMenuManager(this, stelliaOptions.contextMenus.directoryPath);
-        this.events = new EventManager(this, stelliaOptions.events.directoryPath);
-        this.selectMenus = new SelectMenuManager(this, stelliaOptions.selectMenus.directoryPath);
-        this.modals = new ModalManager(this, stelliaOptions.modals.directoryPath);
+
+        if (stelliaOptions?.autoCompletes?.directoryPath) {
+            this.managers.autoCompletes = new AutoCompleteManager(this, stelliaOptions.autoCompletes.directoryPath);
+        }
+
+        if (stelliaOptions?.buttons?.directoryPath) {
+            this.managers.buttons = new ButtonManager(this, stelliaOptions.buttons.directoryPath);
+        }
+
+        if (stelliaOptions?.commands?.directoryPath) {
+            this.managers.commands = new CommandManager(this, stelliaOptions.commands.directoryPath);
+        }
+
+        if (stelliaOptions?.contextMenus?.directoryPath) {
+            this.managers.contextMenus = new ContextMenuManager(this, stelliaOptions.contextMenus.directoryPath);
+        }
+
+        if (stelliaOptions?.events?.directoryPath) {
+            this.managers.events = new EventManager(this, stelliaOptions.events.directoryPath);
+        }
+
+        if (stelliaOptions?.selectMenus?.directoryPath) {
+            this.managers.selectMenus = new SelectMenuManager(this, stelliaOptions.selectMenus.directoryPath);
+        }
+
+        if (stelliaOptions?.modals?.directoryPath) {
+            this.managers.modals = new ModalManager(this, stelliaOptions.modals.directoryPath);
+        }
     }
 
     public connect = async (token: string): Promise<void> => {
@@ -53,12 +68,12 @@ export class StelliaClient<Ready extends boolean = boolean> extends Client<Ready
 }
 
 interface StelliaOptions {
-    autoCompletes: ManagerOptions;
-    buttons: ManagerOptions;
-    commands: ManagerOptions;
-    contextMenus: ManagerOptions;
-    events: ManagerOptions;
-    selectMenus: ManagerOptions;
-    modals: ManagerOptions;
+    autoCompletes?: ManagerOptions;
+    buttons?: ManagerOptions;
+    commands?: ManagerOptions;
+    contextMenus?: ManagerOptions;
+    events?: ManagerOptions;
+    selectMenus?: ManagerOptions;
+    modals?: ManagerOptions;
 }
 
