@@ -7,6 +7,15 @@ import {
     type ModalSubmitInteraction,
     type UserContextMenuCommandInteraction
 } from "discord.js";
+import {
+    type AutoCompleteManager,
+    type ButtonManager,
+    type CommandManager,
+    type ContextMenuManager,
+    type EventManager,
+    type ModalManager,
+    type SelectMenuManager
+} from "@managers/index.js";
 
 export type CustomId = string;
 
@@ -28,17 +37,14 @@ export enum InteractionType {
     Unknown = "Unknown"
 }
 
-export type InteractionData = {
-    commandName: string;
-    commandOptions?: CommandOptions;
-    autoCompletes?: AutoCompletes;
-    buttons?: Buttons;
-    modals?: Modals;
-    selectMenus?: SelectMenus;
-}
-
-type CommandOptions = {
-    [key: string]: string;
+export interface Managers {
+    autoCompletes?: AutoCompleteManager;
+    buttons?: ButtonManager;
+    commands?: CommandManager;
+    contextMenus?: ContextMenuManager;
+    events?: EventManager;
+    selectMenus?: SelectMenuManager;
+    modals?: ModalManager;
 }
 
 type AutoCompletes = {
