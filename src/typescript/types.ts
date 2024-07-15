@@ -46,22 +46,3 @@ export interface Managers {
     selectMenus?: SelectMenuManager;
     modals?: ModalManager;
 }
-
-type AutoCompletes = {
-    [key: string]: string;
-}
-
-type Buttons = {
-    [key: string]: string;
-}
-
-type Modals = {
-    [key: string]: {
-        customId: string;
-        [key: string]: string;
-    };
-}
-
-type SelectMenus = {
-    [key: string]: string;
-}
