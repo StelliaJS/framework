@@ -14,7 +14,7 @@ import { type AnyInteraction, type Managers } from "@typescript/index.js";
 
 export class StelliaClient<Ready extends boolean = boolean> extends Client<Ready> {
     private readonly utils: StelliaUtils;
-    public readonly managers: Managers;
+    public readonly managers: Managers = {};
 
     public constructor(clientOptions: ClientOptions, stelliaOptions?: StelliaOptions) {
         super(clientOptions);
