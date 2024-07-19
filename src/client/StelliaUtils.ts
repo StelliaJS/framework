@@ -133,7 +133,7 @@ export class StelliaUtils {
     private handleSelectMenuInteraction = async (interaction: AnyInteraction): Promise<void> => {
         try {
             const interactionSelectMenu = interaction as AnySelectMenuInteraction<"cached">;
-            const selectMenu = this.client.managers.modals?.get<SelectMenuStructure>(interactionSelectMenu.customId);
+            const selectMenu = this.client.managers.selectMenus?.get<SelectMenuStructure>(interactionSelectMenu.customId);
             if (!selectMenu) return;
 
             await selectMenu.execute(this.client, interactionSelectMenu);
