@@ -24,25 +24,25 @@ const client = new StelliaClient({
     partials: [Partials.Message, Partials.GuildMember]
 }, {
     autoCompletes: {
-        directoryPath: "./src/interactions/autoCompletes"
+        directoryPath: "./interactions/autoCompletes"
     },
     buttons: {
-        directoryPath: "./src/interactions/buttons"
+        directoryPath: "./interactions/buttons"
     },
     commands: {
-        directoryPath: "./src/commands/slash"
+        directoryPath: "./commands/slash"
     },
     contextMenus: {
-        directoryPath: "./src/commands/contextMenus"
+        directoryPath: "./commands/contextMenus"
     },
     events: {
-        directoryPath: "./src/events"
+        directoryPath: "./events"
     },
     modals: {
-        directoryPath: "./src/interactions/modals"
+        directoryPath: "./interactions/modals"
     },
     selectMenus: {
-        directoryPath: "./src/interactions/selectMenus"
+        directoryPath: "./interactions/selectMenus"
     }
 });
 
