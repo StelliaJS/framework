@@ -6,7 +6,7 @@ import { type CustomId } from "@typescript/index.js";
 
 export const requiredFiles = async <InteractionStructure extends AnyInteractionStructure>(directoryPath: string): Promise<Collection<CustomId, InteractionStructure>> => {
     const collection = new Collection<CustomId, InteractionStructure>();
-    const filesPath = getAllFilesPath(directoryPath).filter((file) => /\.(js|[^d]\.ts)$/.test(file));
+    const filesPath = getAllFilesPath(directoryPath).filter((file) => !file.endsWith(".d.ts") && (file.endsWith(".js") || file.endsWith(".ts")));
     for (const filePath of filesPath) {
         const data = await loadInteraction<InteractionStructure>(filePath);
         collection.set(data.data.name, data);
