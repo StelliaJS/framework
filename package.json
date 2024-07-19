@@ -12,6 +12,8 @@
   },
   "author": "Tweenty_",
   "license": "ISC",
+  "description": "A framework for simplify the creation of discord bots",
+  "keywords": ["discord", "bot", "discordjs", "typescript", "framework"],
   "dependencies": {
     "discord-api-types": "^0.37.92",
     "discord.js": "^14.15.3"
