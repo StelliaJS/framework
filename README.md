@@ -122,14 +122,14 @@ export default {
 ### Simple command
 
 ```js
-import { type CommandStructure, type StelliaClient } from "@stelliajs/framework";
+import { type CommandStructure, ephemeralFollowUpResponse, type StelliaClient } from "@stelliajs/framework";
 import { type ChatInputCommandInteraction, SlashCommandBuilder } from "discord.js";
 
 export default {
     data: new SlashCommandBuilder()
         .setName("ping"),
     async execute(client: StelliaClient, interaction: ChatInputCommandInteraction<"cached">) { // All interactions are cached
-        await interaction.reply("Pong!");
+        await ephemeralFollowUpResponse(interaction, "Pong!", true); // Response is ephemeral and deleted after 60 seconds
     }
 } as CommandStructure;
 ```
