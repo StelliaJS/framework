@@ -70,7 +70,10 @@ export class StelliaUtils {
     private handleAutoCompleteInteraction = async (interaction: AnyInteraction): Promise<void> => {
         try {
             const interactionAutoComplete = interaction as AutocompleteInteraction<"cached">;
-            const autoComplete = this.client.managers.autoCompletes?.getByCustomId<AutoCompleteStructure>(interactionAutoComplete.commandName);
+            const autoCompleteManager = this.client.managers.autoCompletes;
+            if (!autoCompleteManager) return;
+
+            const autoComplete = autoCompleteManager.getByCustomId<AutoCompleteStructure>(interactionAutoComplete.commandName);
             if (!autoComplete) return;
 
             await autoComplete.execute(this.client, interactionAutoComplete);
@@ -82,7 +85,10 @@ export class StelliaUtils {
     private handleButtonInteraction = async (interaction: AnyInteraction): Promise<void> => {
         try {
             const buttonInteraction = interaction as ButtonInteraction<"cached">;
-            const button = this.client.managers.buttons?.getByCustomId<ButtonStructure>(buttonInteraction.customId);
+            const buttonManager = this.client.managers.buttons;
+            if (!buttonManager) return;
+
+            const button = buttonManager.getByCustomId<ButtonStructure>(buttonInteraction.customId) || buttonManager.getByRegex<ButtonStructure>(buttonInteraction.customId);
             if (!button) return;
 
             await button.execute(this.client, buttonInteraction);
@@ -94,7 +100,10 @@ export class StelliaUtils {
     private handleCommandInteraction = async (interaction: AnyInteraction): Promise<void> => {
         try {
             const interactionCommand = interaction as ChatInputCommandInteraction<"cached">;
-            const command = this.client.managers.commands?.getByCustomId<CommandStructure>(interactionCommand.commandName);
+            const commandManager = this.client.managers.commands;
+            if (!commandManager) return;
+
+            const command = commandManager.getByCustomId<CommandStructure>(interactionCommand.commandName);
             if (!command) return;
 
             await command.execute(this.client, interactionCommand);
@@ -121,7 +130,10 @@ export class StelliaUtils {
     private handleModalInteraction = async (interaction: AnyInteraction): Promise<void> => {
         try {
             const interactionModal = interaction as ModalSubmitInteraction<"cached">;
-            const modal = this.client.managers.modals?.getByCustomId<ModalStructure>(interactionModal.customId);
+            const modalManager = this.client.managers.modals;
+            if (!modalManager) return;
+
+            const modal = modalManager.getByCustomId<ModalStructure>(interactionModal.customId) || modalManager.getByRegex<ModalStructure>(interactionModal.customId);
             if (!modal) return;
 
             await modal.execute(this.client, interactionModal);
@@ -133,7 +145,10 @@ export class StelliaUtils {
     private handleSelectMenuInteraction = async (interaction: AnyInteraction): Promise<void> => {
         try {
             const interactionSelectMenu = interaction as AnySelectMenuInteraction<"cached">;
-            const selectMenu = this.client.managers.selectMenus?.getByCustomId<SelectMenuStructure>(interactionSelectMenu.customId);
+            const selectMenuManager = this.client.managers.selectMenus;
+            if (!selectMenuManager) return;
+
+            const selectMenu = selectMenuManager.getByCustomId<SelectMenuStructure>(interactionSelectMenu.customId) || selectMenuManager.getByRegex<SelectMenuStructure>(interactionSelectMenu.customId);
             if (!selectMenu) return;
 
             await selectMenu.execute(this.client, interactionSelectMenu);
@@ -144,7 +159,10 @@ export class StelliaUtils {
 
     private handleMessageContextMenuInteraction = async (interaction: MessageContextMenuCommandInteraction<"cached">): Promise<void> => {
         try {
-            const messageContextMenu = this.client.managers.contextMenus?.getByCustomId<ContextMenuStructure>(interaction.commandName);
+            const contextMenuManager = this.client.managers.contextMenus;
+            if (!contextMenuManager) return;
+
+            const messageContextMenu = contextMenuManager.getByCustomId<ContextMenuStructure>(interaction.commandName);
             if (!messageContextMenu) return;
 
             await messageContextMenu.execute(this.client, interaction);
@@ -155,7 +173,10 @@ export class StelliaUtils {
 
     private handleUserContextMenuInteraction = async (interaction: UserContextMenuCommandInteraction<"cached">): Promise<void> => {
         try {
-            const userContextMenu = this.client.managers.contextMenus?.getByCustomId<ContextMenuStructure>(interaction.commandName);
+            const contextMenuManager = this.client.managers.contextMenus;
+            if (!contextMenuManager) return;
+
+            const userContextMenu = contextMenuManager.getByCustomId<ContextMenuStructure>(interaction.commandName);
             if (!userContextMenu) return;
 
             await userContextMenu.execute(this.client, interaction);
