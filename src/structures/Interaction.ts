@@ -45,6 +45,6 @@ export interface SelectMenuStructure {
 export type AnyInteractionStructure = AutoCompleteStructure | ButtonStructure | CommandStructure | ContextMenuStructure | ModalStructure | SelectMenuStructure;
 
 interface DefaultDataStructure {
-    name: string;
+    name: string | RegExp;
     once: boolean;
 }

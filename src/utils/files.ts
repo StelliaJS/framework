@@ -2,10 +2,10 @@ import { Collection } from "discord.js";
 import { readdirSync, statSync } from "fs";
 import path from "path";
 import { type AnyInteractionStructure } from "@structures/index.js";
-import { type CustomId } from "@typescript/index.js";
+import { type StructureCustomId } from "@typescript/index.js";
 
-export const requiredFiles = async <InteractionStructure extends AnyInteractionStructure>(directoryPath: string): Promise<Collection<CustomId, InteractionStructure>> => {
-    const collection = new Collection<CustomId, InteractionStructure>();
+export const requiredFiles = async <InteractionStructure extends AnyInteractionStructure>(directoryPath: string): Promise<Collection<StructureCustomId, InteractionStructure>> => {
+    const collection = new Collection<StructureCustomId, InteractionStructure>();
     const filesPath = getAllFilesPath(directoryPath).filter((file) => !file.endsWith(".d.ts") && (file.endsWith(".js") || file.endsWith(".ts")));
     for (const filePath of filesPath) {
         const data = await loadInteraction<InteractionStructure>(filePath);

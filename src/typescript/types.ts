@@ -17,7 +17,8 @@ import {
     type SelectMenuManager
 } from "@managers/index.js";
 
-export type CustomId = string;
+export type StructureCustomId = string | RegExp;
+export type InteractionCustomId = string;
 
 export type AnyInteraction = AutocompleteInteraction<"cached">
     | ButtonInteraction<"cached">
