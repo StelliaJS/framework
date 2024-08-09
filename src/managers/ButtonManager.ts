@@ -22,8 +22,20 @@ export class ButtonManager extends BaseManager {
         return button;
     }
 
-    public getAll<ButtonStructure>(): Collection<CustomId, ButtonStructure> {
-        const buttons = this.buttons as Collection<CustomId, ButtonStructure>;
+    public getByRegex<ButtonStructure>(id: InteractionCustomId): ButtonStructure | undefined {
+        let button;
+        for (const [customId, action] of this.interactions.entries()) {
+            if (customId instanceof RegExp && customId.test(id)) {
+                button = action as ButtonStructure;
+                break;
+            }
+        }
+
+        return button;
+    }
+
+    public getAll<ButtonStructure>(): Collection<StructureCustomId, ButtonStructure> {
+        const buttons = this.interactions as Collection<StructureCustomId, ButtonStructure>;
         return buttons;
     }
 }

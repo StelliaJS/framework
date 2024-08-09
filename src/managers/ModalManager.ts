@@ -22,8 +22,20 @@ export class ModalManager extends BaseManager {
         return modal;
     }
 
-    public getAll<ModalStructure>(): Collection<CustomId, ModalStructure> {
-        const modals = this.modals as Collection<CustomId, ModalStructure>;
+    public getByRegex<ModalStructure>(id: InteractionCustomId): ModalStructure | undefined {
+        let modal;
+        for (const [customId, action] of this.interactions.entries()) {
+            if (customId instanceof RegExp && customId.test(id)) {
+                modal = action as ModalStructure;
+                break;
+            }
+        }
+
+        return modal;
+    }
+
+    public getAll<ModalStructure>(): Collection<StructureCustomId, ModalStructure> {
+        const modals = this.interactions as Collection<StructureCustomId, ModalStructure>;
         return modals;
     }
 }

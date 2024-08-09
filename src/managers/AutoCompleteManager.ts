@@ -22,8 +22,12 @@ export class AutoCompleteManager extends BaseManager {
         return autoComplete;
     }
 
-    public getAll<AutoCompleteStructure>(): Collection<CustomId, AutoCompleteStructure> {
-        const autoCompletes = this.autoCompletes as Collection<CustomId, AutoCompleteStructure>;
+    public getByRegex<AutoCompleteStructure>(id: InteractionCustomId): AutoCompleteStructure | undefined {
+        return undefined;
+    }
+
+    public getAll<AutoCompleteStructure>(): Collection<StructureCustomId, AutoCompleteStructure> {
+        const autoCompletes = this.interactions as Collection<StructureCustomId, AutoCompleteStructure>;
         return autoCompletes;
     }
 }

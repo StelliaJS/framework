@@ -22,8 +22,12 @@ export class ContextMenuManager extends BaseManager {
         return contextMenu;
     }
 
-    public getAll<ContextMenuStructure>(): Collection<CustomId, ContextMenuStructure> {
-        const contextMenus = this.contextMenus as Collection<CustomId, ContextMenuStructure>;
+    public getByRegex<ContextMenuStructure>(id: InteractionCustomId): ContextMenuStructure | undefined {
+        return undefined;
+    }
+
+    public getAll<ContextMenuStructure>(): Collection<StructureCustomId, ContextMenuStructure> {
+        const contextMenus = this.interactions as Collection<StructureCustomId, ContextMenuStructure>;
         return contextMenus;
     }
 }

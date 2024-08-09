@@ -22,8 +22,20 @@ export class SelectMenuManager extends BaseManager {
         return selectMenu;
     }
 
-    public getAll<SelectMenuStructure>(): Collection<CustomId, SelectMenuStructure> {
-        const selectMenus = this.selectMenus as Collection<CustomId, SelectMenuStructure>;
+    public getByRegex<SelectMenuStructure>(id: InteractionCustomId): SelectMenuStructure | undefined {
+        let button;
+        for (const [customId, action] of this.interactions.entries()) {
+            if (customId instanceof RegExp && customId.test(id)) {
+                button = action as SelectMenuStructure;
+                break;
+            }
+        }
+
+        return button;
+    }
+
+    public getAll<SelectMenuStructure>(): Collection<StructureCustomId, SelectMenuStructure> {
+        const selectMenus = this.interactions as Collection<StructureCustomId, SelectMenuStructure>;
         return selectMenus;
     }
 }
