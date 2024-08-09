@@ -1,6 +1,6 @@
 import { Collection } from "discord.js";
 import { type StelliaClient } from "@client/index.js";
-import { type CustomId } from "@typescript/index.js";
+import { type StructureCustomId, type InteractionCustomId } from "@typescript/index.js";
 import { type AnyInteractionStructure } from "@structures/index.js";
 
 export interface ManagerOptions {
@@ -18,6 +18,7 @@ export abstract class BaseManager {
     }
 
     public abstract loadData(): void;
-    public abstract get<InteractionStructure extends AnyInteractionStructure>(id: CustomId): InteractionStructure | undefined;
-    public abstract getAll<InteractionStructure extends AnyInteractionStructure>(): Collection<CustomId, InteractionStructure>;
+    public abstract getByCustomId<InteractionStructure extends AnyInteractionStructure>(id: InteractionCustomId): InteractionStructure | undefined;
+    public abstract getByRegex<InteractionStructure extends AnyInteractionStructure>(id: InteractionCustomId): InteractionStructure | undefined;
+    public abstract getAll<InteractionStructure extends AnyInteractionStructure>(): Collection<StructureCustomId, InteractionStructure>;
 }
