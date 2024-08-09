@@ -2,11 +2,11 @@ import { Collection } from "discord.js";
 import { type StelliaClient } from "@client/index.js";
 import { BaseManager } from "@managers/index.js";
 import { type ContextMenuStructure } from "@structures/index.js";
-import { type CustomId } from "@typescript/index.js";
+import { type StructureCustomId, type InteractionCustomId } from "@typescript/index.js";
 import { requiredFiles } from "@utils/index.js";
 
 export class ContextMenuManager extends BaseManager {
-    public contextMenus: Collection<CustomId, ContextMenuStructure> = new Collection();
+    public interactions: Collection<StructureCustomId, ContextMenuStructure> = new Collection();
 
     constructor(client: StelliaClient, directory: string) {
         super(client, directory);
@@ -14,11 +14,11 @@ export class ContextMenuManager extends BaseManager {
 
     public async loadData(): Promise<void> {
         const contextMenus = await requiredFiles<ContextMenuStructure>(this.directoryPath);
-        this.contextMenus = contextMenus;
+        this.interactions = contextMenus;
     }
 
-    public get<ContextMenuStructure>(id: CustomId): ContextMenuStructure | undefined {
-        const contextMenu = this.contextMenus.get(id) as ContextMenuStructure ?? undefined;
+    public getByCustomId<ContextMenuStructure>(id: InteractionCustomId): ContextMenuStructure | undefined {
+        const contextMenu = this.interactions.get(id) as ContextMenuStructure ?? undefined;
         return contextMenu;
     }
 

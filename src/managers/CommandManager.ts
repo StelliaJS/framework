@@ -2,11 +2,11 @@ import { Collection } from "discord.js";
 import { type StelliaClient } from "@client/index.js";
 import { BaseManager } from "@managers/index.js";
 import { type CommandStructure } from "@structures/index.js";
-import { type CustomId } from "@typescript/index.js";
+import { type StructureCustomId, type InteractionCustomId } from "@typescript/index.js";
 import { requiredFiles } from "@utils/index.js";
 
 export class CommandManager extends BaseManager {
-    public commands: Collection<CustomId, CommandStructure> = new Collection();
+    public interactions: Collection<StructureCustomId, CommandStructure> = new Collection();
 
     constructor(client: StelliaClient, directory: string) {
         super(client, directory);
@@ -14,16 +14,20 @@ export class CommandManager extends BaseManager {
 
     public async loadData(): Promise<void> {
         const commands = await requiredFiles<CommandStructure>(this.directoryPath);
-        this.commands = commands;
+        this.interactions = commands;
     }
 
-    public get<CommandStructure>(id: CustomId): CommandStructure | undefined {
-        const command = this.commands.get(id) as CommandStructure ?? undefined;
+    public getByCustomId<CommandStructure>(id: InteractionCustomId): CommandStructure | undefined {
+        const command = this.interactions.get(id) as CommandStructure ?? undefined;
         return command;
     }
 
-    public getAll<CommandStructure>(): Collection<CustomId, CommandStructure> {
-        const commands = this.commands as Collection<CustomId, CommandStructure>;
+    public getByRegex<CommandStructure>(id: InteractionCustomId): CommandStructure | undefined {
+        return undefined;
+    }
+
+    public getAll<CommandStructure>(): Collection<StructureCustomId, CommandStructure> {
+        const commands = this.interactions as Collection<StructureCustomId, CommandStructure>;
         return commands;
     }
 }

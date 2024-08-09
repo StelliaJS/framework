@@ -2,11 +2,11 @@ import { Collection } from "discord.js";
 import { type StelliaClient } from "@client/index.js";
 import { BaseManager } from "@managers/index.js";
 import { type AutoCompleteStructure } from "@structures/index.js";
-import { type CustomId } from "@typescript/index.js";
+import { type StructureCustomId, type InteractionCustomId } from "@typescript/index.js";
 import { requiredFiles } from "@utils/index.js";
 
 export class AutoCompleteManager extends BaseManager {
-    private autoCompletes: Collection<CustomId, AutoCompleteStructure> = new Collection();
+    private interactions: Collection<StructureCustomId, AutoCompleteStructure> = new Collection();
 
     constructor(client: StelliaClient, directory: string) {
         super(client, directory);
@@ -14,11 +14,11 @@ export class AutoCompleteManager extends BaseManager {
 
     public async loadData(): Promise<void> {
         const autoCompletes = await requiredFiles<AutoCompleteStructure>(this.directoryPath);
-        this.autoCompletes = autoCompletes;
+        this.interactions = autoCompletes;
     }
 
-    public get<AutoCompleteStructure>(id: CustomId): AutoCompleteStructure | undefined {
-        const autoComplete = this.autoCompletes.get(id) as AutoCompleteStructure ?? undefined;
+    public getByCustomId<AutoCompleteStructure>(id: InteractionCustomId): AutoCompleteStructure | undefined {
+        const autoComplete = this.interactions.get(id) as AutoCompleteStructure ?? undefined;
         return autoComplete;
     }
 

@@ -70,7 +70,7 @@ export class StelliaUtils {
     private handleAutoCompleteInteraction = async (interaction: AnyInteraction): Promise<void> => {
         try {
             const interactionAutoComplete = interaction as AutocompleteInteraction<"cached">;
-            const autoComplete = this.client.managers.autoCompletes?.get<AutoCompleteStructure>(interactionAutoComplete.commandName);
+            const autoComplete = this.client.managers.autoCompletes?.getByCustomId<AutoCompleteStructure>(interactionAutoComplete.commandName);
             if (!autoComplete) return;
 
             await autoComplete.execute(this.client, interactionAutoComplete);
@@ -82,7 +82,7 @@ export class StelliaUtils {
     private handleButtonInteraction = async (interaction: AnyInteraction): Promise<void> => {
         try {
             const buttonInteraction = interaction as ButtonInteraction<"cached">;
-            const button = this.client.managers.buttons?.get<ButtonStructure>(buttonInteraction.customId);
+            const button = this.client.managers.buttons?.getByCustomId<ButtonStructure>(buttonInteraction.customId);
             if (!button) return;
 
             await button.execute(this.client, buttonInteraction);
@@ -94,7 +94,7 @@ export class StelliaUtils {
     private handleCommandInteraction = async (interaction: AnyInteraction): Promise<void> => {
         try {
             const interactionCommand = interaction as ChatInputCommandInteraction<"cached">;
-            const command = this.client.managers.commands?.get<CommandStructure>(interactionCommand.commandName);
+            const command = this.client.managers.commands?.getByCustomId<CommandStructure>(interactionCommand.commandName);
             if (!command) return;
 
             await command.execute(this.client, interactionCommand);
@@ -121,7 +121,7 @@ export class StelliaUtils {
     private handleModalInteraction = async (interaction: AnyInteraction): Promise<void> => {
         try {
             const interactionModal = interaction as ModalSubmitInteraction<"cached">;
-            const modal = this.client.managers.modals?.get<ModalStructure>(interactionModal.customId);
+            const modal = this.client.managers.modals?.getByCustomId<ModalStructure>(interactionModal.customId);
             if (!modal) return;
 
             await modal.execute(this.client, interactionModal);
@@ -133,7 +133,7 @@ export class StelliaUtils {
     private handleSelectMenuInteraction = async (interaction: AnyInteraction): Promise<void> => {
         try {
             const interactionSelectMenu = interaction as AnySelectMenuInteraction<"cached">;
-            const selectMenu = this.client.managers.selectMenus?.get<SelectMenuStructure>(interactionSelectMenu.customId);
+            const selectMenu = this.client.managers.selectMenus?.getByCustomId<SelectMenuStructure>(interactionSelectMenu.customId);
             if (!selectMenu) return;
 
             await selectMenu.execute(this.client, interactionSelectMenu);
@@ -144,7 +144,7 @@ export class StelliaUtils {
 
     private handleMessageContextMenuInteraction = async (interaction: MessageContextMenuCommandInteraction<"cached">): Promise<void> => {
         try {
-            const messageContextMenu = this.client.managers.contextMenus?.get<ContextMenuStructure>(interaction.commandName);
+            const messageContextMenu = this.client.managers.contextMenus?.getByCustomId<ContextMenuStructure>(interaction.commandName);
             if (!messageContextMenu) return;
 
             await messageContextMenu.execute(this.client, interaction);
@@ -155,7 +155,7 @@ export class StelliaUtils {
 
     private handleUserContextMenuInteraction = async (interaction: UserContextMenuCommandInteraction<"cached">): Promise<void> => {
         try {
-            const userContextMenu = this.client.managers.contextMenus?.get<ContextMenuStructure>(interaction.commandName);
+            const userContextMenu = this.client.managers.contextMenus?.getByCustomId<ContextMenuStructure>(interaction.commandName);
             if (!userContextMenu) return;
 
             await userContextMenu.execute(this.client, interaction);
