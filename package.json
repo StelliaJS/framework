@@ -1,6 +1,6 @@
 {
   "name": "@stelliajs/framework",
-  "version": "1.1.0-dev-2",
+  "version": "1.1.0",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
@@ -15,8 +15,8 @@
   "description": "A framework for simplify the creation of discord bots",
   "keywords": ["discord", "bot", "discordjs", "typescript", "framework"],
   "dependencies": {
-    "discord-api-types": "^0.37.92",
-    "discord.js": "^14.15.3"
+    "discord-api-types": "^0.37.100",
+    "discord.js": "^14.16.1"
   },
   "devDependencies": {
     "ts-node": "^10.9.2",
