@@ -6,7 +6,7 @@ import { type StructureCustomId, type InteractionCustomId } from "@typescript/in
 import { requiredFiles } from "@utils/index.js";
 
 export class EventManager extends BaseManager {
-    public interactions: Collection<StructureCustomId, EventStructure> = new Collection();
+    private interactions: Collection<StructureCustomId, EventStructure> = new Collection();
 
     constructor(client: StelliaClient, directoryPath: string) {
         super(client, directoryPath);
@@ -24,6 +24,7 @@ export class EventManager extends BaseManager {
                 this.client.on(name, (...args) => event.execute(this.client, ...args));
             }
         }
+        this.setManagerLoaded();
     }
 
     public getByCustomId<EventStructure>(id: InteractionCustomId): EventStructure | undefined {

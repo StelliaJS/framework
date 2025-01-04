@@ -15,8 +15,8 @@
   "description": "A framework for simplify the creation of discord bots",
   "keywords": ["discord", "bot", "discordjs", "typescript", "framework"],
   "dependencies": {
-    "discord-api-types": "^0.37.100",
-    "discord.js": "^14.16.1"
+    "discord-api-types": "^0.37.115",
+    "discord.js": "^14.17.2"
   },
   "devDependencies": {
     "ts-node": "^10.9.2",

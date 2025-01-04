@@ -38,6 +38,7 @@ export enum InteractionType {
     Unknown = "Unknown"
 }
 
+export type Manager = AutoCompleteManager | ButtonManager | CommandManager | ContextMenuManager | EventManager | ModalManager | SelectMenuManager;
 export interface Managers {
     autoCompletes?: AutoCompleteManager;
     buttons?: ButtonManager;
