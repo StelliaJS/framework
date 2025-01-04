@@ -6,7 +6,7 @@ import { type StructureCustomId, type InteractionCustomId } from "@typescript/in
 import { requiredFiles } from "@utils/index.js";
 
 export class ModalManager extends BaseManager {
-    public interactions: Collection<StructureCustomId, ModalStructure> = new Collection();
+    private interactions: Collection<StructureCustomId, ModalStructure> = new Collection();
 
     constructor(client: StelliaClient, directory: string) {
         super(client, directory);
@@ -15,6 +15,7 @@ export class ModalManager extends BaseManager {
     public async loadData(): Promise<void> {
         const modals = await requiredFiles<ModalStructure>(this.directoryPath,);
         this.interactions = modals;
+        this.setManagerLoaded();
     }
 
     public getByCustomId<ModalStructure>(id: InteractionCustomId): ModalStructure | undefined {

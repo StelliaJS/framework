@@ -6,7 +6,7 @@ import { type StructureCustomId, type InteractionCustomId } from "@typescript/in
 import { requiredFiles } from "@utils/index.js";
 
 export class CommandManager extends BaseManager {
-    public interactions: Collection<StructureCustomId, CommandStructure> = new Collection();
+    private interactions: Collection<StructureCustomId, CommandStructure> = new Collection();
 
     constructor(client: StelliaClient, directory: string) {
         super(client, directory);
@@ -15,6 +15,7 @@ export class CommandManager extends BaseManager {
     public async loadData(): Promise<void> {
         const commands = await requiredFiles<CommandStructure>(this.directoryPath);
         this.interactions = commands;
+        this.setManagerLoaded();
     }
 
     public getByCustomId<CommandStructure>(id: InteractionCustomId): CommandStructure | undefined {

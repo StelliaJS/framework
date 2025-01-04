@@ -15,6 +15,7 @@ export class AutoCompleteManager extends BaseManager {
     public async loadData(): Promise<void> {
         const autoCompletes = await requiredFiles<AutoCompleteStructure>(this.directoryPath);
         this.interactions = autoCompletes;
+        this.setManagerLoaded();
     }
 
     public getByCustomId<AutoCompleteStructure>(id: InteractionCustomId): AutoCompleteStructure | undefined {
