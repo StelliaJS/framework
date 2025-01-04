@@ -15,6 +15,7 @@ export class ButtonManager extends BaseManager {
     public async loadData(): Promise<void> {
         const buttons = await requiredFiles<ButtonStructure>(this.directoryPath);
         this.interactions = buttons;
+        this.setManagerLoaded();
     }
 
     public getByCustomId<ButtonStructure>(id: InteractionCustomId): ButtonStructure | undefined {

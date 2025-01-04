@@ -10,11 +10,20 @@ export interface ManagerOptions {
 export abstract class BaseManager {
     public readonly client: StelliaClient;
     public readonly directoryPath: string;
+    private isLoaded = false;
 
     constructor(client: StelliaClient, directory: string) {
         this.client = client;
         this.directoryPath = directory;
         this.loadData();
+    }
+
+    public isManagerLoaded(): boolean {
+        return this.isLoaded;
+    }
+
+    public setManagerLoaded(): void {
+        this.isLoaded = true;
     }
 
     public abstract loadData(): void;

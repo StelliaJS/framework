@@ -6,7 +6,7 @@ import { type StructureCustomId, type InteractionCustomId } from "@typescript/in
 import { requiredFiles } from "@utils/index.js";
 
 export class ContextMenuManager extends BaseManager {
-    public interactions: Collection<StructureCustomId, ContextMenuStructure> = new Collection();
+    private interactions: Collection<StructureCustomId, ContextMenuStructure> = new Collection();
 
     constructor(client: StelliaClient, directory: string) {
         super(client, directory);
@@ -15,6 +15,7 @@ export class ContextMenuManager extends BaseManager {
     public async loadData(): Promise<void> {
         const contextMenus = await requiredFiles<ContextMenuStructure>(this.directoryPath);
         this.interactions = contextMenus;
+        this.setManagerLoaded();
     }
 
     public getByCustomId<ContextMenuStructure>(id: InteractionCustomId): ContextMenuStructure | undefined {
