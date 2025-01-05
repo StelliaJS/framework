@@ -56,13 +56,14 @@ export class StelliaClient<Ready extends boolean = boolean> extends Client<Ready
     public connect = async (token: string): Promise<void> => {
         if (!this.areManagersLoaded()) {
             setTimeout(() => {
-                console.log('Retrying connection')
+                console.log("Managers are not loaded yet, retrying in 500ms...");
                 this.connect(token);
             }, 500);
 
             return;
         }
 
+        console.log("Managers are loaded, connecting to Discord...");
         await this.login(token);
     }
 
