@@ -1,4 +1,4 @@
-import { Client, type ClientOptions, Events } from "discord.js";
+import { Client, type ClientOptions } from "discord.js";
 import {
     AutoCompleteManager,
     ButtonManager,
@@ -10,7 +10,7 @@ import {
     SelectMenuManager
 } from "@managers/index.js";
 import { StelliaUtils } from "@client/index.js";
-import { type AnyInteraction, Manager, type Managers } from "@typescript/index.js";
+import { type AnyInteraction, type Manager, type Managers } from "@typescript/index.js";
 
 export class StelliaClient<Ready extends boolean = boolean> extends Client<Ready> {
     private readonly utils: StelliaUtils;
@@ -47,29 +47,23 @@ export class StelliaClient<Ready extends boolean = boolean> extends Client<Ready
         if (stelliaOptions?.modals?.directoryPath) {
             this.managers.modals = new ModalManager(this, stelliaOptions.modals.directoryPath);
         }
-    }
-
-    public connect = async (token: string): Promise<void> => {
-        this.on(Events.Error, (error) => console.error(error));
-
-        await Promise.all(Object.values(this.managers).map((manager: Manager) => {
-            return new Promise<void>((resolve) => {
-                const checkLoaded = () => {
-                    if (manager.isManagerLoaded()) {
-                        resolve();
-                    } else {
-                        setTimeout(checkLoaded, 500);
-                    }
-                };
-                checkLoaded();
-            });
-        }));
-
-        await this.login(token);
 
         process.on("unhandledRejection", (error: string) => {
             console.error(`Unhandled promise rejection: ${error}`);
         });
+    }
+
+    public connect = async (token: string): Promise<void> => {
+        if (!this.areManagersLoaded()) {
+            setTimeout(() => {
+                console.log('Retrying connection')
+                this.connect(token);
+            }, 500);
+
+            return;
+        }
+
+        await this.login(token);
     }
 
     public initializeCommands = async (): Promise<void> => {
@@ -78,6 +72,12 @@ export class StelliaClient<Ready extends boolean = boolean> extends Client<Ready
 
     public handleInteraction = async (interaction: AnyInteraction): Promise<void> => {
         await this.utils.handleInteraction(interaction);
+    }
+
+    private areManagersLoaded = (): boolean => {
+        const managers = Object.values(this.managers);
+
+        return managers.length === 0 ? true : managers.every((manager: Manager) => manager.isManagerLoaded());
     }
 }
 
