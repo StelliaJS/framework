@@ -1,4 +1,4 @@
-import { Collection } from "discord.js";
+import { Collection, Events } from "discord.js";
 import { type StelliaClient } from "@client/index.js";
 import { BaseManager } from "@managers/index.js";
 import { type EventStructure } from "@structures/index.js";
@@ -24,6 +24,8 @@ export class EventManager extends BaseManager {
                 this.client.on(name, (...args) => event.execute(this.client, ...args));
             }
         }
+
+        this.client.on(Events.Error, (error) => console.error(error));
         this.setManagerLoaded();
     }
 
