@@ -1,14 +1,14 @@
-import { type BaseMessageOptions, type RepliableInteraction } from "discord.js";
+import { type BaseMessageOptions, MessageFlags, type RepliableInteraction } from "discord.js";
 
 export const ephemeralFollowUpResponse = async (interaction: RepliableInteraction, data: string | BaseMessageOptions, automaticDeletion: boolean = false) => {
     if (!interaction.deferred) {
-        await interaction.deferReply({ ephemeral: true });
+        await interaction.deferReply({ flags: MessageFlags.Ephemeral });
     }
 
     if (typeof data === "string") {
-        await interaction.followUp({ content: data, ephemeral: true });
+        await interaction.followUp({ content: data, flags: MessageFlags.Ephemeral });
     } else {
-        await interaction.followUp({ ...data, ephemeral: true });
+        await interaction.followUp({ ...data, flags: MessageFlags.Ephemeral });
     }
 
     if (automaticDeletion) {
@@ -22,13 +22,13 @@ export const ephemeralFollowUpResponse = async (interaction: RepliableInteractio
 
 export const ephemeralReplyResponse = async (interaction: RepliableInteraction, data: BaseMessageOptions, automaticDeletion: boolean = false) => {
     if (!interaction.deferred) {
-        await interaction.deferReply({ ephemeral: true });
+        await interaction.deferReply({ flags: MessageFlags.Ephemeral });
     }
 
     if (typeof data === "string") {
-        await interaction.reply({ content: data, ephemeral: true });
+        await interaction.reply({ content: data, flags: MessageFlags.Ephemeral });
     } else {
-        await interaction.reply({ ...data, ephemeral: true });
+        await interaction.reply({ ...data, flags: MessageFlags.Ephemeral });
     }
 
     if (automaticDeletion) {
