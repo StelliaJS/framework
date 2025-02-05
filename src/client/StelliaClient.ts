@@ -106,8 +106,9 @@ export class StelliaClient<Ready extends boolean = boolean> extends Client<Ready
                         return reject(new Error("Invalid environment"));
                     }
 
-                    const environmentPath = environments[chosenEnvironment];
-                    const environmentAbsolutePath = pathToFileURL(path.join(srcPath, "..", environmentPath.file)).href
+                    const environmentData = environments[chosenEnvironment];
+                    const environmentPath = environmentData.production ? StelliaClient.convertFilePathToProduction(environmentData.file) : environmentData.file;
+                    const environmentAbsolutePath = pathToFileURL(path.join(srcPath, "..", environmentPath)).href
                     const environmentFile = await import(environmentAbsolutePath);
                     resolve(environmentFile.environment);
                 } catch (error) {
@@ -125,6 +126,10 @@ export class StelliaClient<Ready extends boolean = boolean> extends Client<Ready
         const managers = Object.values(this.managers);
 
         return managers.length === 0 ? true : managers.every((manager: Manager) => manager.isManagerLoaded());
+    }
+
+    private static convertFilePathToProduction = (filePath: string): string => {
+        return filePath.replace("src", "dist").replace(".ts", ".js");
     }
 }
 
