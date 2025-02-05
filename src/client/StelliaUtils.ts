@@ -41,7 +41,8 @@ export class StelliaUtils {
         if (this.client.environment.isEnvironmentsEnabled) {
             this.client.getEnvironment()
                 .then((environment) => {
-                    this.environment = environment
+                    this.environment = environment;
+                    console.log("Environment loaded");
                 })
                 .catch((error) => console.error(error));
         }
