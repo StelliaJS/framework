@@ -48,3 +48,10 @@ export interface Managers {
     selectMenus?: SelectMenuManager;
     modals?: ModalManager;
 }
+
+export interface Environment {
+    isEnvironmentsEnabled: boolean;
+}
+export interface EnvironmentConfiguration {
+    [key: string]: unknown;
+}
