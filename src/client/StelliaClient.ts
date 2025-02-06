@@ -19,7 +19,7 @@ import {
 } from "@typescript/index.js";
 import path from "path";
 import * as fs from "node:fs";
-import { pathToFileURL } from 'url';
+import { pathToFileURL } from "url";
 
 export class StelliaClient<Ready extends boolean = boolean> extends Client<Ready> {
     private readonly utils: StelliaUtils;
