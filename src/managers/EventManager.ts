@@ -18,10 +18,29 @@ export class EventManager extends BaseManager {
 
         for (const event of this.interactions.values()) {
             const { name, once } = event.data;
-            if (once) {
-                this.client.once(name, (...args) => event.execute(this.client, ...args));
+            if (this.client.environment.isEnvironmentsEnabled) {
+                const environment = await this.client.getEnvironment();
+                if (name == Events.ClientReady) {
+                    this.client.once(name, () => event.execute(this.client, environment));
+                    continue;
+                }
+
+                if (once) {
+                    this.client.once(name, (...args) => event.execute(this.client, environment, ...args));
+                } else {
+                    this.client.on(name, (...args) => event.execute(this.client, environment, ...args));
+                }
             } else {
-                this.client.on(name, (...args) => event.execute(this.client, ...args));
+                if (name == Events.ClientReady) {
+                    this.client.once(name, () => event.execute(this.client));
+                    continue;
+                }
+
+                if (once) {
+                    this.client.once(name, (...args) => event.execute(this.client, ...args));
+                } else {
+                    this.client.on(name, (...args) => event.execute(this.client, ...args));
+                }
             }
         }
 
