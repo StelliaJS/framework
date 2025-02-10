@@ -1,4 +1,4 @@
-import { Client, type ClientOptions } from "discord.js";
+import { Client, type ClientOptions, type Interaction } from "discord.js";
 import {
     AutoCompleteManager,
     ButtonManager,
@@ -11,7 +11,6 @@ import {
 } from "@managers/index.js";
 import { StelliaUtils } from "@client/index.js";
 import {
-    type AnyInteraction,
     type Environment,
     type EnvironmentConfiguration,
     type Manager,
@@ -118,7 +117,7 @@ export class StelliaClient<Ready extends boolean = boolean> extends Client<Ready
         });
     }
 
-    public handleInteraction = async (interaction: AnyInteraction): Promise<void> => {
+    public handleInteraction = async (interaction: Interaction<"cached">): Promise<void> => {
         await this.utils.handleInteraction(interaction);
     }
 

@@ -6,6 +6,7 @@ import {
     type ButtonInteraction,
     type ChatInputCommandInteraction,
     type ContextMenuCommandInteraction,
+    type Interaction,
     type MessageContextMenuCommandInteraction,
     type ModalSubmitInteraction,
     REST,
@@ -21,11 +22,11 @@ import {
     type ModalStructure,
     type SelectMenuStructure
 } from "@structures/index.js";
-import { type AnyInteraction, type EnvironmentConfiguration, InteractionType } from "@typescript/index.js";
+import { type EnvironmentConfiguration, InteractionType } from "@typescript/index.js";
 
 export class StelliaUtils {
     public readonly client: StelliaClient;
-    private readonly interactionHandlers: Map<InteractionType, (interaction: AnyInteraction) => Promise<void>>;
+    private readonly interactionHandlers: Map<InteractionType, (interaction: Interaction<"cached">) => Promise<void>>;
     private environment: EnvironmentConfiguration;
 
     constructor(client: StelliaClient) {
@@ -38,7 +39,7 @@ export class StelliaUtils {
             [InteractionType.ModalSubmit, this.handleModalInteraction],
             [InteractionType.SelectMenu, this.handleSelectMenuInteraction]
         ]);
-        if (this.client.environment.isEnvironmentsEnabled) {
+        if (this.client.environment.areEnvironmentsEnabled) {
             this.client.getEnvironment()
                 .then((environment) => {
                     this.environment = environment;
@@ -63,7 +64,7 @@ export class StelliaUtils {
         }
     }
 
-    public handleInteraction = async (interaction: AnyInteraction): Promise<void> => {
+    public handleInteraction = async (interaction: Interaction<"cached">): Promise<void> => {
         if (interaction.inCachedGuild()) {
             const interactionType = this.getInteractionType(interaction);
             if (interactionType === InteractionType.Unknown) {
@@ -76,7 +77,7 @@ export class StelliaUtils {
         }
     }
 
-    private handleAutoCompleteInteraction = async (interaction: AnyInteraction): Promise<void> => {
+    private handleAutoCompleteInteraction = async (interaction: Interaction<"cached">): Promise<void> => {
         try {
             const interactionAutoComplete = interaction as AutocompleteInteraction<"cached">;
             const autoCompleteManager = this.client.managers.autoCompletes;
@@ -85,7 +86,7 @@ export class StelliaUtils {
             const autoComplete = autoCompleteManager.getByCustomId<AutoCompleteStructure>(interactionAutoComplete.commandName);
             if (!autoComplete) return;
 
-            if (this.client.environment.isEnvironmentsEnabled) {
+            if (this.client.environment.areEnvironmentsEnabled) {
                 await autoComplete.execute(this.client, this.environment, interactionAutoComplete);
                 return;
             }
@@ -96,7 +97,7 @@ export class StelliaUtils {
         }
     }
 
-    private handleButtonInteraction = async (interaction: AnyInteraction): Promise<void> => {
+    private handleButtonInteraction = async (interaction: Interaction<"cached">): Promise<void> => {
         try {
             const buttonInteraction = interaction as ButtonInteraction<"cached">;
             const buttonManager = this.client.managers.buttons;
@@ -105,7 +106,7 @@ export class StelliaUtils {
             const button = buttonManager.getByCustomId<ButtonStructure>(buttonInteraction.customId) || buttonManager.getByRegex<ButtonStructure>(buttonInteraction.customId);
             if (!button) return;
 
-            if (this.client.environment.isEnvironmentsEnabled) {
+            if (this.client.environment.areEnvironmentsEnabled) {
                 await button.execute(this.client, this.environment, buttonInteraction);
                 return;
             }
@@ -116,7 +117,7 @@ export class StelliaUtils {
         }
     }
 
-    private handleCommandInteraction = async (interaction: AnyInteraction): Promise<void> => {
+    private handleCommandInteraction = async (interaction: Interaction<"cached">): Promise<void> => {
         try {
             const interactionCommand = interaction as ChatInputCommandInteraction<"cached">;
             const commandManager = this.client.managers.commands;
@@ -125,7 +126,7 @@ export class StelliaUtils {
             const command = commandManager.getByCustomId<CommandStructure>(interactionCommand.commandName);
             if (!command) return;
 
-            if (this.client.environment.isEnvironmentsEnabled) {
+            if (this.client.environment.areEnvironmentsEnabled) {
                 await command.execute(this.client, this.environment, interactionCommand);
                 return;
             }
@@ -136,7 +137,7 @@ export class StelliaUtils {
         }
     }
 
-    private handleContextMenuInteraction = async (interaction: AnyInteraction): Promise<void> => {
+    private handleContextMenuInteraction = async (interaction: Interaction<"cached">): Promise<void> => {
         try {
             const interactionContextMenu = interaction as ContextMenuCommandInteraction<"cached">;
             if (interactionContextMenu.commandType === ApplicationCommandType.Message) {
@@ -151,7 +152,7 @@ export class StelliaUtils {
         }
     }
 
-    private handleModalInteraction = async (interaction: AnyInteraction): Promise<void> => {
+    private handleModalInteraction = async (interaction: Interaction<"cached">): Promise<void> => {
         try {
             const interactionModal = interaction as ModalSubmitInteraction<"cached">;
             const modalManager = this.client.managers.modals;
@@ -160,7 +161,7 @@ export class StelliaUtils {
             const modal = modalManager.getByCustomId<ModalStructure>(interactionModal.customId) || modalManager.getByRegex<ModalStructure>(interactionModal.customId);
             if (!modal) return;
 
-            if (this.client.environment.isEnvironmentsEnabled) {
+            if (this.client.environment.areEnvironmentsEnabled) {
                 await modal.execute(this.client, this.environment, interactionModal);
                 return;
             }
@@ -171,7 +172,7 @@ export class StelliaUtils {
         }
     }
 
-    private handleSelectMenuInteraction = async (interaction: AnyInteraction): Promise<void> => {
+    private handleSelectMenuInteraction = async (interaction: Interaction<"cached">): Promise<void> => {
         try {
             const interactionSelectMenu = interaction as AnySelectMenuInteraction<"cached">;
             const selectMenuManager = this.client.managers.selectMenus;
@@ -180,7 +181,7 @@ export class StelliaUtils {
             const selectMenu = selectMenuManager.getByCustomId<SelectMenuStructure>(interactionSelectMenu.customId) || selectMenuManager.getByRegex<SelectMenuStructure>(interactionSelectMenu.customId);
             if (!selectMenu) return;
 
-            if (this.client.environment.isEnvironmentsEnabled) {
+            if (this.client.environment.areEnvironmentsEnabled) {
                 await selectMenu.execute(this.client, this.environment, interactionSelectMenu);
                 return;
             }
@@ -199,7 +200,7 @@ export class StelliaUtils {
             const messageContextMenu = contextMenuManager.getByCustomId<ContextMenuStructure>(interaction.commandName);
             if (!messageContextMenu) return;
 
-            if (this.client.environment.isEnvironmentsEnabled) {
+            if (this.client.environment.areEnvironmentsEnabled) {
                 await messageContextMenu.execute(this.client, this.environment, interaction);
                 return;
             }
@@ -218,7 +219,7 @@ export class StelliaUtils {
             const userContextMenu = contextMenuManager.getByCustomId<ContextMenuStructure>(interaction.commandName);
             if (!userContextMenu) return;
 
-            if (this.client.environment.isEnvironmentsEnabled) {
+            if (this.client.environment.areEnvironmentsEnabled) {
                 await userContextMenu.execute(this.client, this.environment, interaction);
                 return;
             }
@@ -229,7 +230,7 @@ export class StelliaUtils {
         }
     }
 
-    private getInteractionType(interaction: AnyInteraction): InteractionType {
+    private getInteractionType(interaction: Interaction<"cached">): InteractionType {
         if (interaction.isAutocomplete()) {
             return InteractionType.Autocomplete;
         }

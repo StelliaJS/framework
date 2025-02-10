@@ -1,13 +1,4 @@
 import {
-    type AnySelectMenuInteraction,
-    type AutocompleteInteraction,
-    type ButtonInteraction,
-    type ChatInputCommandInteraction,
-    type ContextMenuCommandInteraction,
-    type ModalSubmitInteraction,
-    type UserContextMenuCommandInteraction
-} from "discord.js";
-import {
     type AutoCompleteManager,
     type ButtonManager,
     type CommandManager,
@@ -19,14 +10,6 @@ import {
 
 export type StructureCustomId = string | RegExp;
 export type InteractionCustomId = string;
-
-export type AnyInteraction = AutocompleteInteraction<"cached">
-    | ButtonInteraction<"cached">
-    | ChatInputCommandInteraction<"cached">
-    | ContextMenuCommandInteraction<"cached">
-    | ModalSubmitInteraction<"cached">
-    | AnySelectMenuInteraction<"cached">
-    | UserContextMenuCommandInteraction<"cached">;
 
 export enum InteractionType {
     Autocomplete = "Autocomplete",
@@ -50,7 +33,7 @@ export interface Managers {
 }
 
 export interface Environment {
-    isEnvironmentsEnabled: boolean;
+    areEnvironmentsEnabled: boolean;
 }
 export interface EnvironmentConfiguration {
     [key: string]: unknown;
