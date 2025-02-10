@@ -39,7 +39,7 @@ export class StelliaUtils {
             [InteractionType.ModalSubmit, this.handleModalInteraction],
             [InteractionType.SelectMenu, this.handleSelectMenuInteraction]
         ]);
-        if (this.client.environment.isEnvironmentsEnabled) {
+        if (this.client.environment.areEnvironmentsEnabled) {
             this.client.getEnvironment()
                 .then((environment) => {
                     this.environment = environment;
@@ -86,7 +86,7 @@ export class StelliaUtils {
             const autoComplete = autoCompleteManager.getByCustomId<AutoCompleteStructure>(interactionAutoComplete.commandName);
             if (!autoComplete) return;
 
-            if (this.client.environment.isEnvironmentsEnabled) {
+            if (this.client.environment.areEnvironmentsEnabled) {
                 await autoComplete.execute(this.client, this.environment, interactionAutoComplete);
                 return;
             }
@@ -106,7 +106,7 @@ export class StelliaUtils {
             const button = buttonManager.getByCustomId<ButtonStructure>(buttonInteraction.customId) || buttonManager.getByRegex<ButtonStructure>(buttonInteraction.customId);
             if (!button) return;
 
-            if (this.client.environment.isEnvironmentsEnabled) {
+            if (this.client.environment.areEnvironmentsEnabled) {
                 await button.execute(this.client, this.environment, buttonInteraction);
                 return;
             }
@@ -126,7 +126,7 @@ export class StelliaUtils {
             const command = commandManager.getByCustomId<CommandStructure>(interactionCommand.commandName);
             if (!command) return;
 
-            if (this.client.environment.isEnvironmentsEnabled) {
+            if (this.client.environment.areEnvironmentsEnabled) {
                 await command.execute(this.client, this.environment, interactionCommand);
                 return;
             }
@@ -161,7 +161,7 @@ export class StelliaUtils {
             const modal = modalManager.getByCustomId<ModalStructure>(interactionModal.customId) || modalManager.getByRegex<ModalStructure>(interactionModal.customId);
             if (!modal) return;
 
-            if (this.client.environment.isEnvironmentsEnabled) {
+            if (this.client.environment.areEnvironmentsEnabled) {
                 await modal.execute(this.client, this.environment, interactionModal);
                 return;
             }
@@ -181,7 +181,7 @@ export class StelliaUtils {
             const selectMenu = selectMenuManager.getByCustomId<SelectMenuStructure>(interactionSelectMenu.customId) || selectMenuManager.getByRegex<SelectMenuStructure>(interactionSelectMenu.customId);
             if (!selectMenu) return;
 
-            if (this.client.environment.isEnvironmentsEnabled) {
+            if (this.client.environment.areEnvironmentsEnabled) {
                 await selectMenu.execute(this.client, this.environment, interactionSelectMenu);
                 return;
             }
@@ -200,7 +200,7 @@ export class StelliaUtils {
             const messageContextMenu = contextMenuManager.getByCustomId<ContextMenuStructure>(interaction.commandName);
             if (!messageContextMenu) return;
 
-            if (this.client.environment.isEnvironmentsEnabled) {
+            if (this.client.environment.areEnvironmentsEnabled) {
                 await messageContextMenu.execute(this.client, this.environment, interaction);
                 return;
             }
@@ -219,7 +219,7 @@ export class StelliaUtils {
             const userContextMenu = contextMenuManager.getByCustomId<ContextMenuStructure>(interaction.commandName);
             if (!userContextMenu) return;
 
-            if (this.client.environment.isEnvironmentsEnabled) {
+            if (this.client.environment.areEnvironmentsEnabled) {
                 await userContextMenu.execute(this.client, this.environment, interaction);
                 return;
             }

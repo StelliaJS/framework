@@ -33,7 +33,7 @@ export interface Managers {
 }
 
 export interface Environment {
-    isEnvironmentsEnabled: boolean;
+    areEnvironmentsEnabled: boolean;
 }
 export interface EnvironmentConfiguration {
     [key: string]: unknown;

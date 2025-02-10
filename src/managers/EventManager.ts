@@ -18,7 +18,7 @@ export class EventManager extends BaseManager {
 
         for (const event of this.interactions.values()) {
             const { name, once } = event.data;
-            if (this.client.environment.isEnvironmentsEnabled) {
+            if (this.client.environment.areEnvironmentsEnabled) {
                 const environment = await this.client.getEnvironment();
                 if (name == Events.ClientReady) {
                     this.client.once(name, () => event.execute(this.client, environment));
