@@ -85,7 +85,7 @@ const client = new StelliaClient({
         }
     },
     environment: {
-        isEnvironmentsEnabled: true
+        areEnvironmentsEnabled: true
     }
 });
 
