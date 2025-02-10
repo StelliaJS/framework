@@ -98,7 +98,7 @@ await client.connect(process.env.TOKEN);
 ```js
 import { type StelliaClient, type EventStructure } from "@stelliajs/framework";
 import { Events } from "discord.js";
-import { type CustomEnvironment } from "@environments/environment.model.ts;
+import { type CustomEnvironment } from "@environments/environment.model.ts";
 
 export default {
     data: {
@@ -116,7 +116,7 @@ export default {
 ```js
 import { type StelliaClient, type EventStructure } from "@stelliajs/framework";
 import { Events, type Interaction } from "discord.js";
-import { type CustomEnvironment } from "@environments/environment.model.ts;
+import { type CustomEnvironment } from "@environments/environment.model.ts";
 
 export default {
     data: {
@@ -136,7 +136,7 @@ export default {
 ```js
 import { type CommandStructure, ephemeralFollowUpResponse, type StelliaClient } from "@stelliajs/framework";
 import { type ChatInputCommandInteraction, SlashCommandBuilder } from "discord.js";
-import { type CustomEnvironment } from "@environments/environment.model.ts;
+import { type CustomEnvironment } from "@environments/environment.model.ts";
 
 export default {
     data: new SlashCommandBuilder()
