@@ -7,9 +7,9 @@ export interface EventStructure<Event extends keyof ClientEvents = keyof ClientE
         name: Event;
         once: boolean;
     };
-    execute(client: ClientEvents["ready"]): Awaitable<unknown>;
+    execute(client: StelliaClient<true>): Awaitable<unknown>;
     execute(...args: ClientEvents[Event]): Awaitable<unknown>;
-    execute(client: StelliaClient, ...args: ClientEvents[Event]): Awaitable<unknown>;
-    execute<CustomEnvironment extends EnvironmentConfiguration>(client: ClientEvents["ready"], environment: CustomEnvironment): Awaitable<unknown>;
-    execute<CustomEnvironment extends EnvironmentConfiguration>(client: StelliaClient, environment: CustomEnvironment, ...args: ClientEvents[Event]): Awaitable<unknown>;
+    execute(client: StelliaClient<true>, ...args: ClientEvents[Event]): Awaitable<unknown>;
+    execute<CustomEnvironment extends EnvironmentConfiguration>(client: StelliaClient<true>, environment: CustomEnvironment): Awaitable<unknown>;
+    execute<CustomEnvironment extends EnvironmentConfiguration>(client: StelliaClient<true>, environment: CustomEnvironment, ...args: ClientEvents[Event]): Awaitable<unknown>;
 }
