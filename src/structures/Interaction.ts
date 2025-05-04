@@ -4,55 +4,81 @@ import {
     type Awaitable,
     type ButtonInteraction,
     type ChatInputCommandInteraction,
-    type ContextMenuCommandBuilder,
+    type ContextMenuCommandType,
     type MessageContextMenuCommandInteraction,
     type ModalSubmitInteraction,
-    type SlashCommandBuilder,
+    type SlashCommandOptionsOnlyBuilder,
     type UserContextMenuCommandInteraction
 } from "discord.js";
 import { type StelliaClient } from "@client/index.js";
 import { type EnvironmentConfiguration } from "@typescript/index.js";
 import { type EventStructure } from "@structures/Event.js";
 
-export interface AutoCompleteStructure {
-    data: DefaultDataStructure;
+export interface AutoCompleteStructureWithEnvironment extends MessageInteractionStructure {
+    execute(client: StelliaClient, environment: EnvironmentConfiguration, interaction: AutocompleteInteraction<"cached">): Awaitable<unknown>;
+}
+export interface AutoCompleteStructureWithoutEnvironment extends MessageInteractionStructure {
     execute(client: StelliaClient, interaction: AutocompleteInteraction<"cached">): Awaitable<unknown>;
-    execute<CustomEnvironment extends EnvironmentConfiguration>(client: StelliaClient, environment: CustomEnvironment, interaction: AutocompleteInteraction<"cached">): Awaitable<unknown>;
 }
+export type AutoCompleteStructure = AutoCompleteStructureWithEnvironment | AutoCompleteStructureWithoutEnvironment;
 
-export interface ButtonStructure {
-    data: DefaultDataStructure;
+export interface ButtonStructureWithEnvironment extends MessageInteractionStructure {
+    execute(client: StelliaClient, environment: EnvironmentConfiguration, interaction: ButtonInteraction<"cached">): Awaitable<unknown>;
+}
+export interface ButtonStructureWithoutEnvironment extends MessageInteractionStructure {
     execute(client: StelliaClient, interaction: ButtonInteraction<"cached">): Awaitable<unknown>;
-    execute<CustomEnvironment extends EnvironmentConfiguration>(client: StelliaClient, environment: CustomEnvironment, interaction: ButtonInteraction<"cached">): Awaitable<unknown>;
 }
+export type ButtonStructure = ButtonStructureWithEnvironment | ButtonStructureWithoutEnvironment;
 
-export interface CommandStructure {
-    data: SlashCommandBuilder;
+export interface CommandStructureWithEnvironment extends CommandInteractionStructure {
+    execute(client: StelliaClient, environment: EnvironmentConfiguration, interaction: ChatInputCommandInteraction<"cached">): Awaitable<unknown>;
+}
+export interface CommandStructureWithoutEnvironment extends CommandInteractionStructure {
     execute(client: StelliaClient, interaction: ChatInputCommandInteraction<"cached">): Awaitable<unknown>;
-    execute<CustomEnvironment extends EnvironmentConfiguration>(client: StelliaClient, environment: CustomEnvironment, interaction: ChatInputCommandInteraction<"cached">): Awaitable<unknown>;
 }
+export type CommandStructure = CommandStructureWithEnvironment | CommandStructureWithoutEnvironment;
 
-export interface ContextMenuStructure {
-    data: ContextMenuCommandBuilder;
+export interface ContextMenuStructureWithEnvironment extends ContextMenuInteractionStructure {
+    execute(client: StelliaClient, environment: EnvironmentConfiguration, interaction: MessageContextMenuCommandInteraction<"cached"> | UserContextMenuCommandInteraction<"cached">): Awaitable<unknown>;
+}
+export interface ContextMenuStructureWithoutEnvironment extends ContextMenuInteractionStructure {
     execute(client: StelliaClient, interaction: MessageContextMenuCommandInteraction<"cached"> | UserContextMenuCommandInteraction<"cached">): Awaitable<unknown>;
-    execute<CustomEnvironment extends EnvironmentConfiguration>(client: StelliaClient, environment: CustomEnvironment, interaction: MessageContextMenuCommandInteraction<"cached"> | UserContextMenuCommandInteraction<"cached">): Awaitable<unknown>;
 }
+export type ContextMenuStructure = ContextMenuStructureWithEnvironment | ContextMenuStructureWithoutEnvironment;
 
-export interface ModalStructure {
-    data: DefaultDataStructure;
+export interface ModalStructureWithEnvironment extends MessageInteractionStructure {
+    execute(client: StelliaClient, environment: EnvironmentConfiguration, interaction: ModalSubmitInteraction<"cached">): Awaitable<unknown>;
+}
+export interface ModalStructureWithoutEnvironment extends MessageInteractionStructure {
     execute(client: StelliaClient, interaction: ModalSubmitInteraction<"cached">): Awaitable<unknown>;
-    execute<CustomEnvironment extends EnvironmentConfiguration>(client: StelliaClient, environment: CustomEnvironment, interaction: ModalSubmitInteraction<"cached">): Awaitable<unknown>;
 }
+export type ModalStructure = ModalStructureWithEnvironment | ModalStructureWithoutEnvironment;
 
-export interface SelectMenuStructure {
-    data: DefaultDataStructure;
-    execute(client: StelliaClient, interaction: AnySelectMenuInteraction<"cached">): Awaitable<unknown>;
-    execute<CustomEnvironment extends EnvironmentConfiguration>(client: StelliaClient, environment: CustomEnvironment, interaction: AnySelectMenuInteraction<"cached">): Awaitable<unknown>;
+export interface SelectMenuStructureWithEnvironment extends MessageInteractionStructure {
+    execute(client: StelliaClient, environment: EnvironmentConfiguration, interaction: AnySelectMenuInteraction<"cached">): Awaitable<unknown>;
 }
+export interface SelectMenuStructureWithoutEnvironment extends MessageInteractionStructure {
+    execute(client: StelliaClient, interaction: AnySelectMenuInteraction<"cached">): Awaitable<unknown>;
+}
+export type SelectMenuStructure = SelectMenuStructureWithEnvironment | SelectMenuStructureWithoutEnvironment;
 
 export type AnyInteractionStructure = AutoCompleteStructure | ButtonStructure | CommandStructure | ContextMenuStructure | EventStructure | ModalStructure | SelectMenuStructure;
 
-interface DefaultDataStructure {
+interface CommandInteractionStructure {
+    data: SlashCommandOptionsOnlyBuilder;
+}
+interface ContextMenuInteractionStructure {
+    data: ContextMenuDataStructure;
+}
+interface ContextMenuDataStructure {
+    name: string;
+    type: ContextMenuCommandType;
+}
+
+interface MessageInteractionStructure {
+    data: MessageDataStructure;
+}
+interface MessageDataStructure {
     name: string | RegExp;
     once: boolean;
 }

@@ -16,11 +16,23 @@ import {
 import { DISCORD_API_VERSION } from "@constants/index.js";
 import {
     type AutoCompleteStructure,
+    type AutoCompleteStructureWithEnvironment,
+    type AutoCompleteStructureWithoutEnvironment,
     type ButtonStructure,
+    type ButtonStructureWithEnvironment,
+    type ButtonStructureWithoutEnvironment,
     type CommandStructure,
+    type CommandStructureWithEnvironment,
+    type CommandStructureWithoutEnvironment,
     type ContextMenuStructure,
+    type ContextMenuStructureWithEnvironment,
+    type ContextMenuStructureWithoutEnvironment,
     type ModalStructure,
-    type SelectMenuStructure
+    type ModalStructureWithEnvironment,
+    type ModalStructureWithoutEnvironment,
+    type SelectMenuStructure,
+    type SelectMenuStructureWithEnvironment,
+    type SelectMenuStructureWithoutEnvironment
 } from "@structures/index.js";
 import { type EnvironmentConfiguration, InteractionType } from "@typescript/index.js";
 
@@ -79,19 +91,20 @@ export class StelliaUtils {
 
     private handleAutoCompleteInteraction = async (interaction: Interaction<"cached">): Promise<void> => {
         try {
-            const interactionAutoComplete = interaction as AutocompleteInteraction<"cached">;
+            const autoCompleteInteraction = interaction as AutocompleteInteraction<"cached">;
             const autoCompleteManager = this.client.managers.autoCompletes;
             if (!autoCompleteManager) return;
 
-            const autoComplete = autoCompleteManager.getByCustomId<AutoCompleteStructure>(interactionAutoComplete.commandName);
+            const autoComplete = autoCompleteManager.getByCustomId<AutoCompleteStructure>(autoCompleteInteraction.commandName);
             if (!autoComplete) return;
 
             if (this.client.environment.areEnvironmentsEnabled) {
-                await autoComplete.execute(this.client, this.environment, interactionAutoComplete);
-                return;
+                const autoCompleteWithEnv = autoComplete as AutoCompleteStructureWithEnvironment;
+                await autoCompleteWithEnv.execute(this.client, this.environment, autoCompleteInteraction);
+            } else {
+                const autoCompleteWithoutEnv = autoComplete as AutoCompleteStructureWithoutEnvironment;
+                await autoCompleteWithoutEnv.execute(this.client, autoCompleteInteraction);
             }
-
-            await autoComplete.execute(this.client, interactionAutoComplete);
         } catch (error) {
             console.error(error);
         }
@@ -107,11 +120,12 @@ export class StelliaUtils {
             if (!button) return;
 
             if (this.client.environment.areEnvironmentsEnabled) {
-                await button.execute(this.client, this.environment, buttonInteraction);
-                return;
+                const buttonWithEnv = button as ButtonStructureWithEnvironment;
+                await buttonWithEnv.execute(this.client, this.environment, buttonInteraction);
+            } else {
+                const buttonWithoutEnv = button as ButtonStructureWithoutEnvironment;
+                await buttonWithoutEnv.execute(this.client, buttonInteraction);
             }
-
-            await button.execute(this.client, buttonInteraction);
         } catch (error) {
             console.error(error);
         }
@@ -119,19 +133,20 @@ export class StelliaUtils {
 
     private handleCommandInteraction = async (interaction: Interaction<"cached">): Promise<void> => {
         try {
-            const interactionCommand = interaction as ChatInputCommandInteraction<"cached">;
+            const commandInteraction = interaction as ChatInputCommandInteraction<"cached">;
             const commandManager = this.client.managers.commands;
             if (!commandManager) return;
 
-            const command = commandManager.getByCustomId<CommandStructure>(interactionCommand.commandName);
+            let command = commandManager.getByCustomId<CommandStructure>(commandInteraction.commandName);
             if (!command) return;
 
             if (this.client.environment.areEnvironmentsEnabled) {
-                await command.execute(this.client, this.environment, interactionCommand);
-                return;
+                const commandWithEnv = command as CommandStructureWithEnvironment;
+                await commandWithEnv.execute(this.client, this.environment, commandInteraction);
+            } else {
+                const commandWithoutEnv = command as CommandStructureWithoutEnvironment;
+                await commandWithoutEnv.execute(this.client, commandInteraction);
             }
-
-            await command.execute(this.client, interactionCommand);
         } catch (error) {
             console.error(error);
         }
@@ -154,19 +169,20 @@ export class StelliaUtils {
 
     private handleModalInteraction = async (interaction: Interaction<"cached">): Promise<void> => {
         try {
-            const interactionModal = interaction as ModalSubmitInteraction<"cached">;
+            const modalInteraction = interaction as ModalSubmitInteraction<"cached">;
             const modalManager = this.client.managers.modals;
             if (!modalManager) return;
 
-            const modal = modalManager.getByCustomId<ModalStructure>(interactionModal.customId) || modalManager.getByRegex<ModalStructure>(interactionModal.customId);
+            const modal = modalManager.getByCustomId<ModalStructure>(modalInteraction.customId) || modalManager.getByRegex<ModalStructure>(modalInteraction.customId);
             if (!modal) return;
 
             if (this.client.environment.areEnvironmentsEnabled) {
-                await modal.execute(this.client, this.environment, interactionModal);
-                return;
+                const modalWithEnv = modal as ModalStructureWithEnvironment;
+                await modalWithEnv.execute(this.client, this.environment, modalInteraction);
+            } else {
+                const modalWithoutEnv = modal as ModalStructureWithoutEnvironment;
+                await modalWithoutEnv.execute(this.client, modalInteraction);
             }
-
-            await modal.execute(this.client, interactionModal);
         } catch (error) {
             console.error(error);
         }
@@ -174,19 +190,20 @@ export class StelliaUtils {
 
     private handleSelectMenuInteraction = async (interaction: Interaction<"cached">): Promise<void> => {
         try {
-            const interactionSelectMenu = interaction as AnySelectMenuInteraction<"cached">;
+            const selectMenuInteraction = interaction as AnySelectMenuInteraction<"cached">;
             const selectMenuManager = this.client.managers.selectMenus;
             if (!selectMenuManager) return;
 
-            const selectMenu = selectMenuManager.getByCustomId<SelectMenuStructure>(interactionSelectMenu.customId) || selectMenuManager.getByRegex<SelectMenuStructure>(interactionSelectMenu.customId);
+            const selectMenu = selectMenuManager.getByCustomId<SelectMenuStructure>(selectMenuInteraction.customId) || selectMenuManager.getByRegex<SelectMenuStructure>(selectMenuInteraction.customId);
             if (!selectMenu) return;
 
             if (this.client.environment.areEnvironmentsEnabled) {
-                await selectMenu.execute(this.client, this.environment, interactionSelectMenu);
-                return;
+                const selectMenuWithEnv = selectMenu as SelectMenuStructureWithEnvironment;
+                await selectMenuWithEnv.execute(this.client, this.environment, selectMenuInteraction);
+            } else {
+                const modalWithoutEnv = selectMenu as SelectMenuStructureWithoutEnvironment;
+                await modalWithoutEnv.execute(this.client, selectMenuInteraction);
             }
-
-            await selectMenu.execute(this.client, interactionSelectMenu);
         } catch (error) {
             console.error(error);
         }
@@ -201,11 +218,12 @@ export class StelliaUtils {
             if (!messageContextMenu) return;
 
             if (this.client.environment.areEnvironmentsEnabled) {
-                await messageContextMenu.execute(this.client, this.environment, interaction);
-                return;
+                const messageContextMenuWithEnv = messageContextMenu as ContextMenuStructureWithEnvironment;
+                await messageContextMenuWithEnv.execute(this.client, this.environment, interaction);
+            } else {
+                const messageContextMenuWithoutEnv = messageContextMenu as ContextMenuStructureWithoutEnvironment;
+                await messageContextMenuWithoutEnv.execute(this.client, interaction);
             }
-
-            await messageContextMenu.execute(this.client, interaction);
         } catch (error) {
             console.error(error);
         }
@@ -220,11 +238,12 @@ export class StelliaUtils {
             if (!userContextMenu) return;
 
             if (this.client.environment.areEnvironmentsEnabled) {
-                await userContextMenu.execute(this.client, this.environment, interaction);
-                return;
+                const userContextMenuWithEnv = userContextMenu as ContextMenuStructureWithEnvironment;
+                await userContextMenuWithEnv.execute(this.client, this.environment, interaction);
+            } else {
+                const userContextMenuWithoutEnv = userContextMenu as ContextMenuStructureWithoutEnvironment;
+                await userContextMenuWithoutEnv.execute(this.client, interaction);
             }
-
-            await userContextMenu.execute(this.client, interaction);
         } catch (error) {
             console.error(error);
         }
