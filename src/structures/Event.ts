@@ -1,15 +1,20 @@
 import { type Awaitable, type ClientEvents } from "discord.js";
 import { type StelliaClient } from "@client/index.js";
-import type { EnvironmentConfiguration } from "@typescript/types.js";
+import { type EnvironmentConfiguration } from "@typescript/types.js";
 
-export interface EventStructure<Event extends keyof ClientEvents = keyof ClientEvents> {
-    data: {
-        name: Event;
-        once: boolean;
-    };
-    execute(client: StelliaClient): Awaitable<unknown>;
-    execute(...args: ClientEvents[Event]): Awaitable<unknown>;
-    execute(client: StelliaClient, ...args: ClientEvents[Event]): Awaitable<unknown>;
-    execute<CustomEnvironment extends EnvironmentConfiguration>(client: StelliaClient, environment: CustomEnvironment): Awaitable<unknown>;
-    execute<CustomEnvironment extends EnvironmentConfiguration>(client: StelliaClient, environment: CustomEnvironment, ...args: ClientEvents[Event]): Awaitable<unknown>;
+export interface EventStructureWithEnvironment extends EventInteractionStructure {
+    execute(client: StelliaClient, environment: EnvironmentConfiguration, ...args: ClientEvents[Event]): Awaitable<unknown>;
 }
+export interface EventStructureWithoutEnvironment extends EventInteractionStructure {
+    execute(client: StelliaClient, ...args: ClientEvents[Event]): Awaitable<unknown>;
+}
+export type EventStructure = EventStructureWithEnvironment | EventStructureWithoutEnvironment;
+
+interface EventInteractionStructure {
+    data: EventDataStructure;
+}
+interface EventDataStructure {
+    name: Event;
+    once: boolean;
+}
+type Event = keyof ClientEvents;
