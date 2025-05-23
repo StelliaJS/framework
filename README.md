@@ -3,7 +3,7 @@
 ## About
 
 StelliaJS is built using Discord JS V14 and TypeScript. It allows you to quickly set up a new bot with a simple and complete architecture.
-A CLI is currently being developed and will soon be available for even greater convenience.
+A CLI is available to help you set up a project with StelliaJS : [link to the CLI](https://github.com/StelliaJS/cli)
 
 ## Architecture
 Recommended architecture for StelliaJS project.
@@ -19,6 +19,10 @@ Recommended architecture for StelliaJS project.
 │   │       │   ├── ban.ts
 │   │       │   └── mute.ts
 │   │       └── ping.ts
+│   ├── environments/
+│   │   ├── environment.development.ts
+│   │   ├── environment.model.ts
+│   │   └── environment.ts
 │   ├── events/
 │   │   ├── ready.ts
 │   │   └── interactionCreate.ts
@@ -36,16 +40,17 @@ Recommended architecture for StelliaJS project.
 ├── .env
 ├── package.json
 ├── package-lock.json
+├── stellia.json
 └── tsconfig.json
 ```
+
 ## Examples
 
-### Simple client
+### Simple client with environment
 
 ```js
 import { StelliaClient } from "@stelliajs/framework";
-import { GatewayIntentBits } from "discord-api-types/v10";
-import { Partials } from "discord.js";
+import { GatewayIntentBits, Partials } from "discord.js";
 
 const client = new StelliaClient({
     intents: [
@@ -56,26 +61,31 @@ const client = new StelliaClient({
     ],
     partials: [Partials.Message, Partials.GuildMember]
 }, {
-    autoCompletes: {
-        directoryPath: "./interactions/autoCompletes"
+    managers: {
+        autoCompletes: {
+            directoryPath: "./interactions/autoCompletes"
+        },
+        buttons: {
+            directoryPath: "./interactions/buttons"
+        },
+        commands: {
+            directoryPath: "./commands/slash"
+        },
+        contextMenus: {
+            directoryPath: "./commands/contextMenus"
+        },
+        events: {
+            directoryPath: "./events"
+        },
+        modals: {
+            directoryPath: "./interactions/modals"
+        },
+        selectMenus: {
+            directoryPath: "./interactions/selectMenus"
+        }
     },
-    buttons: {
-        directoryPath: "./interactions/buttons"
-    },
-    commands: {
-        directoryPath: "./commands/slash"
-    },
-    contextMenus: {
-        directoryPath: "./commands/contextMenus"
-    },
-    events: {
-        directoryPath: "./events"
-    },
-    modals: {
-        directoryPath: "./interactions/modals"
-    },
-    selectMenus: {
-        directoryPath: "./interactions/selectMenus"
+    environment: {
+        areEnvironmentsEnabled: true
     }
 });
 
@@ -84,34 +94,36 @@ await client.connect(process.env.TOKEN);
 
 ### Simple event
 
-#### Ready event
+#### Ready event with environment
 ```js
 import { type StelliaClient, type EventStructure } from "@stelliajs/framework";
 import { Events } from "discord.js";
+import { type CustomEnvironment } from "@environments/environment.model.ts";
 
 export default {
     data: {
         name: Events.ClientReady,
         once: true
     },
-    async execute(client: StelliaClient<true>) { // <true> ensures that the client is Ready
+    async execute(client: StelliaClient<true>, environment: CustomEnvironment) { // <true> ensures that the client is Ready
         console.log(`Logged in as ${client.user.tag}`);
         await client.initializeCommands(); // Used to initialise registered commands
     }
 } as EventStructure;
 ```
 
-#### InteractionCreate event
+#### InteractionCreate event with environment
 ```js
 import { type StelliaClient, type EventStructure } from "@stelliajs/framework";
 import { Events, type Interaction } from "discord.js";
+import { type CustomEnvironment } from "@environments/environment.model.ts";
 
 export default {
     data: {
         name: Events.InteractionCreate,
         once: false
     },
-    async execute(client: StelliaClient<true>, interaction: Interaction) {
+    async execute(client: StelliaClient<true>, environment: CustomEnvironment, interaction: Interaction) {
         if (interaction.inCachedGuild()) {
             await client.handleInteraction(interaction); // Automatic interaction handling
         }
@@ -124,11 +136,12 @@ export default {
 ```js
 import { type CommandStructure, ephemeralFollowUpResponse, type StelliaClient } from "@stelliajs/framework";
 import { type ChatInputCommandInteraction, SlashCommandBuilder } from "discord.js";
+import { type CustomEnvironment } from "@environments/environment.model.ts";
 
 export default {
     data: new SlashCommandBuilder()
         .setName("ping"),
-    async execute(client: StelliaClient, interaction: ChatInputCommandInteraction<"cached">) { // All interactions are cached
+    async execute(client: StelliaClient, environment: CustomEnvironment, interaction: ChatInputCommandInteraction<"cached">) { // All interactions are cached
         await ephemeralFollowUpResponse(interaction, "Pong!", true); // Response is ephemeral and deleted after 60 seconds
     }
 } as CommandStructure;
