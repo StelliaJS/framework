@@ -15,13 +15,13 @@
   "description": "A framework for simplify the creation of discord bots",
   "keywords": ["discord", "bot", "discordjs", "typescript", "framework"],
   "dependencies": {
-    "discord-api-types": "^0.38.2",
+    "discord-api-types": "^0.38.8",
     "discord.js": "^14.19.3"
   },
   "devDependencies": {
     "ts-node": "^10.9.2",
-    "tsc-alias": "^1.8.15"
+    "tsc-alias": "^1.8.16"
   },
   "type": "module",
-  "packageManager": "pnpm@10.10.0"
+  "packageManager": "pnpm@10.11.0"
 }
