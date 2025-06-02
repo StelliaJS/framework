@@ -12,6 +12,7 @@ import {
 import { StelliaUtils } from "@client/index.js";
 import {
     type ClientEnvironment,
+    type GuildConfigurationType,
     type GuildsConfiguration,
     type Manager,
     type Managers
@@ -116,6 +117,10 @@ export class StelliaClient<Ready extends boolean = boolean> extends Client<Ready
                 }
             });
         });
+    }
+
+    public getGuildConfiguration = (guildId: string): GuildConfigurationType => {
+        return this.utils.getGuildConfiguration(guildId);
     }
 
     public handleInteraction = async (interaction: Interaction<"cached">): Promise<void> => {

@@ -35,12 +35,24 @@ export interface Managers {
 export interface ClientEnvironment {
     areGuildsConfigurationEnabled: boolean;
 }
-export interface GuildsConfiguration {
+
+export interface BaseGuildConfiguration {
+    locale: string;
     [key: string]: unknown;
+}
+export interface BaseGeneralConfiguration {
+    [key: string]: unknown;
+}
+export interface GuildsConfiguration {
+    general: {
+        [key: string]: unknown;
+    },
     guilds: {
-        [guildId: string]: {
-            locale: string;
-            [key: string]: unknown;
-        };
+        [guildId: string]: BaseGuildConfiguration;
     }
 }
+export interface GuildConfiguration {
+    general: BaseGeneralConfiguration;
+    guild: BaseGuildConfiguration;
+}
+export type GuildConfigurationType = GuildConfiguration | undefined;
