@@ -56,8 +56,9 @@ export class StelliaUtils {
                 .then((environment) => {
                     this.environment = environment;
                     console.log("Environment loaded");
+                    logger.success("Guilds configuration loaded successfully");
                 })
-                .catch((error) => console.error(error));
+                .catch((error) => logger.error(`Error while loading guilds configuration: ${error}`));
         }
     }
 
@@ -70,8 +71,9 @@ export class StelliaUtils {
             const rest = new REST({ version: DISCORD_API_VERSION }).setToken(this.client.token);
             try {
                 await rest.put(Routes.applicationCommands(this.client.user.id), { body: applicationCommands })
+                await rest.put(Routes.applicationCommands(this.client.user.id), { body: applicationCommands });
             } catch (error) {
-                console.error(error);
+                logger.error(`Error while registering application commands: ${error}`);
             }
         }
     }
@@ -82,6 +84,7 @@ export class StelliaUtils {
             if (interactionType === InteractionType.Unknown) {
                 throw new Error("Unknown interaction type");
             }
+
             const handler = this.interactionHandlers.get(interactionType);
             if (handler) {
                 await handler(interaction);
@@ -106,7 +109,7 @@ export class StelliaUtils {
                 await autoCompleteWithoutEnv.execute(this.client, autoCompleteInteraction);
             }
         } catch (error) {
-            console.error(error);
+            logger.error(`Error while handling autocomplete interaction: ${error}`);
         }
     }
 
@@ -127,7 +130,7 @@ export class StelliaUtils {
                 await buttonWithoutEnv.execute(this.client, buttonInteraction);
             }
         } catch (error) {
-            console.error(error);
+            logger.error(`Error while handling button interaction: ${error}`);
         }
     }
 
@@ -148,7 +151,7 @@ export class StelliaUtils {
                 await commandWithoutEnv.execute(this.client, commandInteraction);
             }
         } catch (error) {
-            console.error(error);
+            logger.error(`Error while handling command interaction: ${error}`);
         }
     }
 
@@ -163,7 +166,7 @@ export class StelliaUtils {
                 await this.handleUserContextMenuInteraction(userInteraction);
             }
         } catch (error) {
-            console.error(error);
+            logger.error(`Error while handling context menu interaction: ${error}`);
         }
     }
 
@@ -184,7 +187,7 @@ export class StelliaUtils {
                 await modalWithoutEnv.execute(this.client, modalInteraction);
             }
         } catch (error) {
-            console.error(error);
+            logger.error(`Error while handling modal interaction: ${error}`);
         }
     }
 
@@ -205,7 +208,7 @@ export class StelliaUtils {
                 await modalWithoutEnv.execute(this.client, selectMenuInteraction);
             }
         } catch (error) {
-            console.error(error);
+            logger.error(`Error while handling select menu interaction: ${error}`);
         }
     }
 
@@ -225,7 +228,7 @@ export class StelliaUtils {
                 await messageContextMenuWithoutEnv.execute(this.client, interaction);
             }
         } catch (error) {
-            console.error(error);
+            logger.error(`Error while handling message context menu interaction: ${error}`);
         }
     }
 
@@ -245,7 +248,7 @@ export class StelliaUtils {
                 await userContextMenuWithoutEnv.execute(this.client, interaction);
             }
         } catch (error) {
-            console.error(error);
+            logger.error(`Error while handling user context menu interaction: ${error}`);
         }
     }
 

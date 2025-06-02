@@ -8,6 +8,7 @@ import {
 } from "@structures/index.js";
 import { type StructureCustomId, type InteractionCustomId } from "@typescript/index.js";
 import { requiredFiles } from "@utils/index.js";
+import { logger } from "@utils/logger.js";
 
 export class EventManager extends BaseManager {
     private interactions: Collection<StructureCustomId, EventStructure> = new Collection();
@@ -50,7 +51,7 @@ export class EventManager extends BaseManager {
             }
         }
 
-        this.client.on(Events.Error, (error) => console.error(error));
+        this.client.on(Events.Error, (error) => logger.error(`Client error: ${error}`));
         this.setManagerLoaded();
     }
 
