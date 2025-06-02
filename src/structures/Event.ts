@@ -1,14 +1,14 @@
 import { type Awaitable, type ClientEvents } from "discord.js";
 import { type StelliaClient } from "@client/index.js";
-import { type EnvironmentConfiguration } from "@typescript/types.js";
+import { type GuildsConfiguration } from "@typescript/types.js";
 
-export interface EventStructureWithEnvironment extends EventInteractionStructure {
-    execute(client: StelliaClient, environment: EnvironmentConfiguration, ...args: ClientEvents[Event]): Awaitable<unknown>;
+export interface EventStructureWithGuildsConfiguration extends EventInteractionStructure {
+    execute(client: StelliaClient, guildsConfiguration: GuildsConfiguration, ...args: ClientEvents[Event]): Awaitable<unknown>;
 }
-export interface EventStructureWithoutEnvironment extends EventInteractionStructure {
+export interface EventStructureWithoutGuildsConfiguration extends EventInteractionStructure {
     execute(client: StelliaClient, ...args: ClientEvents[Event]): Awaitable<unknown>;
 }
-export type EventStructure = EventStructureWithEnvironment | EventStructureWithoutEnvironment;
+export type EventStructure = EventStructureWithGuildsConfiguration | EventStructureWithoutGuildsConfiguration;
 
 interface EventInteractionStructure {
     data: EventDataStructure;

@@ -32,9 +32,15 @@ export interface Managers {
     modals?: ModalManager;
 }
 
-export interface Environment {
-    areEnvironmentsEnabled: boolean;
+export interface ClientEnvironment {
+    areGuildsConfigurationEnabled: boolean;
 }
-export interface EnvironmentConfiguration {
+export interface GuildsConfiguration {
     [key: string]: unknown;
+    guilds: {
+        [guildId: string]: {
+            locale: string;
+            [key: string]: unknown;
+        };
+    }
 }

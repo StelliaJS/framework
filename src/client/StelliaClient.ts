@@ -11,19 +11,20 @@ import {
 } from "@managers/index.js";
 import { StelliaUtils } from "@client/index.js";
 import {
-    type Environment,
-    type EnvironmentConfiguration,
+    type ClientEnvironment,
+    type GuildsConfiguration,
     type Manager,
     type Managers
 } from "@typescript/index.js";
 import path from "path";
 import * as fs from "node:fs";
 import { pathToFileURL } from "url";
+import { logger } from "@utils/logger.js";
 
 export class StelliaClient<Ready extends boolean = boolean> extends Client<Ready> {
     private readonly utils: StelliaUtils;
     public readonly managers: Managers = {};
-    public readonly environment: Environment;
+    public readonly environment: ClientEnvironment;
 
     public constructor(clientOptions: ClientOptions, stelliaOptions?: StelliaOptions) {
         super(clientOptions);
@@ -85,7 +86,7 @@ export class StelliaClient<Ready extends boolean = boolean> extends Client<Ready
         await this.utils.initializeCommands();
     }
 
-    public getEnvironment = async <CustomEnvironment extends EnvironmentConfiguration>(): Promise<CustomEnvironment> => {
+    public getGuildsConfiguration = async <CustomGuildsConfiguration extends GuildsConfiguration>(): Promise<CustomGuildsConfiguration> => {
         const chosenEnvironment = process.argv.find(arg => arg.startsWith("--config"))?.split("=")[1];
         if (!chosenEnvironment) {
             throw new Error("Environment not provided");
@@ -142,6 +143,6 @@ interface StelliaOptions {
         selectMenus?: ManagerOptions;
         modals?: ManagerOptions;   
     },
-    environment?: Environment;
+    environment?: ClientEnvironment;
 }
 

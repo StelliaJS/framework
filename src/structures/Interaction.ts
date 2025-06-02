@@ -11,56 +11,56 @@ import {
     type UserContextMenuCommandInteraction
 } from "discord.js";
 import { type StelliaClient } from "@client/index.js";
-import { type EnvironmentConfiguration } from "@typescript/index.js";
+import { type GuildsConfiguration } from "@typescript/index.js";
 import { type EventStructure } from "@structures/Event.js";
 
-export interface AutoCompleteStructureWithEnvironment extends MessageInteractionStructure {
-    execute(client: StelliaClient, environment: EnvironmentConfiguration, interaction: AutocompleteInteraction<"cached">): Awaitable<unknown>;
+export interface AutoCompleteStructureWithGuildsConfiguration extends MessageInteractionStructure {
+    execute(client: StelliaClient, guildsConfiguration: GuildsConfiguration, interaction: AutocompleteInteraction<"cached">): Awaitable<unknown>;
 }
-export interface AutoCompleteStructureWithoutEnvironment extends MessageInteractionStructure {
+export interface AutoCompleteStructureWithoutGuildsConfiguration extends MessageInteractionStructure {
     execute(client: StelliaClient, interaction: AutocompleteInteraction<"cached">): Awaitable<unknown>;
 }
-export type AutoCompleteStructure = AutoCompleteStructureWithEnvironment | AutoCompleteStructureWithoutEnvironment;
+export type AutoCompleteStructure = AutoCompleteStructureWithGuildsConfiguration | AutoCompleteStructureWithoutGuildsConfiguration;
 
-export interface ButtonStructureWithEnvironment extends MessageInteractionStructure {
-    execute(client: StelliaClient, environment: EnvironmentConfiguration, interaction: ButtonInteraction<"cached">): Awaitable<unknown>;
+export interface ButtonStructureWithGuildsConfiguration extends MessageInteractionStructure {
+    execute(client: StelliaClient, guildsConfiguration: GuildsConfiguration, interaction: ButtonInteraction<"cached">): Awaitable<unknown>;
 }
-export interface ButtonStructureWithoutEnvironment extends MessageInteractionStructure {
+export interface ButtonStructureWithoutGuildsConfiguration extends MessageInteractionStructure {
     execute(client: StelliaClient, interaction: ButtonInteraction<"cached">): Awaitable<unknown>;
 }
-export type ButtonStructure = ButtonStructureWithEnvironment | ButtonStructureWithoutEnvironment;
+export type ButtonStructure = ButtonStructureWithGuildsConfiguration | ButtonStructureWithoutGuildsConfiguration;
 
-export interface CommandStructureWithEnvironment extends CommandInteractionStructure {
-    execute(client: StelliaClient, environment: EnvironmentConfiguration, interaction: ChatInputCommandInteraction<"cached">): Awaitable<unknown>;
+export interface CommandStructureWithGuildsConfiguration extends CommandInteractionStructure {
+    execute(client: StelliaClient, guildsConfiguration: GuildsConfiguration, interaction: ChatInputCommandInteraction<"cached">): Awaitable<unknown>;
 }
-export interface CommandStructureWithoutEnvironment extends CommandInteractionStructure {
+export interface CommandStructureWithoutGuildsConfiguration extends CommandInteractionStructure {
     execute(client: StelliaClient, interaction: ChatInputCommandInteraction<"cached">): Awaitable<unknown>;
 }
-export type CommandStructure = CommandStructureWithEnvironment | CommandStructureWithoutEnvironment;
+export type CommandStructure = CommandStructureWithGuildsConfiguration | CommandStructureWithoutGuildsConfiguration;
 
-export interface ContextMenuStructureWithEnvironment extends ContextMenuInteractionStructure {
-    execute(client: StelliaClient, environment: EnvironmentConfiguration, interaction: MessageContextMenuCommandInteraction<"cached"> | UserContextMenuCommandInteraction<"cached">): Awaitable<unknown>;
+export interface ContextMenuStructureWithGuildsConfiguration extends ContextMenuInteractionStructure {
+    execute(client: StelliaClient, guildsConfiguration: GuildsConfiguration, interaction: MessageContextMenuCommandInteraction<"cached"> | UserContextMenuCommandInteraction<"cached">): Awaitable<unknown>;
 }
-export interface ContextMenuStructureWithoutEnvironment extends ContextMenuInteractionStructure {
+export interface ContextMenuStructureWithoutGuildsConfiguration extends ContextMenuInteractionStructure {
     execute(client: StelliaClient, interaction: MessageContextMenuCommandInteraction<"cached"> | UserContextMenuCommandInteraction<"cached">): Awaitable<unknown>;
 }
-export type ContextMenuStructure = ContextMenuStructureWithEnvironment | ContextMenuStructureWithoutEnvironment;
+export type ContextMenuStructure = ContextMenuStructureWithGuildsConfiguration | ContextMenuStructureWithoutGuildsConfiguration;
 
-export interface ModalStructureWithEnvironment extends MessageInteractionStructure {
-    execute(client: StelliaClient, environment: EnvironmentConfiguration, interaction: ModalSubmitInteraction<"cached">): Awaitable<unknown>;
+export interface ModalStructureWithGuildsConfiguration extends MessageInteractionStructure {
+    execute(client: StelliaClient, guildsConfiguration: GuildsConfiguration, interaction: ModalSubmitInteraction<"cached">): Awaitable<unknown>;
 }
-export interface ModalStructureWithoutEnvironment extends MessageInteractionStructure {
+export interface ModalStructureWithoutGuildsConfiguration extends MessageInteractionStructure {
     execute(client: StelliaClient, interaction: ModalSubmitInteraction<"cached">): Awaitable<unknown>;
 }
-export type ModalStructure = ModalStructureWithEnvironment | ModalStructureWithoutEnvironment;
+export type ModalStructure = ModalStructureWithGuildsConfiguration | ModalStructureWithoutGuildsConfiguration;
 
-export interface SelectMenuStructureWithEnvironment extends MessageInteractionStructure {
-    execute(client: StelliaClient, environment: EnvironmentConfiguration, interaction: AnySelectMenuInteraction<"cached">): Awaitable<unknown>;
+export interface SelectMenuStructureWithGuildsConfiguration extends MessageInteractionStructure {
+    execute(client: StelliaClient, guildsConfiguration: GuildsConfiguration, interaction: AnySelectMenuInteraction<"cached">): Awaitable<unknown>;
 }
-export interface SelectMenuStructureWithoutEnvironment extends MessageInteractionStructure {
+export interface SelectMenuStructureWithoutGuildsConfiguration extends MessageInteractionStructure {
     execute(client: StelliaClient, interaction: AnySelectMenuInteraction<"cached">): Awaitable<unknown>;
 }
-export type SelectMenuStructure = SelectMenuStructureWithEnvironment | SelectMenuStructureWithoutEnvironment;
+export type SelectMenuStructure = SelectMenuStructureWithGuildsConfiguration | SelectMenuStructureWithoutGuildsConfiguration;
 
 export type AnyInteractionStructure = AutoCompleteStructure | ButtonStructure | CommandStructure | ContextMenuStructure | EventStructure | ModalStructure | SelectMenuStructure;
 

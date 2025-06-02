@@ -3,8 +3,8 @@ import { type StelliaClient } from "@client/index.js";
 import { BaseManager } from "@managers/index.js";
 import {
     type EventStructure,
-    type EventStructureWithEnvironment,
-    type EventStructureWithoutEnvironment
+    type EventStructureWithGuildsConfiguration,
+    type EventStructureWithoutGuildsConfiguration
 } from "@structures/index.js";
 import { type StructureCustomId, type InteractionCustomId } from "@typescript/index.js";
 import { requiredFiles } from "@utils/index.js";
@@ -22,32 +22,10 @@ export class EventManager extends BaseManager {
         this.interactions = events;
 
         for (const eventStructure of this.interactions.values()) {
-            const { name, once } = eventStructure.data;
-            if (this.client.environment.areEnvironmentsEnabled) {
-                const environment = await this.client.getEnvironment();
-                const event = eventStructure as EventStructureWithEnvironment;
-                if (name == Events.ClientReady) {
-                    this.client.once(Events.ClientReady, () => event.execute(this.client, environment));
-                    continue;
-                }
-
-                if (once) {
-                    this.client.once(name, (...args) => event.execute(this.client, environment, ...args));
-                } else {
-                    this.client.on(name, (...args) => event.execute(this.client, environment, ...args));
-                }
+            if (this.client.environment.areGuildsConfigurationEnabled) {
+                await this.loadEventWithGuildsConfiguration(eventStructure);
             } else {
-                const event = eventStructure as EventStructureWithoutEnvironment;
-                if (name == Events.ClientReady) {
-                    this.client.once(name, () => event.execute(this.client));
-                    continue;
-                }
-
-                if (once) {
-                    this.client.once(name, (...args) => event.execute(this.client, ...args));
-                } else {
-                    this.client.on(name, (...args) => event.execute(this.client, ...args));
-                }
+                await this.loadEventWithoutGuildsConfiguration(eventStructure);
             }
         }
 
@@ -67,5 +45,28 @@ export class EventManager extends BaseManager {
     public getAll<EventStructure>(): Collection<StructureCustomId, EventStructure> {
         const events = this.interactions as Collection<StructureCustomId, EventStructure>;
         return events;
+    }
+
+    private async loadEventWithGuildsConfiguration(eventStructure: EventStructure) {
+        const guildsConfiguration = await this.client.getGuildsConfiguration();
+        const { name, once } = eventStructure.data;
+        const event = eventStructure as EventStructureWithGuildsConfiguration;
+
+        if (once) {
+            this.client.once(name, (...args) => event.execute(this.client, guildsConfiguration, ...args));
+        } else {
+            this.client.on(name, (...args) => event.execute(this.client, guildsConfiguration, ...args));
+        }
+    }
+
+    private async loadEventWithoutGuildsConfiguration(eventStructure: EventStructure) {
+        const { name, once } = eventStructure.data;
+        const event = eventStructure as EventStructureWithoutGuildsConfiguration;
+
+        if (once) {
+            this.client.once(name, (...args) => event.execute(this.client, ...args));
+        } else {
+            this.client.on(name, (...args) => event.execute(this.client, ...args));
+        }
     }
 }
