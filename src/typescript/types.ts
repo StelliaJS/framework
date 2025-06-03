@@ -7,6 +7,7 @@ import {
     type ModalManager,
     type SelectMenuManager
 } from "@managers/index.js";
+import { type Snowflake } from "discord.js";
 
 export type StructureCustomId = string | RegExp;
 export type InteractionCustomId = string;
@@ -48,7 +49,7 @@ export interface GuildsConfiguration {
         [key: string]: unknown;
     },
     guilds: {
-        [guildId: string]: BaseGuildConfiguration;
+        [guildId in Snowflake]: BaseGuildConfiguration;
     }
 }
 export interface GuildConfiguration {

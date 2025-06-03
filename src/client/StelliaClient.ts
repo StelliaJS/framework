@@ -30,6 +30,10 @@ export class StelliaClient<Ready extends boolean = boolean> extends Client<Ready
     public constructor(clientOptions: ClientOptions, stelliaOptions?: StelliaOptions) {
         super(clientOptions);
 
+        if (stelliaOptions?.environment) {
+            this.environment = stelliaOptions.environment;
+        }
+
         if (stelliaOptions?.managers.autoCompletes?.directoryPath) {
             this.managers.autoCompletes = new AutoCompleteManager(this, stelliaOptions.managers.autoCompletes.directoryPath);
         }
@@ -56,10 +60,6 @@ export class StelliaClient<Ready extends boolean = boolean> extends Client<Ready
 
         if (stelliaOptions?.managers.modals?.directoryPath) {
             this.managers.modals = new ModalManager(this, stelliaOptions.managers.modals.directoryPath);
-        }
-
-        if (stelliaOptions?.environment) {
-            this.environment = stelliaOptions.environment;
         }
 
         this.utils = new StelliaUtils(this);

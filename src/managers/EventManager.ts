@@ -1,9 +1,11 @@
-import { Collection, Events } from "discord.js";
+import { Collection } from "discord.js";
 import { type StelliaClient } from "@client/index.js";
 import { BaseManager } from "@managers/index.js";
 import {
     type ClientEventsArgs,
-    type EventStructure, EventStructureWithAllGuildsConfiguration, EventStructureWithConfiguration,
+    type EventStructure,
+    type EventStructureWithAllGuildsConfiguration,
+    type EventStructureWithConfiguration,
     type EventStructureWithGuildConfiguration,
     type EventStructureWithoutGuildConfiguration
 } from "@structures/index.js";
@@ -45,7 +47,6 @@ export class EventManager extends BaseManager {
             }
         }
 
-        this.client.on(Events.Error, (error) => logger.error(`Client error: ${error}`));
         this.setManagerLoaded();
     }
 
@@ -76,18 +77,14 @@ export class EventManager extends BaseManager {
 
     private eventHandler = (event: EventStructureWithConfiguration, ...args: ClientEventsArgs) => {
         const mainArgument = args[0];
-        if (!mainArgument) {
-            const eventStructure = event as EventStructureWithAllGuildsConfiguration;
-            return eventStructure.execute(this.client, this.guildsConfiguration);
-        }
-
         const guildConfiguration = this.getGuildConfiguration(mainArgument);
         if (guildConfiguration) {
             const eventStructure = event as EventStructureWithGuildConfiguration;
             return eventStructure.execute(this.client, guildConfiguration, ...args);
         }
 
-        logger.warn(`No guild configuration found for event ${event.data.name} with main argument ${mainArgument}`);
+        const eventStructure = event as EventStructureWithAllGuildsConfiguration;
+        return eventStructure.execute(this.client, this.guildsConfiguration);
     };
 
     private async loadEventWithoutGuildConfiguration(eventStructure: EventStructure) {
