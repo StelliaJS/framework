@@ -7,6 +7,7 @@ import {
     type ModalManager,
     type SelectMenuManager
 } from "@managers/index.js";
+import { type Snowflake } from "discord.js";
 
 export type StructureCustomId = string | RegExp;
 export type InteractionCustomId = string;
@@ -32,9 +33,27 @@ export interface Managers {
     modals?: ModalManager;
 }
 
-export interface Environment {
-    areEnvironmentsEnabled: boolean;
+export interface ClientEnvironment {
+    areGuildsConfigurationEnabled: boolean;
 }
-export interface EnvironmentConfiguration {
+
+export interface BaseGuildConfiguration {
+    locale: string;
     [key: string]: unknown;
 }
+export interface BaseGeneralConfiguration {
+    [key: string]: unknown;
+}
+export interface GuildsConfiguration {
+    general: {
+        [key: string]: unknown;
+    },
+    guilds: {
+        [guildId in Snowflake]: BaseGuildConfiguration;
+    }
+}
+export interface GuildConfiguration {
+    general: BaseGeneralConfiguration;
+    guild: BaseGuildConfiguration;
+}
+export type GuildConfigurationType = GuildConfiguration | undefined;

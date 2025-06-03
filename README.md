@@ -85,7 +85,7 @@ const client = new StelliaClient({
         }
     },
     environment: {
-        areEnvironmentsEnabled: true
+        areGuildsConfigurationEnabled: true
     }
 });
 
@@ -98,14 +98,14 @@ await client.connect(process.env.TOKEN);
 ```js
 import { type StelliaClient, type EventStructure } from "@stelliajs/framework";
 import { Events } from "discord.js";
-import { type CustomEnvironment } from "@environments/environment.model.ts";
+import { type CustomGuildsConfiguration } from "@environments/environment.model.ts";
 
 export default {
     data: {
         name: Events.ClientReady,
         once: true
     },
-    async execute(client: StelliaClient<true>, environment: CustomEnvironment) { // <true> ensures that the client is Ready
+    async execute(client: StelliaClient<true>, environment: CustomGuildsConfiguration) { // <true> ensures that the client is Ready
         console.log(`Logged in as ${client.user.tag}`);
         await client.initializeCommands(); // Used to initialise registered commands
     }
@@ -116,14 +116,14 @@ export default {
 ```js
 import { type StelliaClient, type EventStructure } from "@stelliajs/framework";
 import { Events, type Interaction } from "discord.js";
-import { type CustomEnvironment } from "@environments/environment.model.ts";
+import { type CustomGuildsConfiguration } from "@environments/environment.model.ts";
 
 export default {
     data: {
         name: Events.InteractionCreate,
         once: false
     },
-    async execute(client: StelliaClient<true>, environment: CustomEnvironment, interaction: Interaction) {
+    async execute(client: StelliaClient<true>, environment: CustomGuildsConfiguration, interaction: Interaction) {
         if (interaction.inCachedGuild()) {
             await client.handleInteraction(interaction); // Automatic interaction handling
         }
@@ -136,12 +136,12 @@ export default {
 ```js
 import { type CommandStructure, ephemeralFollowUpResponse, type StelliaClient } from "@stelliajs/framework";
 import { type ChatInputCommandInteraction, SlashCommandBuilder } from "discord.js";
-import { type CustomEnvironment } from "@environments/environment.model.ts";
+import { type CustomGuildsConfiguration } from "@environments/environment.model.ts";
 
 export default {
     data: new SlashCommandBuilder()
         .setName("ping"),
-    async execute(client: StelliaClient, environment: CustomEnvironment, interaction: ChatInputCommandInteraction<"cached">) { // All interactions are cached
+    async execute(client: StelliaClient, environment: CustomGuildsConfiguration, interaction: ChatInputCommandInteraction<"cached">) { // All interactions are cached
         await ephemeralFollowUpResponse(interaction, "Pong!", true); // Response is ephemeral and deleted after 60 seconds
     }
 } as CommandStructure;

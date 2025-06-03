@@ -11,22 +11,28 @@ import {
 } from "@managers/index.js";
 import { StelliaUtils } from "@client/index.js";
 import {
-    type Environment,
-    type EnvironmentConfiguration,
+    type ClientEnvironment,
+    type GuildConfigurationType,
+    type GuildsConfiguration,
     type Manager,
     type Managers
 } from "@typescript/index.js";
 import path from "path";
 import * as fs from "node:fs";
 import { pathToFileURL } from "url";
+import { logger } from "@utils/logger.js";
 
 export class StelliaClient<Ready extends boolean = boolean> extends Client<Ready> {
     private readonly utils: StelliaUtils;
     public readonly managers: Managers = {};
-    public readonly environment: Environment;
+    public readonly environment: ClientEnvironment;
 
     public constructor(clientOptions: ClientOptions, stelliaOptions?: StelliaOptions) {
         super(clientOptions);
+
+        if (stelliaOptions?.environment) {
+            this.environment = stelliaOptions.environment;
+        }
 
         if (stelliaOptions?.managers.autoCompletes?.directoryPath) {
             this.managers.autoCompletes = new AutoCompleteManager(this, stelliaOptions.managers.autoCompletes.directoryPath);
@@ -56,28 +62,24 @@ export class StelliaClient<Ready extends boolean = boolean> extends Client<Ready
             this.managers.modals = new ModalManager(this, stelliaOptions.managers.modals.directoryPath);
         }
 
-        if (stelliaOptions?.environment) {
-            this.environment = stelliaOptions.environment;
-        }
-
         this.utils = new StelliaUtils(this);
 
         process.on("unhandledRejection", (error: string) => {
-            console.error(`Unhandled promise rejection: ${error}`);
+            logger.error(`Unhandled promise rejection: ${error}`)
         });
     }
 
     public connect = async (token: string): Promise<void> => {
         if (!this.areManagersLoaded()) {
             setTimeout(() => {
-                console.log("Managers are not loaded yet, retrying in 500ms...");
+                logger.warn("Managers are not loaded yet, retrying in 500ms...")
                 this.connect(token);
             }, 500);
 
             return;
         }
 
-        console.log("Managers are loaded, connecting to Discord...");
+        logger.success("Managers are loaded, connecting to Discord...")
         await this.login(token);
     }
 
@@ -85,7 +87,7 @@ export class StelliaClient<Ready extends boolean = boolean> extends Client<Ready
         await this.utils.initializeCommands();
     }
 
-    public getEnvironment = async <CustomEnvironment extends EnvironmentConfiguration>(): Promise<CustomEnvironment> => {
+    public getGuildsConfiguration = async <CustomGuildsConfiguration extends GuildsConfiguration>(): Promise<CustomGuildsConfiguration> => {
         const chosenEnvironment = process.argv.find(arg => arg.startsWith("--config"))?.split("=")[1];
         if (!chosenEnvironment) {
             throw new Error("Environment not provided");
@@ -117,6 +119,10 @@ export class StelliaClient<Ready extends boolean = boolean> extends Client<Ready
         });
     }
 
+    public getGuildConfiguration = (guildId: string): GuildConfigurationType => {
+        return this.utils.getGuildConfiguration(guildId);
+    }
+
     public handleInteraction = async (interaction: Interaction<"cached">): Promise<void> => {
         await this.utils.handleInteraction(interaction);
     }
@@ -142,6 +148,6 @@ interface StelliaOptions {
         selectMenus?: ManagerOptions;
         modals?: ManagerOptions;   
     },
-    environment?: Environment;
+    environment?: ClientEnvironment;
 }
 
