@@ -83,10 +83,13 @@ export class StelliaUtils {
             return undefined;
         }
 
-        const { guilds, ...general } = this.guildsConfiguration;
+        const { guilds, general } = this.guildsConfiguration;
         const guildConfiguration = guilds[guildId];
 
-        return { general, guild: guildConfiguration };
+        return {
+            general: general,
+            guild: guildConfiguration
+        };
     }
 
     public handleInteraction = async (interaction: Interaction<"cached">): Promise<void> => {
