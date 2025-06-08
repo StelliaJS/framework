@@ -67,6 +67,10 @@ export class StelliaClient<Ready extends boolean = boolean> extends Client<Ready
         process.on("unhandledRejection", (error: string) => {
             logger.error(`Unhandled promise rejection: ${error}`)
         });
+
+        process.on("uncaughtException", (error: string) => {
+            logger.error(`Uncaught exception: ${error}`)
+        });
     }
 
     public connect = async (token: string): Promise<void> => {

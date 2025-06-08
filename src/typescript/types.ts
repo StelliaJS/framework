@@ -7,7 +7,7 @@ import {
     type ModalManager,
     type SelectMenuManager
 } from "@managers/index.js";
-import { type Snowflake } from "discord.js";
+import { type Locale, type Snowflake } from "discord.js";
 
 export type StructureCustomId = string | RegExp;
 export type InteractionCustomId = string;
@@ -38,7 +38,7 @@ export interface ClientEnvironment {
 }
 
 export interface BaseGuildConfiguration {
-    locale: string;
+    locale: Locale;
     [key: string]: unknown;
 }
 export interface BaseGeneralConfiguration {
