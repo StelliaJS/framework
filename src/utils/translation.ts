@@ -1,12 +1,8 @@
 import i18next from "i18next";
+import { type Locale } from "discord.js";
 
 interface TranslateArgs {
     [key: string]: any;
-}
-
-export enum Locale {
-    EN = "en",
-    FR = "fr"
 }
 
 export const translateToLocale = async (locale: Locale, key: string, args?: TranslateArgs): Promise<any> => {

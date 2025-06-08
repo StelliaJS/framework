@@ -7,8 +7,7 @@ import {
     type ModalManager,
     type SelectMenuManager
 } from "@managers/index.js";
-import { type Snowflake } from "discord.js";
-import { Locale } from "@utils/translation.js";
+import { type Locale, type Snowflake } from "discord.js";
 
 export type StructureCustomId = string | RegExp;
 export type InteractionCustomId = string;
