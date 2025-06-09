@@ -1,6 +1,6 @@
 {
   "name": "@stelliajs/framework",
-  "version": "1.4.2",
+  "version": "1.4.3",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
@@ -25,5 +25,5 @@
     "tsc-alias": "^1.8.16"
   },
   "type": "module",
-  "packageManager": "pnpm@10.11.1"
+  "packageManager": "pnpm@10.12.1"
 }
