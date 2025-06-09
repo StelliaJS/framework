@@ -64,12 +64,12 @@ export class StelliaClient<Ready extends boolean = boolean> extends Client<Ready
 
         this.utils = new StelliaUtils(this);
 
-        process.on("unhandledRejection", (error: string) => {
-            logger.error(`Unhandled promise rejection: ${error}`)
+        process.on("unhandledRejection", (error: Error) => {
+            logger.error(`Unhandled promise rejection: ${error.stack}`)
         });
 
-        process.on("uncaughtException", (error: string) => {
-            logger.error(`Uncaught exception: ${error}`)
+        process.on("uncaughtException", (error: Error) => {
+            logger.error(`Uncaught exception: ${error.stack}`)
         });
     }
 

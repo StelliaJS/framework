@@ -29,7 +29,7 @@ export class EventManager extends BaseManager {
             this.client.getGuildsConfiguration()
                 .then((guildsConfiguration) => {
                     this.guildsConfiguration = guildsConfiguration;
-                    logger.success("Guilds configuration loaded successfully for event manager");
+                    logger.success("Guilds configuration loaded successfully for event");
                 })
                 .catch((error) => logger.error(`Error while loading guilds configuration: ${error}`));
         }
