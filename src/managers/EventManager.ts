@@ -31,7 +31,7 @@ export class EventManager extends BaseManager {
                     this.guildsConfiguration = guildsConfiguration;
                     logger.success("Guilds configuration loaded successfully for event");
                 })
-                .catch((error) => logger.error(`Error while loading guilds configuration: ${error}`));
+                .catch((error) => logger.error(`Error while loading guilds configuration: ${error.stack}`));
         }
     }
 

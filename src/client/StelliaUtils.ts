@@ -58,7 +58,7 @@ export class StelliaUtils {
                     this.guildsConfiguration = guildsConfiguration;
                     logger.success("Guilds configuration loaded successfully for interactions");
                 })
-                .catch((error) => logger.error(`Error while loading guilds configuration: ${error}`));
+                .catch((error) => logger.error(`Error while loading guilds configuration: ${error.stack}`));
         }
     }
 
@@ -72,8 +72,8 @@ export class StelliaUtils {
             try {
                 await rest.put(Routes.applicationCommands(this.client.user.id), { body: applicationCommands });
                 logger.success("Application commands registered successfully");
-            } catch (error) {
-                logger.error(`Error while registering application commands: ${error}`);
+            } catch (error: any) {
+                logger.error(`Error while registering application commands: ${error.stack}`);
             }
         }
     }
@@ -123,8 +123,8 @@ export class StelliaUtils {
                 const autoCompleteWithoutGuildConfiguration = autoComplete as AutoCompleteStructureWithoutGuildConfiguration;
                 await autoCompleteWithoutGuildConfiguration.execute(this.client, autoCompleteInteraction);
             }
-        } catch (error) {
-            logger.error(`Error while handling autocomplete interaction: ${error}`);
+        } catch (error: any) {
+            logger.error(`Error while handling autocomplete interaction: ${error.stack}`);
         }
     }
 
@@ -145,8 +145,8 @@ export class StelliaUtils {
                 const buttonWithoutGuildConfiguration = button as ButtonStructureWithoutGuildConfiguration;
                 await buttonWithoutGuildConfiguration.execute(this.client, buttonInteraction);
             }
-        } catch (error) {
-            logger.error(`Error while handling button interaction: ${error}`);
+        } catch (error: any) {
+            logger.error(`Error while handling button interaction: ${error.stack}`);
         }
     }
 
@@ -167,8 +167,8 @@ export class StelliaUtils {
                 const commandWithoutGuildConfiguration = command as CommandStructureWithoutGuildConfiguration;
                 await commandWithoutGuildConfiguration.execute(this.client, commandInteraction);
             }
-        } catch (error) {
-            logger.error(`Error while handling command interaction: ${error}`);
+        } catch (error: any) {
+            logger.error(`Error while handling command interaction: ${error.stack}`);
         }
     }
 
@@ -182,8 +182,8 @@ export class StelliaUtils {
                 const userInteraction = interaction as UserContextMenuCommandInteraction<"cached">;
                 await this.handleUserContextMenuInteraction(userInteraction);
             }
-        } catch (error) {
-            logger.error(`Error while handling context menu interaction: ${error}`);
+        } catch (error: any) {
+            logger.error(`Error while handling context menu interaction: ${error.stack}`);
         }
     }
 
@@ -204,8 +204,8 @@ export class StelliaUtils {
                 const modalWithoutGuildConfiguration = modal as ModalStructureWithoutGuildConfiguration;
                 await modalWithoutGuildConfiguration.execute(this.client, modalInteraction);
             }
-        } catch (error) {
-            logger.error(`Error while handling modal interaction: ${error}`);
+        } catch (error: any) {
+            logger.error(`Error while handling modal interaction: ${error.stack}`);
         }
     }
 
@@ -226,8 +226,8 @@ export class StelliaUtils {
                 const modalWithoutGuildConfiguration = selectMenu as SelectMenuStructureWithoutGuildConfiguration;
                 await modalWithoutGuildConfiguration.execute(this.client, selectMenuInteraction);
             }
-        } catch (error) {
-            logger.error(`Error while handling select menu interaction: ${error}`);
+        } catch (error: any) {
+            logger.error(`Error while handling select menu interaction: ${error.stack}`);
         }
     }
 
@@ -247,8 +247,8 @@ export class StelliaUtils {
                 const messageContextMenuWithoutGuildConfiguration = messageContextMenu as ContextMenuStructureWithoutGuildConfiguration;
                 await messageContextMenuWithoutGuildConfiguration.execute(this.client, interaction);
             }
-        } catch (error) {
-            logger.error(`Error while handling message context menu interaction: ${error}`);
+        } catch (error: any) {
+            logger.error(`Error while handling message context menu interaction: ${error.stack}`);
         }
     }
 
@@ -268,8 +268,8 @@ export class StelliaUtils {
                 const userContextMenuWithoutGuildConfiguration = userContextMenu as ContextMenuStructureWithoutGuildConfiguration;
                 await userContextMenuWithoutGuildConfiguration.execute(this.client, interaction);
             }
-        } catch (error) {
-            logger.error(`Error while handling user context menu interaction: ${error}`);
+        } catch (error: any) {
+            logger.error(`Error while handling user context menu interaction: ${error.stack}`);
         }
     }
 
