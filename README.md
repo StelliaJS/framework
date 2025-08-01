@@ -6,7 +6,9 @@ StelliaJS is built using Discord JS V14 and TypeScript. It allows you to quickly
 A CLI is available to help you set up a project with StelliaJS : [link to the CLI](https://github.com/StelliaJS/cli)
 
 ## Architecture
+
 Recommended architecture for StelliaJS project.
+
 ```
 .
 ├── dist // Build folder
@@ -49,45 +51,48 @@ Recommended architecture for StelliaJS project.
 ### Simple client with environment
 
 ```js
-import { StelliaClient } from "@stelliajs/framework";
 import { GatewayIntentBits, Partials } from "discord.js";
+import { StelliaClient } from "@stelliajs/framework";
 
-const client = new StelliaClient({
-    intents: [
-        GatewayIntentBits.Guilds, 
-        GatewayIntentBits.GuildMessages,
-        GatewayIntentBits.MessageContent,
-        GatewayIntentBits.GuildMembers
-    ],
-    partials: [Partials.Message, Partials.GuildMember]
-}, {
-    managers: {
-        autoCompletes: {
-            directoryPath: "./interactions/autoCompletes"
-        },
-        buttons: {
-            directoryPath: "./interactions/buttons"
-        },
-        commands: {
-            directoryPath: "./commands/slash"
-        },
-        contextMenus: {
-            directoryPath: "./commands/contextMenus"
-        },
-        events: {
-            directoryPath: "./events"
-        },
-        modals: {
-            directoryPath: "./interactions/modals"
-        },
-        selectMenus: {
-            directoryPath: "./interactions/selectMenus"
-        }
-    },
-    environment: {
-        areGuildsConfigurationEnabled: true
-    }
-});
+const client = new StelliaClient(
+	{
+		intents: [
+			GatewayIntentBits.Guilds,
+			GatewayIntentBits.GuildMessages,
+			GatewayIntentBits.MessageContent,
+			GatewayIntentBits.GuildMembers
+		],
+		partials: [Partials.Message, Partials.GuildMember]
+	},
+	{
+		managers: {
+			autoCompletes: {
+				directoryPath: "./interactions/autoCompletes"
+			},
+			buttons: {
+				directoryPath: "./interactions/buttons"
+			},
+			commands: {
+				directoryPath: "./commands/slash"
+			},
+			contextMenus: {
+				directoryPath: "./commands/contextMenus"
+			},
+			events: {
+				directoryPath: "./events"
+			},
+			modals: {
+				directoryPath: "./interactions/modals"
+			},
+			selectMenus: {
+				directoryPath: "./interactions/selectMenus"
+			}
+		},
+		environment: {
+			areGuildsConfigurationEnabled: true
+		}
+	}
+);
 
 await client.connect(process.env.TOKEN);
 ```
@@ -95,6 +100,7 @@ await client.connect(process.env.TOKEN);
 ### Simple event
 
 #### Ready event with environment
+
 ```js
 import { type StelliaClient, type EventStructure } from "@stelliajs/framework";
 import { Events } from "discord.js";
@@ -113,6 +119,7 @@ export default {
 ```
 
 #### InteractionCreate event with environment
+
 ```js
 import { type StelliaClient, type EventStructure } from "@stelliajs/framework";
 import { Events, type Interaction } from "discord.js";
@@ -146,7 +153,6 @@ export default {
     }
 } as CommandStructure;
 ```
-
 
 ## Help
 

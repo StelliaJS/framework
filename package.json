@@ -1,29 +1,43 @@
 {
-  "name": "@stelliajs/framework",
-  "version": "1.4.5",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "scripts": {
-    "build": "tsc && tsc-alias"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/stelliajs/framework.git"
-  },
-  "author": "Tweenty_",
-  "license": "ISC",
-  "description": "A framework for simplify the creation of discord bots",
-  "keywords": ["discord", "bot", "discordjs", "typescript", "framework"],
-  "dependencies": {
-    "discord-api-types": "^0.38.11",
-    "discord.js": "^14.21.0",
-    "i18next": "^25.3.0",
-    "log-symbols": "^7.0.1"
-  },
-  "devDependencies": {
-    "ts-node": "^10.9.2",
-    "tsc-alias": "^1.8.16"
-  },
-  "type": "module",
-  "packageManager": "pnpm@10.12.4"
+	"name": "@stelliajs/framework",
+	"version": "1.4.6",
+	"main": "./dist/index.js",
+	"types": "./dist/index.d.ts",
+	"scripts": {
+		"lint": "eslint . --ext .js",
+		"format": "prettier --write .",
+		"build": "tsc && tsc-alias"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/stelliajs/framework.git"
+	},
+	"author": "Tweenty_",
+	"license": "ISC",
+	"description": "A framework for simplify the creation of discord bots",
+	"keywords": [
+		"discord",
+		"bot",
+		"discordjs",
+		"typescript",
+		"framework"
+	],
+	"dependencies": {
+		"discord.js": "^14.21.0",
+		"i18next": "^25.3.2",
+		"log-symbols": "^7.0.1"
+	},
+	"devDependencies": {
+		"@eslint/js": "^9.32.0",
+		"@trivago/prettier-plugin-sort-imports": "^5.2.2",
+		"eslint": "^9.32.0",
+		"discord-api-types": "^0.38.16",
+		"globals": "^16.3.0",
+		"prettier": "^3.6.2",
+		"ts-node": "^10.9.2",
+		"tsc-alias": "^1.8.16",
+		"typescript-eslint": "^8.38.0"
+	},
+	"type": "module",
+	"packageManager": "pnpm@10.14.0"
 }
