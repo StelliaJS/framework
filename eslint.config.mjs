@@ -1,79 +1,68 @@
-import _import from "eslint-plugin-import";
-import nPlugin from "eslint-plugin-n";
-import prettierPlugin from "eslint-plugin-prettier";
-import typescriptPlugin from "@typescript-eslint/eslint-plugin";
-import typescriptParser from "@typescript-eslint/parser";
-import { defineConfig } from "eslint/config";
-import globals from "globals";
 import js from "@eslint/js";
+import ts from "typescript-eslint";
+import importPlugin from "eslint-plugin-import";
+import prettierConfig from "eslint-config-prettier";
 
-export default defineConfig([
+export default ts.config(
     js.configs.recommended,
+    ts.configs.recommended,
+    importPlugin.flatConfigs.recommended,
+    importPlugin.flatConfigs.typescript,
+    prettierConfig,
     {
         languageOptions: {
-            globals: { ...globals.node },
-            ecmaVersion: "latest",
-            sourceType: "module",
-        },
-        plugins: {
-            import: _import,
-            n: nPlugin,
-            prettier: prettierPlugin,
+            parserOptions: {
+                project: "./tsconfig.json",
+                sourceType: "module",
+                ecmaVersion: "latest"
+            }
         },
         rules: {
+            "import/namespace": "off",
+            "@typescript-eslint/explicit-function-return-type": "off",
+            "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
+            "@typescript-eslint/no-explicit-any": "warn",
             "import/order": [
                 "error",
                 {
-                    groups: ["builtin", "external", "internal", "parent", "sibling", "index"],
-                    "newlines-between": "always",
-                    alphabetize: { order: "asc", caseInsensitive: true },
-                },
-            ],
-            "no-console": "off",
-            "prettier/prettier": "error",
-        },
-        settings: {
-            "import/resolver": {
-                node: { extensions: [".js", ".ts"] },
-            },
-        },
-    },
-    {
-        files: ["**/*.ts", "**/*.tsx"],
-        languageOptions: {
-            parser: typescriptParser,
-            ecmaVersion: "latest",
-            sourceType: "module",
-        },
-        plugins: {
-            "@typescript-eslint": typescriptPlugin,
-        },
-        rules: {
-            "import/order": [
-                "error",
-                {
-                    groups: ["builtin", "external", "internal", "parent", "sibling", "index"],
-                    "newlines-between": "always",
+                    groups: [
+                        "builtin",
+                        "external",
+                        "internal",
+                        ["parent", "sibling", "index"],
+                        "object",
+                        "type"
+                    ],
+                    pathGroups: [
+                        {
+                            pattern: "@/**",
+                            group: "internal"
+                        }
+                    ],
+                    pathGroupsExcludedImportTypes: ["builtin"],
                     alphabetize: {
                         order: "asc",
                         caseInsensitive: true
                     }
                 }
             ],
+            "import/newline-after-import": ["error", { count: 1 }],
+            "import/no-unresolved": "error",
+            "import/no-duplicates": "error",
             "no-console": "off",
-            "prettier/prettier": [
-                "error",
-                {
-                    endOfLine: "lf",
-                }
-            ],
+            "no-var": "error",
+            "prefer-const": "error"
         },
         settings: {
             "import/resolver": {
+                typescript: {
+                    alwaysTryTypes: true,
+                    project: "./tsconfig.json"
+                },
                 node: {
-                    extensions: [".js"]
+                    extensions: [".js", ".ts"]
                 }
             }
         }
     }
-]);
+);
