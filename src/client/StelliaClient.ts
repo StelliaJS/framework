@@ -14,11 +14,11 @@ import {
 	SelectMenuManager
 } from "@managers/index.js";
 import {
-	type ClientEnvironment,
-	type GuildConfigurationType,
-	type GuildsConfiguration,
-	type Manager,
-	type Managers
+    type ClientEnvironment, type GuildConfiguration,
+    type GuildConfigurationType,
+    type GuildsConfiguration,
+    type Manager,
+    type Managers
 } from "@typescript/index.js";
 import { logger } from "@utils/logger.js";
 
@@ -125,7 +125,7 @@ export class StelliaClient<Ready extends boolean = boolean> extends Client<Ready
 		});
 	};
 
-	public getGuildConfiguration = (guildId: string): GuildConfigurationType => {
+	public getGuildConfiguration = <CustomGuildConfiguration extends GuildConfiguration>(guildId: string): CustomGuildConfiguration | undefined => {
 		return this.utils.getGuildConfiguration(guildId);
 	};
 
