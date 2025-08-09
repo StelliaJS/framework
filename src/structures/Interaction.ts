@@ -1,15 +1,15 @@
 import {
-	type AnySelectMenuInteraction,
-	type AutocompleteInteraction,
-	type Awaitable,
-	type ButtonInteraction,
-	type ChatInputCommandInteraction,
-	type ContextMenuCommandType,
-	type MessageContextMenuCommandInteraction,
-	type ModalSubmitInteraction,
-	type SlashCommandOptionsOnlyBuilder,
-	type SlashCommandSubcommandsOnlyBuilder,
-	type UserContextMenuCommandInteraction
+    type AnySelectMenuInteraction,
+    type AutocompleteInteraction,
+    type Awaitable,
+    type ButtonInteraction,
+    type ChatInputCommandInteraction,
+    type ContextMenuCommandBuilder,
+    type MessageContextMenuCommandInteraction,
+    type ModalSubmitInteraction,
+    type SlashCommandOptionsOnlyBuilder,
+    type SlashCommandSubcommandsOnlyBuilder,
+    type UserContextMenuCommandInteraction
 } from "discord.js";
 import { type StelliaClient } from "@client/index.js";
 import { type EventStructure } from "@structures/Event.js";
@@ -24,8 +24,8 @@ export interface AutoCompleteStructureWithoutGuildConfiguration extends Omit<Mes
     execute(client: StelliaClient, interaction: AutocompleteInteraction<"cached">): Awaitable<unknown>;
 }
 export type AutoCompleteStructure =
-	| AutoCompleteStructureWithGuildConfiguration
-	| AutoCompleteStructureWithoutGuildConfiguration;
+    | AutoCompleteStructureWithGuildConfiguration
+    | AutoCompleteStructureWithoutGuildConfiguration;
 
 export interface ButtonStructureWithGuildConfiguration extends MessageInteractionStructure {
     execute(client: StelliaClient, guildConfiguration: GuildConfigurationType, interaction: ButtonInteraction<"cached">): Awaitable<unknown>;
@@ -34,8 +34,8 @@ export interface ButtonStructureWithoutGuildConfiguration extends MessageInterac
     execute(client: StelliaClient, interaction: ButtonInteraction<"cached">): Awaitable<unknown>;
 }
 export type ButtonStructure =
-	| ButtonStructureWithGuildConfiguration
-	| ButtonStructureWithoutGuildConfiguration;
+    | ButtonStructureWithGuildConfiguration
+    | ButtonStructureWithoutGuildConfiguration;
 
 export interface CommandStructureWithGuildConfiguration extends CommandInteractionStructure {
     execute(client: StelliaClient, guildConfiguration: GuildConfigurationType, interaction: ChatInputCommandInteraction<"cached">): Awaitable<unknown>;
@@ -44,8 +44,8 @@ export interface CommandStructureWithoutGuildConfiguration extends CommandIntera
     execute(client: StelliaClient, interaction: ChatInputCommandInteraction<"cached">): Awaitable<unknown>;
 }
 export type CommandStructure =
-	| CommandStructureWithGuildConfiguration
-	| CommandStructureWithoutGuildConfiguration;
+    | CommandStructureWithGuildConfiguration
+    | CommandStructureWithoutGuildConfiguration;
 
 export interface ContextMenuStructureWithGuildConfiguration extends ContextMenuInteractionStructure {
     execute(client: StelliaClient, guildConfiguration: GuildConfigurationType, interaction: MessageContextMenuCommandInteraction<"cached"> | UserContextMenuCommandInteraction<"cached">): Awaitable<unknown>;
@@ -54,8 +54,8 @@ export interface ContextMenuStructureWithoutGuildConfiguration extends ContextMe
     execute(client: StelliaClient, interaction: MessageContextMenuCommandInteraction<"cached"> | UserContextMenuCommandInteraction<"cached">): Awaitable<unknown>;
 }
 export type ContextMenuStructure =
-	| ContextMenuStructureWithGuildConfiguration
-	| ContextMenuStructureWithoutGuildConfiguration;
+    | ContextMenuStructureWithGuildConfiguration
+    | ContextMenuStructureWithoutGuildConfiguration;
 
 export interface ModalStructureWithGuildConfiguration extends MessageInteractionStructure {
     execute(client: StelliaClient, guildConfiguration: GuildConfigurationType, interaction: ModalSubmitInteraction<"cached">): Awaitable<unknown>;
@@ -64,8 +64,8 @@ export interface ModalStructureWithoutGuildConfiguration extends MessageInteract
     execute(client: StelliaClient, interaction: ModalSubmitInteraction<"cached">): Awaitable<unknown>;
 }
 export type ModalStructure =
-	| ModalStructureWithGuildConfiguration
-	| ModalStructureWithoutGuildConfiguration;
+    | ModalStructureWithGuildConfiguration
+    | ModalStructureWithoutGuildConfiguration;
 
 export interface SelectMenuStructureWithGuildConfiguration extends MessageInteractionStructure {
     execute(client: StelliaClient, guildConfiguration: GuildConfigurationType, interaction: AnySelectMenuInteraction<"cached">): Awaitable<unknown>;
@@ -74,20 +74,20 @@ export interface SelectMenuStructureWithoutGuildConfiguration extends MessageInt
     execute(client: StelliaClient, interaction: AnySelectMenuInteraction<"cached">): Awaitable<unknown>;
 }
 export type SelectMenuStructure =
-	| SelectMenuStructureWithGuildConfiguration
-	| SelectMenuStructureWithoutGuildConfiguration;
+    | SelectMenuStructureWithGuildConfiguration
+    | SelectMenuStructureWithoutGuildConfiguration;
 
 export type AnyInteractionStructure =
-	| AutoCompleteStructure
-	| ButtonStructure
-	| CommandStructure
-	| ContextMenuStructure
-	| EventStructure
-	| ModalStructure
-	| SelectMenuStructure;
+    | AutoCompleteStructure
+    | ButtonStructure
+    | CommandStructure
+    | ContextMenuStructure
+    | EventStructure
+    | ModalStructure
+    | SelectMenuStructure;
 
 interface CommandInteractionStructure {
-	data: CommandDataStructure;
+    data: CommandDataStructure;
 }
 interface CommandDataStructure {
     command: SlashCommandOptionsOnlyBuilder | SlashCommandSubcommandsOnlyBuilder;
@@ -95,20 +95,19 @@ interface CommandDataStructure {
 }
 
 interface ContextMenuInteractionStructure {
-	data: ContextMenuDataStructure;
+    data: ContextMenuDataStructure;
 }
 interface ContextMenuDataStructure {
-	name: string;
-	type: ContextMenuCommandType;
+    command: ContextMenuCommandBuilder;
     reply: ReplyStructure<true> | ReplyStructure<false>;
 }
 
 interface MessageInteractionStructure {
-	data: MessageDataStructure;
+    data: MessageDataStructure;
 }
 interface MessageDataStructure {
-	name: string | RegExp;
-	once: boolean;
+    name: string | RegExp;
+    once: boolean;
     reply: ReplyStructure<true> | ReplyStructure<false>;
 }
 
