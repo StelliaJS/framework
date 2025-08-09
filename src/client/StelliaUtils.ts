@@ -1,44 +1,41 @@
 import {
-	type AnySelectMenuInteraction,
-	ApplicationCommandType,
-	type AutocompleteInteraction,
-	type ButtonInteraction,
-	type ChatInputCommandInteraction,
-	type ContextMenuCommandInteraction,
-	type Interaction,
-	type MessageContextMenuCommandInteraction,
-	type ModalSubmitInteraction,
-	REST,
-	Routes,
-	type UserContextMenuCommandInteraction
+    type AnySelectMenuInteraction,
+    ApplicationCommandType,
+    type AutocompleteInteraction,
+    type ButtonInteraction,
+    type ChatInputCommandInteraction,
+    type ContextMenuCommandInteraction,
+    type Interaction,
+    type MessageContextMenuCommandInteraction,
+    MessageFlags,
+    type ModalSubmitInteraction,
+    REST,
+    Routes,
+    type UserContextMenuCommandInteraction
 } from "discord.js";
 import { type StelliaClient } from "@client/index.js";
 import { DISCORD_API_VERSION } from "@constants/index.js";
 import {
-	type AutoCompleteStructure,
-	type AutoCompleteStructureWithGuildConfiguration,
-	type AutoCompleteStructureWithoutGuildConfiguration,
-	type ButtonStructure,
-	type ButtonStructureWithGuildConfiguration,
-	type ButtonStructureWithoutGuildConfiguration,
-	type CommandStructure,
-	type CommandStructureWithGuildConfiguration,
-	type CommandStructureWithoutGuildConfiguration,
-	type ContextMenuStructure,
-	type ContextMenuStructureWithGuildConfiguration,
-	type ContextMenuStructureWithoutGuildConfiguration,
-	type ModalStructure,
-	type ModalStructureWithGuildConfiguration,
-	type ModalStructureWithoutGuildConfiguration,
-	type SelectMenuStructure,
-	type SelectMenuStructureWithGuildConfiguration,
-	type SelectMenuStructureWithoutGuildConfiguration
+    type AutoCompleteStructure,
+    type AutoCompleteStructureWithGuildConfiguration,
+    type AutoCompleteStructureWithoutGuildConfiguration,
+    type ButtonStructure,
+    type ButtonStructureWithGuildConfiguration,
+    type ButtonStructureWithoutGuildConfiguration,
+    type CommandStructure,
+    type CommandStructureWithGuildConfiguration,
+    type CommandStructureWithoutGuildConfiguration,
+    type ContextMenuStructure,
+    type ContextMenuStructureWithGuildConfiguration,
+    type ContextMenuStructureWithoutGuildConfiguration,
+    type ModalStructure,
+    type ModalStructureWithGuildConfiguration,
+    type ModalStructureWithoutGuildConfiguration,
+    type SelectMenuStructure,
+    type SelectMenuStructureWithGuildConfiguration,
+    type SelectMenuStructureWithoutGuildConfiguration
 } from "@structures/index.js";
-import {
-	type GuildConfiguration,
-	type GuildsConfiguration,
-	InteractionType
-} from "@typescript/index.js";
+import { type GuildConfiguration, type GuildsConfiguration, InteractionType } from "@typescript/index.js";
 import { logger } from "@utils/logger.js";
 
 export class StelliaUtils {
@@ -121,23 +118,15 @@ export class StelliaUtils {
 			const autoCompleteManager = this.client.managers.autoCompletes;
 			if (!autoCompleteManager) return;
 
-			const autoComplete = autoCompleteManager.getByCustomId<AutoCompleteStructure>(
-				autoCompleteInteraction.commandName
-			);
+			const autoComplete = autoCompleteManager.getByCustomId<AutoCompleteStructure>(autoCompleteInteraction.commandName);
 			if (!autoComplete) return;
 
 			if (this.client.environment.areGuildsConfigurationEnabled) {
-				const autoCompleteWithGuildConfiguration =
-					autoComplete as AutoCompleteStructureWithGuildConfiguration;
+				const autoCompleteWithGuildConfiguration = autoComplete as AutoCompleteStructureWithGuildConfiguration;
 				const guildConfiguration = this.getGuildConfiguration(autoCompleteInteraction.guildId);
-				await autoCompleteWithGuildConfiguration.execute(
-					this.client,
-					guildConfiguration,
-					autoCompleteInteraction
-				);
+				await autoCompleteWithGuildConfiguration.execute(this.client, guildConfiguration, autoCompleteInteraction);
 			} else {
-				const autoCompleteWithoutGuildConfiguration =
-					autoComplete as AutoCompleteStructureWithoutGuildConfiguration;
+				const autoCompleteWithoutGuildConfiguration = autoComplete as AutoCompleteStructureWithoutGuildConfiguration;
 				await autoCompleteWithoutGuildConfiguration.execute(this.client, autoCompleteInteraction);
 			}
 		} catch (error: any) {
@@ -156,14 +145,14 @@ export class StelliaUtils {
 				buttonManager.getByRegex<ButtonStructure>(buttonInteraction.customId);
 			if (!button) return;
 
+            if (button.data.reply.autoDefer && !buttonInteraction.deferred) {
+                await buttonInteraction.deferReply({ flags: button.data.reply.ephemeral ? MessageFlags.Ephemeral : undefined });
+            }
+
 			if (this.client.environment.areGuildsConfigurationEnabled) {
 				const buttonWithGuildConfiguration = button as ButtonStructureWithGuildConfiguration;
 				const guildConfiguration = this.getGuildConfiguration(buttonInteraction.guildId);
-				await buttonWithGuildConfiguration.execute(
-					this.client,
-					guildConfiguration,
-					buttonInteraction
-				);
+				await buttonWithGuildConfiguration.execute(this.client, guildConfiguration, buttonInteraction);
 			} else {
 				const buttonWithoutGuildConfiguration = button as ButtonStructureWithoutGuildConfiguration;
 				await buttonWithoutGuildConfiguration.execute(this.client, buttonInteraction);
@@ -182,17 +171,16 @@ export class StelliaUtils {
 			const command = commandManager.getByCustomId<CommandStructure>(commandInteraction.commandName);
 			if (!command) return;
 
+            if (command.data.reply.autoDefer && !commandInteraction.deferred) {
+                await commandInteraction.deferReply({ flags: command.data.reply.ephemeral ? MessageFlags.Ephemeral : undefined });
+            }
+
 			if (this.client.environment.areGuildsConfigurationEnabled) {
 				const commandWithGuildConfiguration = command as CommandStructureWithGuildConfiguration;
 				const guildConfiguration = this.getGuildConfiguration(commandInteraction.guildId);
-				await commandWithGuildConfiguration.execute(
-					this.client,
-					guildConfiguration,
-					commandInteraction
-				);
+				await commandWithGuildConfiguration.execute(this.client, guildConfiguration, commandInteraction);
 			} else {
-				const commandWithoutGuildConfiguration =
-					command as CommandStructureWithoutGuildConfiguration;
+				const commandWithoutGuildConfiguration = command as CommandStructureWithoutGuildConfiguration;
 				await commandWithoutGuildConfiguration.execute(this.client, commandInteraction);
 			}
 		} catch (error: any) {
@@ -226,14 +214,14 @@ export class StelliaUtils {
 				modalManager.getByRegex<ModalStructure>(modalInteraction.customId);
 			if (!modal) return;
 
+            if (modal.data.reply.autoDefer && !modalInteraction.deferred) {
+                await modalInteraction.deferReply({ flags: modal.data.reply.ephemeral ? MessageFlags.Ephemeral : undefined });
+            }
+
 			if (this.client.environment.areGuildsConfigurationEnabled) {
 				const modalWithGuildConfiguration = modal as ModalStructureWithGuildConfiguration;
 				const guildConfiguration = this.getGuildConfiguration(modalInteraction.guildId);
-				await modalWithGuildConfiguration.execute(
-					this.client,
-					guildConfiguration,
-					modalInteraction
-				);
+				await modalWithGuildConfiguration.execute(this.client, guildConfiguration, modalInteraction);
 			} else {
 				const modalWithoutGuildConfiguration = modal as ModalStructureWithoutGuildConfiguration;
 				await modalWithoutGuildConfiguration.execute(this.client, modalInteraction);
@@ -254,18 +242,16 @@ export class StelliaUtils {
 				selectMenuManager.getByRegex<SelectMenuStructure>(selectMenuInteraction.customId);
 			if (!selectMenu) return;
 
+            if (selectMenu.data.reply.autoDefer && !selectMenuInteraction.deferred) {
+                await selectMenuInteraction.deferReply({ flags: selectMenu.data.reply.ephemeral ? MessageFlags.Ephemeral : undefined });
+            }
+
 			if (this.client.environment.areGuildsConfigurationEnabled) {
-				const selectMenuWithGuildConfiguration =
-					selectMenu as SelectMenuStructureWithGuildConfiguration;
+				const selectMenuWithGuildConfiguration = selectMenu as SelectMenuStructureWithGuildConfiguration;
 				const guildConfiguration = this.getGuildConfiguration(selectMenuInteraction.guildId);
-				await selectMenuWithGuildConfiguration.execute(
-					this.client,
-					guildConfiguration,
-					selectMenuInteraction
-				);
+				await selectMenuWithGuildConfiguration.execute(this.client, guildConfiguration, selectMenuInteraction);
 			} else {
-				const modalWithoutGuildConfiguration =
-					selectMenu as SelectMenuStructureWithoutGuildConfiguration;
+				const modalWithoutGuildConfiguration = selectMenu as SelectMenuStructureWithoutGuildConfiguration;
 				await modalWithoutGuildConfiguration.execute(this.client, selectMenuInteraction);
 			}
 		} catch (error: any) {
@@ -278,23 +264,19 @@ export class StelliaUtils {
 			const contextMenuManager = this.client.managers.contextMenus;
 			if (!contextMenuManager) return;
 
-			const messageContextMenu = contextMenuManager.getByCustomId<ContextMenuStructure>(
-				interaction.commandName
-			);
+			const messageContextMenu = contextMenuManager.getByCustomId<ContextMenuStructure>(interaction.commandName);
 			if (!messageContextMenu) return;
 
+            if (messageContextMenu.data.reply.autoDefer && !interaction.deferred) {
+                await interaction.deferReply({ flags: messageContextMenu.data.reply.ephemeral ? MessageFlags.Ephemeral : undefined });
+            }
+
 			if (this.client.environment.areGuildsConfigurationEnabled) {
-				const messageContextMenuWithGuildConfiguration =
-					messageContextMenu as ContextMenuStructureWithGuildConfiguration;
+				const messageContextMenuWithGuildConfiguration = messageContextMenu as ContextMenuStructureWithGuildConfiguration;
 				const guildConfiguration = this.getGuildConfiguration(interaction.guildId);
-				await messageContextMenuWithGuildConfiguration.execute(
-					this.client,
-					guildConfiguration,
-					interaction
-				);
+				await messageContextMenuWithGuildConfiguration.execute(this.client, guildConfiguration, interaction);
 			} else {
-				const messageContextMenuWithoutGuildConfiguration =
-					messageContextMenu as ContextMenuStructureWithoutGuildConfiguration;
+				const messageContextMenuWithoutGuildConfiguration = messageContextMenu as ContextMenuStructureWithoutGuildConfiguration;
 				await messageContextMenuWithoutGuildConfiguration.execute(this.client, interaction);
 			}
 		} catch (error: any) {
@@ -307,23 +289,19 @@ export class StelliaUtils {
 			const contextMenuManager = this.client.managers.contextMenus;
 			if (!contextMenuManager) return;
 
-			const userContextMenu = contextMenuManager.getByCustomId<ContextMenuStructure>(
-				interaction.commandName
-			);
+			const userContextMenu = contextMenuManager.getByCustomId<ContextMenuStructure>(interaction.commandName);
 			if (!userContextMenu) return;
 
+            if (userContextMenu.data.reply.autoDefer && !interaction.deferred) {
+                await interaction.deferReply({ flags: userContextMenu.data.reply.ephemeral ? MessageFlags.Ephemeral : undefined });
+            }
+
 			if (this.client.environment.areGuildsConfigurationEnabled) {
-				const userContextMenuWithGuildConfiguration =
-					userContextMenu as ContextMenuStructureWithGuildConfiguration;
+				const userContextMenuWithGuildConfiguration = userContextMenu as ContextMenuStructureWithGuildConfiguration;
 				const guildConfiguration = this.getGuildConfiguration(interaction.guildId);
-				await userContextMenuWithGuildConfiguration.execute(
-					this.client,
-					guildConfiguration,
-					interaction
-				);
+				await userContextMenuWithGuildConfiguration.execute(this.client, guildConfiguration, interaction);
 			} else {
-				const userContextMenuWithoutGuildConfiguration =
-					userContextMenu as ContextMenuStructureWithoutGuildConfiguration;
+				const userContextMenuWithoutGuildConfiguration = userContextMenu as ContextMenuStructureWithoutGuildConfiguration;
 				await userContextMenuWithoutGuildConfiguration.execute(this.client, interaction);
 			}
 		} catch (error: any) {

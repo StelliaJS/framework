@@ -15,10 +15,12 @@ import { type StelliaClient } from "@client/index.js";
 import { type EventStructure } from "@structures/Event.js";
 import { type GuildConfigurationType } from "@typescript/index.js";
 
-export interface AutoCompleteStructureWithGuildConfiguration extends MessageInteractionStructure {
+export interface AutoCompleteStructureWithGuildConfiguration extends Omit<MessageInteractionStructure, "data"> {
+    data: Omit<MessageDataStructure, "reply">;
     execute(client: StelliaClient, guildConfiguration: GuildConfigurationType, interaction: AutocompleteInteraction<"cached">): Awaitable<unknown>;
 }
-export interface AutoCompleteStructureWithoutGuildConfiguration extends MessageInteractionStructure {
+export interface AutoCompleteStructureWithoutGuildConfiguration extends Omit<MessageInteractionStructure, "data"> {
+    data: Omit<MessageDataStructure, "reply">;
     execute(client: StelliaClient, interaction: AutocompleteInteraction<"cached">): Awaitable<unknown>;
 }
 export type AutoCompleteStructure =
@@ -85,14 +87,20 @@ export type AnyInteractionStructure =
 	| SelectMenuStructure;
 
 interface CommandInteractionStructure {
-	data: SlashCommandOptionsOnlyBuilder | SlashCommandSubcommandsOnlyBuilder;
+	data: CommandDataStructure;
 }
+interface CommandDataStructure {
+    command: SlashCommandOptionsOnlyBuilder | SlashCommandSubcommandsOnlyBuilder;
+    reply: ReplyStructure<true> | ReplyStructure<false>;
+}
+
 interface ContextMenuInteractionStructure {
 	data: ContextMenuDataStructure;
 }
 interface ContextMenuDataStructure {
 	name: string;
 	type: ContextMenuCommandType;
+    reply: ReplyStructure<true> | ReplyStructure<false>;
 }
 
 interface MessageInteractionStructure {
@@ -101,4 +109,9 @@ interface MessageInteractionStructure {
 interface MessageDataStructure {
 	name: string | RegExp;
 	once: boolean;
+    reply: ReplyStructure<true> | ReplyStructure<false>;
 }
+
+type ReplyStructure<T extends boolean = false> = T extends true
+    ? { autoDefer: true; ephemeral: boolean }
+    : { autoDefer: false };
