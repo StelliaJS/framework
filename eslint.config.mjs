@@ -1,68 +1,79 @@
-import path from "node:path";
-import { fileURLToPath } from "node:url";
 import _import from "eslint-plugin-import";
+import nPlugin from "eslint-plugin-n";
+import prettierPlugin from "eslint-plugin-prettier";
+import typescriptPlugin from "@typescript-eslint/eslint-plugin";
+import typescriptParser from "@typescript-eslint/parser";
 import { defineConfig } from "eslint/config";
 import globals from "globals";
-import { fixupConfigRules, fixupPluginRules } from "@eslint/compat";
-import { FlatCompat } from "@eslint/eslintrc";
 import js from "@eslint/js";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const compat = new FlatCompat({
-	baseDirectory: __dirname,
-	recommendedConfig: js.configs.recommended,
-	allConfig: js.configs.all
-});
-
 export default defineConfig([
-	{
-		languageOptions: {
-			globals: {
-				...globals.node
-			},
-
-			ecmaVersion: "latest",
-			sourceType: "module",
-			parserOptions: {}
-		},
-
-		plugins: {
-			import: fixupPluginRules(_import)
-		},
-
-		extends: fixupConfigRules(
-			compat.extends(
-				"eslint:recommended",
-				"plugin:import/recommended",
-				"plugin:n/recommended",
-				"prettier"
-			)
-		),
-
-		rules: {
-			"import/order": [
-				"error",
-				{
-					groups: ["builtin", "external", "internal", "parent", "sibling", "index"],
-					"newlines-between": "always",
-
-					alphabetize: {
-						order: "asc",
-						caseInsensitive: true
-					}
-				}
-			],
-
-			"no-console": "off"
-		},
-
-		settings: {
-			"import/resolver": {
-				node: {
-					extensions: [".js"]
-				}
-			}
-		}
-	}
+    js.configs.recommended,
+    {
+        languageOptions: {
+            globals: { ...globals.node },
+            ecmaVersion: "latest",
+            sourceType: "module",
+        },
+        plugins: {
+            import: _import,
+            n: nPlugin,
+            prettier: prettierPlugin,
+        },
+        rules: {
+            "import/order": [
+                "error",
+                {
+                    groups: ["builtin", "external", "internal", "parent", "sibling", "index"],
+                    "newlines-between": "always",
+                    alphabetize: { order: "asc", caseInsensitive: true },
+                },
+            ],
+            "no-console": "off",
+            "prettier/prettier": "error",
+        },
+        settings: {
+            "import/resolver": {
+                node: { extensions: [".js", ".ts"] },
+            },
+        },
+    },
+    {
+        files: ["**/*.ts", "**/*.tsx"],
+        languageOptions: {
+            parser: typescriptParser,
+            ecmaVersion: "latest",
+            sourceType: "module",
+        },
+        plugins: {
+            "@typescript-eslint": typescriptPlugin,
+        },
+        rules: {
+            "import/order": [
+                "error",
+                {
+                    groups: ["builtin", "external", "internal", "parent", "sibling", "index"],
+                    "newlines-between": "always",
+                    alphabetize: {
+                        order: "asc",
+                        caseInsensitive: true
+                    }
+                }
+            ],
+            "no-console": "off",
+            "prettier/prettier": [
+                "error",
+                {
+                    endOfLine: "lf",
+                }
+            ],
+        },
+        settings: {
+            "import/resolver": {
+                node: {
+                    extensions: [".js"]
+                }
+            }
+        }
+    }
 ]);
