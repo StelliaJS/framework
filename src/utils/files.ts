@@ -8,8 +8,9 @@ export const requiredFiles = async <InteractionStructure extends AnyInteractionS
 	const collection = new Collection<StructureCustomId, InteractionStructure>();
 	const filesPath = getAllFilesPath(directoryPath).filter((file) => !file.endsWith(".d.ts") && (file.endsWith(".js") || file.endsWith(".ts")));
 	for (const filePath of filesPath) {
-		const data = await loadInteraction<InteractionStructure>(filePath);
-		collection.set(data.data.name, data);
+		const interactionData = await loadInteraction<InteractionStructure>(filePath);
+        const interactionName = "command" in interactionData.data ? interactionData.data.command.name : interactionData.data.name
+		collection.set(interactionName, interactionData);
 	}
 
 	return collection;
