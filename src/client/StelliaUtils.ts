@@ -82,7 +82,7 @@ export class StelliaUtils {
         }
     };
 
-    public getGuildConfiguration = (guildId: string): GuildConfiguration | undefined => {
+    public getGuildConfiguration = <CustomGuildConfiguration extends GuildConfiguration>(guildId: string): CustomGuildConfiguration | undefined => {
         if (!this.client.environment.areGuildsConfigurationEnabled || !this.guildsConfiguration) {
             return undefined;
         }
@@ -93,7 +93,7 @@ export class StelliaUtils {
         return {
             general: general,
             guild: guildConfiguration
-        };
+        } as CustomGuildConfiguration;
     };
 
     public handleInteraction = async (interaction: Interaction<"cached">): Promise<void> => {
