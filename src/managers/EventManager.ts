@@ -59,7 +59,7 @@ export class EventManager extends BaseManager {
 	public getByRegex<EventStructure>(id: InteractionCustomId): EventStructure | undefined {
 		return undefined;
 	}
- 
+
 	public getAll<EventStructure>(): Collection<StructureCustomId, EventStructure> {
 		const events = this.interactions as Collection<StructureCustomId, EventStructure>;
 		return events;

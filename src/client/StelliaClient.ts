@@ -1,7 +1,7 @@
 import * as fs from "node:fs";
-import { Client, type ClientOptions, type Interaction } from "discord.js";
 import path from "path";
 import { pathToFileURL } from "url";
+import { Client, type ClientOptions, type Interaction } from "discord.js";
 import { StelliaUtils } from "@client/index.js";
 import {
 	AutoCompleteManager,
@@ -112,7 +112,9 @@ export class StelliaClient<Ready extends boolean = boolean> extends Client<Ready
 					}
 
 					const environmentData = environments[chosenEnvironment];
-					const environmentPath = environmentData.production ? StelliaClient.convertFilePathToProduction(environmentData.file) : environmentData.file;
+					const environmentPath = environmentData.production
+						? StelliaClient.convertFilePathToProduction(environmentData.file)
+						: environmentData.file;
 					const environmentAbsolutePath = pathToFileURL(path.join(srcPath, "..", environmentPath)).href;
 					const environmentFile = await import(environmentAbsolutePath);
 					resolve(environmentFile.environment);
@@ -133,7 +135,9 @@ export class StelliaClient<Ready extends boolean = boolean> extends Client<Ready
 
 	private areManagersLoaded = (): boolean => {
 		const managers = Object.values(this.managers);
-		return managers.length === 0 ? true : managers.every((manager: Manager) => manager.isManagerLoaded());
+		return managers.length === 0
+			? true
+			: managers.every((manager: Manager) => manager.isManagerLoaded());
 	};
 
 	private static convertFilePathToProduction = (filePath: string): string => {
