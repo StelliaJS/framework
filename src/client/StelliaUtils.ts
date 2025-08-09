@@ -179,7 +179,7 @@ export class StelliaUtils {
 			const commandManager = this.client.managers.commands;
 			if (!commandManager) return;
 
-			let command = commandManager.getByCustomId<CommandStructure>(commandInteraction.commandName);
+			const command = commandManager.getByCustomId<CommandStructure>(commandInteraction.commandName);
 			if (!command) return;
 
 			if (this.client.environment.areGuildsConfigurationEnabled) {
