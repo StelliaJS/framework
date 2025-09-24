@@ -11,7 +11,6 @@ Recommended architecture for StelliaJS project.
 
 ```
 .
-├── dist // Build folder
 ├── src/
 │   ├── commands/
 │   │   ├── contextMenus/
@@ -41,7 +40,7 @@ Recommended architecture for StelliaJS project.
 │   └── index.ts
 ├── .env
 ├── package.json
-├── package-lock.json
+├── pnpm-lock.yaml
 ├── stellia.json
 └── tsconfig.json
 ```
