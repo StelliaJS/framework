@@ -1,5 +1,7 @@
 import { readdirSync, statSync } from "fs";
 import path from "path";
+import { readdirSync, statSync } from "node:fs";
+import path from "node:path";
 import { Collection } from "discord.js";
 import { type AnyInteractionStructure } from "@structures/index.js";
 import { type StructureCustomId } from "@typescript/index.js";
