@@ -10,6 +10,8 @@ import {
 } from "@managers/index.js";
 
 export type StructureCustomId = string | RegExp;
+
+// sonarjs/no-duplicate-string: off
 export type InteractionCustomId = string;
 
 export enum InteractionType {
