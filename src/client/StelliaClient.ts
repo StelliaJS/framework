@@ -105,23 +105,21 @@ export class StelliaClient<Ready extends boolean = boolean> extends Client<Ready
                     return reject(new Error("stellia.json file not found"));
 				}
 
-				try {
-					const environments = JSON.parse(data.toString()).environments;
-					if (!Object.keys(environments).includes(chosenEnvironment)) {
-						return reject(new Error("Invalid environment"));
-					}
+                const environments = JSON.parse(data.toString()).environments;
+                if (!Object.keys(environments).includes(chosenEnvironment)) {
+                    return reject(new Error("Invalid environment"));
+                }
 
-					const environmentData = environments[chosenEnvironment];
-					const environmentPath = environmentData.production
-						? StelliaClient.convertFilePathToProduction(environmentData.file)
-						: environmentData.file;
-					const environmentAbsolutePath = pathToFileURL(path.join(srcPath, "..", environmentPath)).href;
-					const environmentFile = await import(environmentAbsolutePath);
-					resolve(environmentFile.environment);
-				} catch (error) {
-					reject(new Error("Error parsing stellia.json file"));
-				}
-			});
+                const environmentData = environments[chosenEnvironment];
+                const environmentPath = environmentData.production
+                    ? StelliaClient.convertFilePathToProduction(environmentData.file)
+                    : environmentData.file;
+
+                const environmentAbsolutePath = pathToFileURL(path.join(srcPath, "..", environmentPath)).href;
+                import(environmentAbsolutePath)
+                    .then((environmentFile) => resolve(environmentFile.environment))
+                    .catch(() => reject(new Error("Error parsing stellia.json file")));
+            });
 		});
 	};
 
