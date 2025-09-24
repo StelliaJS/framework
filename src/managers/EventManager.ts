@@ -51,13 +51,21 @@ export class EventManager extends BaseManager {
 		this.setManagerLoaded();
 	}
 
-	public getByCustomId<EventStructure>(id: InteractionCustomId): EventStructure | undefined {
-		const event = (this.interactions.get(id) as EventStructure) ?? undefined;
+	public getByCustomId<EventStructure>(id: InteractionCustomId): EventStructure | null {
+		const event = (this.interactions.get(id) as EventStructure) ?? null;
 		return event;
 	}
 
-	public getByRegex<EventStructure>(id: InteractionCustomId): EventStructure | undefined {
-		return undefined;
+	public getByRegex<EventStructure>(id: InteractionCustomId): EventStructure | null {
+        let event = null;
+        for (const [customId, action] of this.interactions.entries()) {
+            if (customId instanceof RegExp && customId.test(id)) {
+                event = action as EventStructure;
+                break;
+            }
+        }
+
+        return event;
 	}
 
 	public getAll<EventStructure>(): Collection<StructureCustomId, EventStructure> {

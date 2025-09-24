@@ -18,13 +18,21 @@ export class AutoCompleteManager extends BaseManager {
 		this.setManagerLoaded();
 	}
 
-	public getByCustomId<AutoCompleteStructure>(id: InteractionCustomId): AutoCompleteStructure | undefined {
-		const autoComplete = (this.interactions.get(id) as AutoCompleteStructure) ?? undefined;
+	public getByCustomId<AutoCompleteStructure>(id: InteractionCustomId): AutoCompleteStructure | null {
+		const autoComplete = (this.interactions.get(id) as AutoCompleteStructure) ?? null;
 		return autoComplete;
 	}
 
-	public getByRegex<AutoCompleteStructure>(id: InteractionCustomId): AutoCompleteStructure | undefined {
-		return undefined;
+	public getByRegex<AutoCompleteStructure>(id: InteractionCustomId): AutoCompleteStructure | null {
+        let autoComplete = null;
+        for (const [customId, action] of this.interactions.entries()) {
+            if (customId instanceof RegExp && customId.test(id)) {
+                autoComplete = action as AutoCompleteStructure;
+                break;
+            }
+        }
+
+        return autoComplete;
 	}
 
 	public getAll<AutoCompleteStructure>(): Collection<StructureCustomId, AutoCompleteStructure> {
