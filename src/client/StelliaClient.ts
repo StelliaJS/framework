@@ -1,6 +1,4 @@
 import * as fs from "node:fs";
-import path from "path";
-import { pathToFileURL } from "url";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 import { Client, type ClientOptions, type Interaction } from "discord.js";
@@ -104,7 +102,7 @@ export class StelliaClient<Ready extends boolean = boolean> extends Client<Ready
 		return new Promise((resolve, reject) => {
 			fs.readFile(filePath, async (err, data) => {
 				if (err) {
-					return reject(err);
+                    return reject(new Error("stellia.json file not found"));
 				}
 
 				try {
@@ -121,7 +119,7 @@ export class StelliaClient<Ready extends boolean = boolean> extends Client<Ready
 					const environmentFile = await import(environmentAbsolutePath);
 					resolve(environmentFile.environment);
 				} catch (error) {
-					reject(error);
+					reject(new Error("Error parsing stellia.json file"));
 				}
 			});
 		});
@@ -135,14 +133,14 @@ export class StelliaClient<Ready extends boolean = boolean> extends Client<Ready
 		await this.utils.handleInteraction(interaction);
 	};
 
-	private areManagersLoaded = (): boolean => {
+	private readonly areManagersLoaded = (): boolean => {
 		const managers = Object.values(this.managers);
 		return managers.length === 0
 			? true
 			: managers.every((manager: Manager) => manager.isManagerLoaded());
 	};
 
-	private static convertFilePathToProduction = (filePath: string): string => {
+	private static readonly convertFilePathToProduction = (filePath: string): string => {
 		return filePath.replace("src", "dist").replace(".ts", ".js");
 	};
 }
