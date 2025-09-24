@@ -26,7 +26,7 @@ export abstract class BaseManager {
 		this.isLoaded = true;
 	}
 
-	public abstract loadData(): void;
+	public abstract loadData(): Promise<void>;
 	public abstract getByCustomId<InteractionStructure extends AnyInteractionStructure>(id: InteractionCustomId): InteractionStructure | null;
 	public abstract getByRegex<InteractionStructure extends AnyInteractionStructure>(id: InteractionCustomId): InteractionStructure | null;
 	public abstract getAll<InteractionStructure extends AnyInteractionStructure>(): Collection<StructureCustomId, InteractionStructure>;
