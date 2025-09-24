@@ -18,13 +18,21 @@ export class ContextMenuManager extends BaseManager {
 		this.setManagerLoaded();
 	}
 
-	public getByCustomId<ContextMenuStructure>(id: InteractionCustomId): ContextMenuStructure | undefined {
-		const contextMenu = (this.interactions.get(id) as ContextMenuStructure) ?? undefined;
+	public getByCustomId<ContextMenuStructure>(id: InteractionCustomId): ContextMenuStructure | null {
+		const contextMenu = (this.interactions.get(id) as ContextMenuStructure) ?? null;
 		return contextMenu;
 	}
 
-	public getByRegex<ContextMenuStructure>(id: InteractionCustomId): ContextMenuStructure | undefined {
-		return undefined;
+	public getByRegex<ContextMenuStructure>(id: InteractionCustomId): ContextMenuStructure | null {
+        let contextMenu = null;
+        for (const [customId, action] of this.interactions.entries()) {
+            if (customId instanceof RegExp && customId.test(id)) {
+                contextMenu = action as ContextMenuStructure;
+                break;
+            }
+        }
+
+        return contextMenu;
 	}
 
 	public getAll<ContextMenuStructure>(): Collection<StructureCustomId, ContextMenuStructure> {

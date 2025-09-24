@@ -18,13 +18,13 @@ export class ModalManager extends BaseManager {
 		this.setManagerLoaded();
 	}
 
-	public getByCustomId<ModalStructure>(id: InteractionCustomId): ModalStructure | undefined {
-		const modal = (this.interactions.get(id) as ModalStructure) ?? undefined;
+	public getByCustomId<ModalStructure>(id: InteractionCustomId): ModalStructure | null {
+		const modal = (this.interactions.get(id) as ModalStructure) ?? null;
 		return modal;
 	}
 
-	public getByRegex<ModalStructure>(id: InteractionCustomId): ModalStructure | undefined {
-		let modal;
+	public getByRegex<ModalStructure>(id: InteractionCustomId): ModalStructure | null {
+		let modal = null;
 		for (const [customId, action] of this.interactions.entries()) {
 			if (customId instanceof RegExp && customId.test(id)) {
 				modal = action as ModalStructure;

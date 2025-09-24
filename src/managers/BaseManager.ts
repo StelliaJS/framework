@@ -27,7 +27,7 @@ export abstract class BaseManager {
 	}
 
 	public abstract loadData(): void;
-	public abstract getByCustomId<InteractionStructure extends AnyInteractionStructure>(id: InteractionCustomId): InteractionStructure | undefined;
-	public abstract getByRegex<InteractionStructure extends AnyInteractionStructure>(id: InteractionCustomId): InteractionStructure | undefined;
+	public abstract getByCustomId<InteractionStructure extends AnyInteractionStructure>(id: InteractionCustomId): InteractionStructure | null;
+	public abstract getByRegex<InteractionStructure extends AnyInteractionStructure>(id: InteractionCustomId): InteractionStructure | null;
 	public abstract getAll<InteractionStructure extends AnyInteractionStructure>(): Collection<StructureCustomId, InteractionStructure>;
 }
