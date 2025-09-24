@@ -14,8 +14,8 @@ import {
 	SelectMenuManager
 } from "@managers/index.js";
 import {
-    type ClientEnvironment, type GuildConfiguration,
-    type GuildConfigurationType,
+    type ClientEnvironment,
+    type GuildConfiguration,
     type GuildsConfiguration,
     type Manager,
     type Managers
