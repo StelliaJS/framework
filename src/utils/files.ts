@@ -1,5 +1,3 @@
-import { readdirSync, statSync } from "fs";
-import path from "path";
 import { readdirSync, statSync } from "node:fs";
 import path from "node:path";
 import { Collection } from "discord.js";
@@ -19,25 +17,23 @@ export const requiredFiles = async <InteractionStructure extends AnyInteractionS
 };
 
 const loadInteraction = async <InteractionStructure extends AnyInteractionStructure>(filePath: string): Promise<InteractionStructure> => {
-	try {
-		const module = await import(`file://${filePath}`);
-		const data: InteractionStructure = module.default;
-		return data;
-	} catch (error) {
-		throw error;
-	}
+    const module = await import(`file://${filePath}`);
+    const data: InteractionStructure = module.default;
+
+    return data;
 };
+
 
 const getAllFilesPath = (dirPath: string, arrayOfFiles: string[] = []): string[] => {
 	const files = readdirSync(dirPath);
-	files.forEach((file) => {
-		if (statSync(dirPath + "/" + file).isDirectory()) {
-			arrayOfFiles = getAllFilesPath(dirPath + "/" + file, arrayOfFiles);
-		} else {
-			const __dirname = path.resolve();
-			arrayOfFiles.push(path.join(__dirname, dirPath, "/", file));
-		}
-	});
+    for (const file of files) {
+        if (statSync(dirPath + "/" + file).isDirectory()) {
+            arrayOfFiles = getAllFilesPath(dirPath + "/" + file, arrayOfFiles);
+        } else {
+            const __dirname = path.resolve();
+            arrayOfFiles.push(path.join(__dirname, dirPath, "/", file));
+        }
+    }
 
 	return arrayOfFiles;
 };
