@@ -84,7 +84,7 @@ export class EventManager extends BaseManager {
 		}
 	}
 
-	private eventHandler = (event: EventStructureWithConfiguration, ...args: ClientEventsArgs) => {
+	private readonly eventHandler = (event: EventStructureWithConfiguration, ...args: ClientEventsArgs) => {
 		const mainArgument = args[0];
 		const guildConfiguration = this.getGuildConfiguration(mainArgument);
 		if (guildConfiguration) {
