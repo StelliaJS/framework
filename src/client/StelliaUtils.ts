@@ -53,14 +53,17 @@ export class StelliaUtils {
             [InteractionType.ModalSubmit, this.handleModalInteraction],
             [InteractionType.SelectMenu, this.handleSelectMenuInteraction]
         ]);
+    }
+
+    public async initializeGuildsConfiguration(): Promise<void> {
         if (this.client.environment.areGuildsConfigurationEnabled) {
-            this.client
-                .getGuildsConfiguration()
-                .then((guildsConfiguration) => {
-                    this.guildsConfiguration = guildsConfiguration;
-                    logger.success("Guilds configuration loaded successfully for interactions");
-                })
-                .catch((error) => logger.error(`Error while loading guilds configuration: ${error.stack}`));
+            try {
+                const guildsConfiguration = await this.client.getGuildsConfiguration();
+                this.guildsConfiguration = guildsConfiguration;
+                logger.success("Guilds configuration loaded successfully for interactions");
+            } catch (error: any) {
+                logger.error(`Error while loading guilds configuration: ${error.stack}`);
+            }
         }
     }
 

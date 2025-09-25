@@ -1,4 +1,4 @@
-import * as fs from "node:fs";
+import fs from "node:fs";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 import { Client, type ClientOptions, type Interaction } from "discord.js";
@@ -27,7 +27,14 @@ export class StelliaClient<Ready extends boolean = boolean> extends Client<Ready
 	public readonly managers: Managers = {};
 	public readonly environment: ClientEnvironment;
 
-	public constructor(clientOptions: ClientOptions, stelliaOptions?: StelliaOptions) {
+    public static async create(clientOptions: ClientOptions, stelliaOptions?: StelliaOptions): Promise<StelliaClient> {
+        const client = new StelliaClient(clientOptions, stelliaOptions);
+        await client.initializeAsync();
+
+        return client;
+    }
+
+	private constructor(clientOptions: ClientOptions, stelliaOptions?: StelliaOptions) {
 		super(clientOptions);
 
 		if (stelliaOptions?.environment) {
@@ -130,6 +137,10 @@ export class StelliaClient<Ready extends boolean = boolean> extends Client<Ready
 	public handleInteraction = async (interaction: Interaction<"cached">): Promise<void> => {
 		await this.utils.handleInteraction(interaction);
 	};
+
+    private async initializeAsync(): Promise<void> {
+        await this.utils.initializeGuildsConfiguration();
+    }
 
 	private readonly areManagersLoaded = (): boolean => {
 		const managers = Object.values(this.managers);
