@@ -4,3 +4,6 @@ src
 package-lock.json
 tsconfig.json
 .gitignore
+.prettierrc
+eslint.config.mjs
+README.md
