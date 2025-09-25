@@ -18,13 +18,13 @@ export class ButtonManager extends BaseManager {
 		this.setManagerLoaded();
 	}
 
-	public getByCustomId<ButtonStructure>(id: InteractionCustomId): ButtonStructure | undefined {
-		const button = (this.interactions.get(id) as ButtonStructure) ?? undefined;
+	public getByCustomId<ButtonStructure>(id: InteractionCustomId): ButtonStructure | null {
+		const button = (this.interactions.get(id) as ButtonStructure) ?? null;
 		return button;
 	}
 
-	public getByRegex<ButtonStructure>(id: InteractionCustomId): ButtonStructure | undefined {
-		let button;
+	public getByRegex<ButtonStructure>(id: InteractionCustomId): ButtonStructure | null {
+		let button = null;
 		for (const [customId, action] of this.interactions.entries()) {
 			if (customId instanceof RegExp && customId.test(id)) {
 				button = action as ButtonStructure;

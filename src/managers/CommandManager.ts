@@ -18,13 +18,21 @@ export class CommandManager extends BaseManager {
 		this.setManagerLoaded();
 	}
 
-	public getByCustomId<CommandStructure>(id: InteractionCustomId): CommandStructure | undefined {
-		const command = (this.interactions.get(id) as CommandStructure) ?? undefined;
+	public getByCustomId<CommandStructure>(id: InteractionCustomId): CommandStructure | null {
+		const command = (this.interactions.get(id) as CommandStructure) ?? null;
 		return command;
 	}
 
-	public getByRegex<CommandStructure>(id: InteractionCustomId): CommandStructure | undefined {
-		return undefined;
+	public getByRegex<CommandStructure>(id: InteractionCustomId): CommandStructure | null {
+        let command = null;
+        for (const [customId, action] of this.interactions.entries()) {
+            if (customId instanceof RegExp && customId.test(id)) {
+                command = action as CommandStructure;
+                break;
+            }
+        }
+
+        return command;
 	}
 
 	public getAll<CommandStructure>(): Collection<StructureCustomId, CommandStructure> {

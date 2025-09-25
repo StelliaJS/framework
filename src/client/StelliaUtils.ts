@@ -110,7 +110,7 @@ export class StelliaUtils {
         }
     };
 
-    private handleAutoCompleteInteraction = async (interaction: Interaction<"cached">): Promise<void> => {
+    private readonly handleAutoCompleteInteraction = async (interaction: Interaction<"cached">): Promise<void> => {
         try {
             const autoCompleteInteraction = interaction as AutocompleteInteraction<"cached">;
             const autoCompleteManager = this.client.managers.autoCompletes;
@@ -132,7 +132,7 @@ export class StelliaUtils {
         }
     };
 
-    private handleButtonInteraction = async (interaction: Interaction<"cached">): Promise<void> => {
+    private readonly handleButtonInteraction = async (interaction: Interaction<"cached">): Promise<void> => {
         try {
             const buttonInteraction = interaction as ButtonInteraction<"cached">;
             const buttonManager = this.client.managers.buttons;
@@ -160,7 +160,7 @@ export class StelliaUtils {
         }
     };
 
-    private handleCommandInteraction = async (interaction: Interaction<"cached">): Promise<void> => {
+    private readonly handleCommandInteraction = async (interaction: Interaction<"cached">): Promise<void> => {
         try {
             const commandInteraction = interaction as ChatInputCommandInteraction<"cached">;
             const commandManager = this.client.managers.commands;
@@ -186,7 +186,7 @@ export class StelliaUtils {
         }
     };
 
-    private handleContextMenuInteraction = async (interaction: Interaction<"cached">): Promise<void> => {
+    private readonly handleContextMenuInteraction = async (interaction: Interaction<"cached">): Promise<void> => {
         try {
             const interactionContextMenu = interaction as ContextMenuCommandInteraction<"cached">;
             if (interactionContextMenu.commandType === ApplicationCommandType.Message) {
@@ -201,7 +201,7 @@ export class StelliaUtils {
         }
     };
 
-    private handleModalInteraction = async (interaction: Interaction<"cached">): Promise<void> => {
+    private readonly handleModalInteraction = async (interaction: Interaction<"cached">): Promise<void> => {
         try {
             const modalInteraction = interaction as ModalSubmitInteraction<"cached">;
             const modalManager = this.client.managers.modals;
@@ -229,7 +229,7 @@ export class StelliaUtils {
         }
     };
 
-    private handleSelectMenuInteraction = async (interaction: Interaction<"cached">): Promise<void> => {
+    private readonly handleSelectMenuInteraction = async (interaction: Interaction<"cached">): Promise<void> => {
         try {
             const selectMenuInteraction = interaction as AnySelectMenuInteraction<"cached">;
             const selectMenuManager = this.client.managers.selectMenus;
@@ -257,7 +257,7 @@ export class StelliaUtils {
         }
     };
 
-    private handleMessageContextMenuInteraction = async (interaction: MessageContextMenuCommandInteraction<"cached">): Promise<void> => {
+    private readonly handleMessageContextMenuInteraction = async (interaction: MessageContextMenuCommandInteraction<"cached">): Promise<void> => {
         try {
             const contextMenuManager = this.client.managers.contextMenus;
             if (!contextMenuManager) return;
@@ -282,7 +282,7 @@ export class StelliaUtils {
         }
     };
 
-    private handleUserContextMenuInteraction = async (interaction: UserContextMenuCommandInteraction<"cached">): Promise<void> => {
+    private readonly handleUserContextMenuInteraction = async (interaction: UserContextMenuCommandInteraction<"cached">): Promise<void> => {
         try {
             const contextMenuManager = this.client.managers.contextMenus;
             if (!contextMenuManager) return;
