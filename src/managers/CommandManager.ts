@@ -8,9 +8,16 @@ import { requiredFiles } from "@utils/index.js";
 export class CommandManager extends BaseManager {
 	private interactions: Collection<StructureCustomId, CommandStructure> = new Collection();
 
-	constructor(client: StelliaClient, directory: string) {
-		super(client, directory);
-	}
+    private constructor(client: StelliaClient, directoryPath: string) {
+        super(client, directoryPath);
+    }
+
+    public static async create(client: StelliaClient, directory: string): Promise<CommandManager> {
+        const manager = new CommandManager(client, directory);
+        await manager.loadData();
+
+        return manager;
+    }
 
 	public async loadData(): Promise<void> {
 		const commands = await requiredFiles<CommandStructure>(this.directoryPath);

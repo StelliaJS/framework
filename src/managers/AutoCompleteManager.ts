@@ -8,9 +8,16 @@ import { requiredFiles } from "@utils/index.js";
 export class AutoCompleteManager extends BaseManager {
 	private interactions: Collection<StructureCustomId, AutoCompleteStructure> = new Collection();
 
-	constructor(client: StelliaClient, directory: string) {
-		super(client, directory);
-	}
+    private constructor(client: StelliaClient, directoryPath: string) {
+        super(client, directoryPath);
+    }
+
+    public static async create(client: StelliaClient, directory: string): Promise<AutoCompleteManager> {
+        const manager = new AutoCompleteManager(client, directory);
+        await manager.loadData();
+
+        return manager;
+    }
 
 	public async loadData(): Promise<void> {
 		const autoCompletes = await requiredFiles<AutoCompleteStructure>(this.directoryPath);

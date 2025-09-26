@@ -43,7 +43,7 @@ export class StelliaUtils {
     private readonly interactionHandlers: Map<InteractionType, (interaction: Interaction<"cached">) => Promise<void>>;
     private guildsConfiguration: GuildsConfiguration;
 
-    constructor(client: StelliaClient) {
+    private constructor(client: StelliaClient) {
         this.client = client;
         this.interactionHandlers = new Map([
             [InteractionType.Autocomplete, this.handleAutoCompleteInteraction],
@@ -53,16 +53,14 @@ export class StelliaUtils {
             [InteractionType.ModalSubmit, this.handleModalInteraction],
             [InteractionType.SelectMenu, this.handleSelectMenuInteraction]
         ]);
-        if (this.client.environment.areGuildsConfigurationEnabled) {
-            this.client
-                .getGuildsConfiguration()
-                .then((guildsConfiguration) => {
-                    this.guildsConfiguration = guildsConfiguration;
-                    logger.success("Guilds configuration loaded successfully for interactions");
-                })
-                .catch((error) => logger.error(`Error while loading guilds configuration: ${error.stack}`));
-        }
-    }
+    };
+
+    public static async create(client: StelliaClient): Promise<StelliaUtils> {
+        const utils = new StelliaUtils(client);
+        await utils.initializeGuildsConfiguration();
+
+        return utils;
+    };
 
     public initializeCommands = async (): Promise<void> => {
         const commands = this.client.managers.commands?.getAll<CommandStructure>().values();
@@ -83,7 +81,7 @@ export class StelliaUtils {
     };
 
     public getGuildConfiguration = <CustomGuildConfiguration extends GuildConfiguration>(guildId: string): CustomGuildConfiguration | undefined => {
-        if (!this.client.environment.areGuildsConfigurationEnabled || !this.guildsConfiguration) {
+        if (!this.client.environment?.areGuildsConfigurationEnabled || !this.guildsConfiguration) {
             return undefined;
         }
 
@@ -110,6 +108,18 @@ export class StelliaUtils {
         }
     };
 
+    private async initializeGuildsConfiguration(): Promise<void> {
+        if (this.client.environment?.areGuildsConfigurationEnabled) {
+            try {
+                const guildsConfiguration = await this.client.getGuildsConfiguration();
+                this.guildsConfiguration = guildsConfiguration;
+                logger.success("Guilds configuration loaded successfully for interactions");
+            } catch (error: any) {
+                logger.error(`Error while loading guilds configuration: ${error.stack}`);
+            }
+        }
+    };
+
     private readonly handleAutoCompleteInteraction = async (interaction: Interaction<"cached">): Promise<void> => {
         try {
             const autoCompleteInteraction = interaction as AutocompleteInteraction<"cached">;
@@ -119,7 +129,7 @@ export class StelliaUtils {
             const autoComplete = autoCompleteManager.getByCustomId<AutoCompleteStructure>(autoCompleteInteraction.commandName);
             if (!autoComplete) return;
 
-            if (this.client.environment.areGuildsConfigurationEnabled) {
+            if (this.client.environment?.areGuildsConfigurationEnabled) {
                 const autoCompleteWithGuildConfiguration = autoComplete as AutoCompleteStructureWithGuildConfiguration;
                 const guildConfiguration = this.getGuildConfiguration(autoCompleteInteraction.guildId);
                 await autoCompleteWithGuildConfiguration.execute(this.client, guildConfiguration, autoCompleteInteraction);
@@ -147,7 +157,7 @@ export class StelliaUtils {
                 await buttonInteraction.deferReply({ flags: button.data.reply.ephemeral ? MessageFlags.Ephemeral : undefined });
             }
 
-            if (this.client.environment.areGuildsConfigurationEnabled) {
+            if (this.client.environment?.areGuildsConfigurationEnabled) {
                 const buttonWithGuildConfiguration = button as ButtonStructureWithGuildConfiguration;
                 const guildConfiguration = this.getGuildConfiguration(buttonInteraction.guildId);
                 await buttonWithGuildConfiguration.execute(this.client, guildConfiguration, buttonInteraction);
@@ -173,7 +183,7 @@ export class StelliaUtils {
                 await commandInteraction.deferReply({ flags: command.data.reply.ephemeral ? MessageFlags.Ephemeral : undefined });
             }
 
-            if (this.client.environment.areGuildsConfigurationEnabled) {
+            if (this.client.environment?.areGuildsConfigurationEnabled) {
                 const commandWithGuildConfiguration = command as CommandStructureWithGuildConfiguration;
                 const guildConfiguration = this.getGuildConfiguration(commandInteraction.guildId);
                 await commandWithGuildConfiguration.execute(this.client, guildConfiguration, commandInteraction);
@@ -216,7 +226,7 @@ export class StelliaUtils {
                 await modalInteraction.deferReply({ flags: modal.data.reply.ephemeral ? MessageFlags.Ephemeral : undefined });
             }
 
-            if (this.client.environment.areGuildsConfigurationEnabled) {
+            if (this.client.environment?.areGuildsConfigurationEnabled) {
                 const modalWithGuildConfiguration = modal as ModalStructureWithGuildConfiguration;
                 const guildConfiguration = this.getGuildConfiguration(modalInteraction.guildId);
                 await modalWithGuildConfiguration.execute(this.client, guildConfiguration, modalInteraction);
@@ -244,7 +254,7 @@ export class StelliaUtils {
                 await selectMenuInteraction.deferReply({ flags: selectMenu.data.reply.ephemeral ? MessageFlags.Ephemeral : undefined });
             }
 
-            if (this.client.environment.areGuildsConfigurationEnabled) {
+            if (this.client.environment?.areGuildsConfigurationEnabled) {
                 const selectMenuWithGuildConfiguration = selectMenu as SelectMenuStructureWithGuildConfiguration;
                 const guildConfiguration = this.getGuildConfiguration(selectMenuInteraction.guildId);
                 await selectMenuWithGuildConfiguration.execute(this.client, guildConfiguration, selectMenuInteraction);
@@ -269,7 +279,7 @@ export class StelliaUtils {
                 await interaction.deferReply({ flags: messageContextMenu.data.reply.ephemeral ? MessageFlags.Ephemeral : undefined });
             }
 
-            if (this.client.environment.areGuildsConfigurationEnabled) {
+            if (this.client.environment?.areGuildsConfigurationEnabled) {
                 const messageContextMenuWithGuildConfiguration = messageContextMenu as ContextMenuStructureWithGuildConfiguration;
                 const guildConfiguration = this.getGuildConfiguration(interaction.guildId);
                 await messageContextMenuWithGuildConfiguration.execute(this.client, guildConfiguration, interaction);
@@ -294,7 +304,7 @@ export class StelliaUtils {
                 await interaction.deferReply({ flags: userContextMenu.data.reply.ephemeral ? MessageFlags.Ephemeral : undefined });
             }
 
-            if (this.client.environment.areGuildsConfigurationEnabled) {
+            if (this.client.environment?.areGuildsConfigurationEnabled) {
                 const userContextMenuWithGuildConfiguration = userContextMenu as ContextMenuStructureWithGuildConfiguration;
                 const guildConfiguration = this.getGuildConfiguration(interaction.guildId);
                 await userContextMenuWithGuildConfiguration.execute(this.client, guildConfiguration, interaction);

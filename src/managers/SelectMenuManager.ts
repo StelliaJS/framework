@@ -8,9 +8,16 @@ import { requiredFiles } from "@utils/index.js";
 export class SelectMenuManager extends BaseManager {
 	private interactions: Collection<StructureCustomId, SelectMenuStructure> = new Collection();
 
-	constructor(client: StelliaClient, directory: string) {
-		super(client, directory);
-	}
+    private constructor(client: StelliaClient, directoryPath: string) {
+        super(client, directoryPath);
+    }
+
+    public static async create(client: StelliaClient, directory: string): Promise<SelectMenuManager> {
+        const manager = new SelectMenuManager(client, directory);
+        await manager.loadData();
+
+        return manager;
+    }
 
 	public async loadData(): Promise<void> {
 		const selectMenus = await requiredFiles<SelectMenuStructure>(this.directoryPath);
