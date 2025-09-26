@@ -22,26 +22,24 @@ export class EventManager extends BaseManager {
 	private interactions: Collection<StructureCustomId, EventStructure> = new Collection();
 	private guildsConfiguration: GuildsConfiguration;
 
-	constructor(client: StelliaClient, directoryPath: string) {
-		super(client, directoryPath);
+    private constructor(client: StelliaClient, directoryPath: string) {
+        super(client, directoryPath);
+    }
 
-		if (this.client.environment.areGuildsConfigurationEnabled) {
-			this.client
-				.getGuildsConfiguration()
-				.then((guildsConfiguration) => {
-					this.guildsConfiguration = guildsConfiguration;
-					logger.success("Guilds configuration loaded successfully for event");
-				})
-				.catch((error) => logger.error(`Error while loading guilds configuration: ${error.stack}`));
-		}
-	}
+    public static async create(client: StelliaClient, directoryPath: string): Promise<EventManager> {
+        const manager = new EventManager(client, directoryPath);
+        await manager.loadData();
+        await manager.initializeGuildsConfiguration();
+
+        return manager;
+    };
 
 	public async loadData(): Promise<void> {
 		const events = await requiredFiles<EventStructure>(this.directoryPath);
 		this.interactions = events;
 
 		for (const eventStructure of this.interactions.values()) {
-			if (this.client.environment.areGuildsConfigurationEnabled) {
+			if (this.client.environment?.areGuildsConfigurationEnabled) {
 				await this.loadEventWithGuildConfiguration(eventStructure);
 			} else {
 				await this.loadEventWithoutGuildConfiguration(eventStructure);
@@ -82,7 +80,7 @@ export class EventManager extends BaseManager {
 		} else {
 			this.client.on(name, (...args) => this.eventHandler(event, ...args));
 		}
-	}
+	};
 
 	private readonly eventHandler = (event: EventStructureWithConfiguration, ...args: ClientEventsArgs) => {
 		const mainArgument = args[0];
@@ -96,7 +94,7 @@ export class EventManager extends BaseManager {
 		return eventStructure.execute(this.client, this.guildsConfiguration);
 	};
 
-	private async loadEventWithoutGuildConfiguration(eventStructure: EventStructure) {
+	private async loadEventWithoutGuildConfiguration(eventStructure: EventStructure): Promise<void> {
 		const { name, once } = eventStructure.data;
 		const event = eventStructure as EventStructureWithoutGuildConfiguration;
 
@@ -105,9 +103,9 @@ export class EventManager extends BaseManager {
 		} else {
 			this.client.on(name, (...args) => event.execute(this.client, ...args));
 		}
-	}
+	};
 
-	private getGuildConfiguration(mainArgument: ClientEventsArgs[0]): GuildConfigurationType {
+	private getGuildConfiguration(mainArgument: ClientEventsArgs[0]): GuildConfigurationType | undefined {
 		if (mainArgument && typeof mainArgument === "object") {
 			if ("guildId" in mainArgument && mainArgument.guildId) {
 				return this.client.getGuildConfiguration(mainArgument.guildId);
@@ -118,5 +116,17 @@ export class EventManager extends BaseManager {
 		}
 
 		return undefined;
-	}
+	};
+
+    private async initializeGuildsConfiguration(): Promise<void> {
+        if (this.client.environment?.areGuildsConfigurationEnabled) {
+            try {
+                const guildsConfiguration = await this.client.getGuildsConfiguration();
+                this.guildsConfiguration = guildsConfiguration;
+                logger.success("Guilds configuration loaded successfully for events");
+            } catch (error: any) {
+                logger.error(`Error while loading guilds configuration: ${error.stack}`);
+            }
+        }
+    };
 }

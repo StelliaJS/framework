@@ -8,9 +8,16 @@ import { requiredFiles } from "@utils/index.js";
 export class ModalManager extends BaseManager {
 	private interactions: Collection<StructureCustomId, ModalStructure> = new Collection();
 
-	constructor(client: StelliaClient, directory: string) {
-		super(client, directory);
-	}
+    private constructor(client: StelliaClient, directoryPath: string) {
+        super(client, directoryPath);
+    }
+
+    public static async create(client: StelliaClient, directory: string): Promise<ModalManager> {
+        const manager = new ModalManager(client, directory);
+        await manager.loadData();
+
+        return manager;
+    }
 
 	public async loadData(): Promise<void> {
 		const modals = await requiredFiles<ModalStructure>(this.directoryPath);

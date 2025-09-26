@@ -12,10 +12,9 @@ export abstract class BaseManager {
 	public readonly directoryPath: string;
 	private isLoaded = false;
 
-	constructor(client: StelliaClient, directory: string) {
+	protected constructor(client: StelliaClient, directory: string) {
 		this.client = client;
 		this.directoryPath = directory;
-		this.loadData();
 	}
 
 	public isManagerLoaded(): boolean {
