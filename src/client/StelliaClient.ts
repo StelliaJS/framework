@@ -23,62 +23,32 @@ import {
 import { logger } from "@utils/logger.js";
 
 export class StelliaClient<Ready extends boolean = boolean> extends Client<Ready> {
-	private readonly utils: StelliaUtils;
+	private utils: StelliaUtils;
 	public readonly managers: Managers = {};
-	public readonly environment: ClientEnvironment;
+	public readonly environment?: ClientEnvironment;
+
+    private constructor(clientOptions: ClientOptions, stelliaOptions?: StelliaOptions) {
+        super(clientOptions);
+
+        if (stelliaOptions?.environment) {
+            this.environment = stelliaOptions.environment;
+        }
+
+        process.on("unhandledRejection", (error: Error) => {
+            logger.error(`Unhandled promise rejection: ${error.stack}`);
+        });
+
+        process.on("uncaughtException", (error: Error) => {
+            logger.error(`Uncaught exception: ${error.stack}`);
+        });
+    }
 
     public static async create(clientOptions: ClientOptions, stelliaOptions?: StelliaOptions): Promise<StelliaClient> {
         const client = new StelliaClient(clientOptions, stelliaOptions);
-        await client.initializeAsync();
+        await client.initializeAsyncFields(stelliaOptions);
 
         return client;
     }
-
-	private constructor(clientOptions: ClientOptions, stelliaOptions?: StelliaOptions) {
-		super(clientOptions);
-
-		if (stelliaOptions?.environment) {
-			this.environment = stelliaOptions.environment;
-		}
-
-		if (stelliaOptions?.managers.autoCompletes?.directoryPath) {
-			this.managers.autoCompletes = new AutoCompleteManager(this, stelliaOptions.managers.autoCompletes.directoryPath);
-		}
-
-		if (stelliaOptions?.managers.buttons?.directoryPath) {
-			this.managers.buttons = new ButtonManager(this, stelliaOptions.managers.buttons.directoryPath);
-		}
-
-		if (stelliaOptions?.managers.commands?.directoryPath) {
-			this.managers.commands = new CommandManager(this, stelliaOptions.managers.commands.directoryPath);
-		}
-
-		if (stelliaOptions?.managers.contextMenus?.directoryPath) {
-			this.managers.contextMenus = new ContextMenuManager(this, stelliaOptions.managers.contextMenus.directoryPath);
-		}
-
-		if (stelliaOptions?.managers.events?.directoryPath) {
-			this.managers.events = new EventManager(this, stelliaOptions.managers.events.directoryPath);
-		}
-
-		if (stelliaOptions?.managers.selectMenus?.directoryPath) {
-			this.managers.selectMenus = new SelectMenuManager(this, stelliaOptions.managers.selectMenus.directoryPath);
-		}
-
-		if (stelliaOptions?.managers.modals?.directoryPath) {
-			this.managers.modals = new ModalManager(this, stelliaOptions.managers.modals.directoryPath);
-		}
-
-		this.utils = new StelliaUtils(this);
-
-		process.on("unhandledRejection", (error: Error) => {
-			logger.error(`Unhandled promise rejection: ${error.stack}`);
-		});
-
-		process.on("uncaughtException", (error: Error) => {
-			logger.error(`Uncaught exception: ${error.stack}`);
-		});
-	}
 
 	public connect = async (token: string): Promise<void> => {
 		if (!this.areManagersLoaded()) {
@@ -138,9 +108,44 @@ export class StelliaClient<Ready extends boolean = boolean> extends Client<Ready
 		await this.utils.handleInteraction(interaction);
 	};
 
-    private async initializeAsync(): Promise<void> {
-        await this.utils.initializeGuildsConfiguration();
-    }
+    private async initializeAsyncFields(stelliaOptions?: StelliaOptions): Promise<void> {
+        this.utils = await StelliaUtils.create(this);
+        await this.initializeManagers(stelliaOptions?.managers);
+    };
+
+    private async initializeManagers(managers: StelliaOptions["managers"] | undefined): Promise<void> {
+        if (!managers) {
+            return;
+        }
+
+        if (managers.autoCompletes?.directoryPath) {
+            this.managers.autoCompletes = await AutoCompleteManager.create(this, managers.autoCompletes.directoryPath);
+        }
+
+        if (managers.buttons?.directoryPath) {
+            this.managers.buttons = await ButtonManager.create(this, managers.buttons.directoryPath);
+        }
+
+        if (managers.commands?.directoryPath) {
+            this.managers.commands = await CommandManager.create(this, managers.commands.directoryPath);
+        }
+
+        if (managers.contextMenus?.directoryPath) {
+            this.managers.contextMenus = await ContextMenuManager.create(this, managers.contextMenus.directoryPath);
+        }
+
+        if (managers.events?.directoryPath) {
+            this.managers.events = await EventManager.create(this, managers.events.directoryPath);
+        }
+
+        if (managers.selectMenus?.directoryPath) {
+            this.managers.selectMenus = await SelectMenuManager.create(this, managers.selectMenus.directoryPath);
+        }
+
+        if (managers.modals?.directoryPath) {
+            this.managers.modals = await ModalManager.create(this, managers.modals.directoryPath);
+        }
+    };
 
 	private readonly areManagersLoaded = (): boolean => {
 		const managers = Object.values(this.managers);
@@ -155,7 +160,7 @@ export class StelliaClient<Ready extends boolean = boolean> extends Client<Ready
 }
 
 interface StelliaOptions {
-	managers: {
+	managers?: {
 		autoCompletes?: ManagerOptions;
 		buttons?: ManagerOptions;
 		commands?: ManagerOptions;
