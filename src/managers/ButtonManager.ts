@@ -8,9 +8,16 @@ import { requiredFiles } from "@utils/index.js";
 export class ButtonManager extends BaseManager {
 	public interactions: Collection<StructureCustomId, ButtonStructure> = new Collection();
 
-	constructor(client: StelliaClient, directory: string) {
-		super(client, directory);
-	}
+    private constructor(client: StelliaClient, directoryPath: string) {
+        super(client, directoryPath);
+    }
+
+    public static async create(client: StelliaClient, directory: string): Promise<ButtonManager> {
+        const manager = new ButtonManager(client, directory);
+        await manager.loadData();
+
+        return manager;
+    }
 
 	public async loadData(): Promise<void> {
 		const buttons = await requiredFiles<ButtonStructure>(this.directoryPath);

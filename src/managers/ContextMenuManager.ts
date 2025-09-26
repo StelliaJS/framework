@@ -8,9 +8,16 @@ import { requiredFiles } from "@utils/index.js";
 export class ContextMenuManager extends BaseManager {
 	private interactions: Collection<StructureCustomId, ContextMenuStructure> = new Collection();
 
-	constructor(client: StelliaClient, directory: string) {
-		super(client, directory);
-	}
+    private constructor(client: StelliaClient, directoryPath: string) {
+        super(client, directoryPath);
+    }
+
+    public static async create(client: StelliaClient, directory: string): Promise<ContextMenuManager> {
+        const manager = new ContextMenuManager(client, directory);
+        await manager.loadData();
+
+        return manager;
+    }
 
 	public async loadData(): Promise<void> {
 		const contextMenus = await requiredFiles<ContextMenuStructure>(this.directoryPath);
