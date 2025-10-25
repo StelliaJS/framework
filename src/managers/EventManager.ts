@@ -113,6 +113,13 @@ export class EventManager extends BaseManager {
 			if ("guild" in mainArgument && mainArgument.guild) {
 				return this.client.getGuildConfiguration(mainArgument.guild.id);
 			}
+            if (mainArgument && typeof mainArgument === "object" &&
+                "message" in mainArgument && mainArgument.message &&
+                typeof mainArgument.message === "object" && "guild" in mainArgument.message &&
+                mainArgument.message.guild && "id" in mainArgument.message.guild
+            ) {
+                return this.client.getGuildConfiguration(mainArgument.message.guild.id);
+            }
 		}
 
 		return undefined;
