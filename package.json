@@ -23,19 +23,19 @@
 		"framework"
 	],
 	"dependencies": {
-		"discord.js": "^14.22.1",
-		"i18next": "^25.5.2",
+		"discord.js": "^14.24.0",
+		"i18next": "^25.6.0",
 		"log-symbols": "^7.0.1"
 	},
 	"devDependencies": {
-		"@eslint/js": "^9.36.0",
+		"@eslint/js": "^9.38.0",
 		"eslint-config-prettier": "^10.1.8",
 		"eslint-import-resolver-typescript": "^4.4.4",
 		"eslint-plugin-import": "^2.32.0",
 		"prettier": "^3.6.2",
 		"tsc-alias": "^1.8.16",
-		"typescript-eslint": "^8.44.1"
+		"typescript-eslint": "^8.46.2"
 	},
 	"type": "module",
-	"packageManager": "pnpm@10.17.1"
+	"packageManager": "pnpm@10.19.0"
 }
