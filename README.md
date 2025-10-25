@@ -55,48 +55,46 @@ import { StelliaClient } from "@stelliajs/framework";
 import { GatewayIntentBits, Partials } from "discord.js";
 
 (async () => {
-    const client = new StelliaClient(
-        {
-            intents: [
-                GatewayIntentBits.Guilds,
-                GatewayIntentBits.GuildMessages,
-                GatewayIntentBits.MessageContent,
-                GatewayIntentBits.GuildMembers
-            ],
-            partials: [Partials.Message, Partials.GuildMember]
-        },
-        {
-            managers: {
-                autoCompletes: {
-                    directoryPath: "./interactions/autoCompletes"
-                },
-                buttons: {
-                    directoryPath: "./interactions/buttons"
-                },
-                commands: {
-                    directoryPath: "./commands/slash"
-                },
-                contextMenus: {
-                    directoryPath: "./commands/contextMenus"
-                },
-                events: {
-                    directoryPath: "./events"
-                },
-                modals: {
-                    directoryPath: "./interactions/modals"
-                },
-                selectMenus: {
-                    directoryPath: "./interactions/selectMenus"
-                }
+    const client = new StelliaClient({
+        intents: [
+            GatewayIntentBits.Guilds,
+            GatewayIntentBits.GuildMessages,
+            GatewayIntentBits.MessageContent,
+            GatewayIntentBits.GuildMembers
+        ],
+        partials: [Partials.Message, Partials.GuildMember]
+    },
+    {
+        managers: {
+            autoCompletes: {
+                directoryPath: "./interactions/autoCompletes"
             },
-            environment: {
-                areGuildsConfigurationEnabled: true
+            buttons: {
+                directoryPath: "./interactions/buttons"
+            },
+            commands: {
+                directoryPath: "./commands/slash"
+            },
+            contextMenus: {
+                directoryPath: "./commands/contextMenus"
+            },
+            events: {
+                directoryPath: "./events"
+            },
+            modals: {
+                directoryPath: "./interactions/modals"
+            },
+            selectMenus: {
+                directoryPath: "./interactions/selectMenus"
             }
+        },
+        environment: {
+            areGuildsConfigurationEnabled: true
         }
-    );
-})();
+    });
 
-await client.connect(process.env.TOKEN);
+    await client.connect(process.env.TOKEN);
+})();
 ```
 
 #### Environment model
@@ -147,7 +145,7 @@ export default {
         name: Events.ClientReady,
         once: true
     },
-    async execute(client: StelliaClient<true>, environment: MyBotGuildsConfiguration) { // <true> ensures that the client is Ready
+    async execute(client: StelliaClient<true>, guildsConfiguration: MyBotGuildsConfiguration) { // <true> ensures that the client is Ready
         console.log(`Logged in as ${client.user.tag}`);
         await client.initializeCommands(); // Used to initialise registered commands
     }
@@ -166,7 +164,7 @@ export default {
         name: Events.InteractionCreate,
         once: false
     },
-    async execute(client: StelliaClient<true>, environment: MyBotGuildConfiguration, interaction: Interaction) {
+    async execute(client: StelliaClient<true>, guildConfiguration: MyBotGuildConfiguration, interaction: Interaction) {
         if (interaction.inCachedGuild()) {
             await client.handleInteraction(interaction); // Automatic interaction handling
         }
@@ -190,7 +188,7 @@ export default {
             ephemeral: true, // The reply will be visible only by the user who triggered the interaction
         }
     },
-    async execute(client: StelliaClient, environment: MyBotGuildConfiguration, interaction: ChatInputCommandInteraction<"cached">) { // All interactions are cached
+    async execute(client: StelliaClient, guildConfiguration: MyBotGuildConfiguration, interaction: ChatInputCommandInteraction<"cached">) { // All interactions are cached
         await interaction.editReply("Pong!");
     }
 } satisfies CommandStructure;
