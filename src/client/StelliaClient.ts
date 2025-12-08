@@ -35,11 +35,11 @@ export class StelliaClient<Ready extends boolean = boolean> extends Client<Ready
         }
 
         process.on("unhandledRejection", (error: Error) => {
-            logger.error(`Unhandled promise rejection: ${error.stack}`);
+            logger.errorWithInformation("Unhandled promise rejection", error);
         });
 
         process.on("uncaughtException", (error: Error) => {
-            logger.error(`Uncaught exception: ${error.stack}`);
+            logger.errorWithInformation("Uncaught exception", error);
         });
     }
 

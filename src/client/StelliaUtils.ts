@@ -75,7 +75,7 @@ export class StelliaUtils {
                 });
                 logger.success("Application commands registered successfully");
             } catch (error: any) {
-                logger.error(`Error while registering application commands: ${error.stack}`);
+                logger.errorWithInformation("Error while registering application commands", error);
             }
         }
     };
@@ -115,7 +115,7 @@ export class StelliaUtils {
                 this.guildsConfiguration = guildsConfiguration;
                 logger.success("Guilds configuration loaded successfully for interactions");
             } catch (error: any) {
-                logger.error(`Error while loading guilds configuration: ${error.stack}`);
+                logger.errorWithInformation("Error while loading guilds configuration", error);
             }
         }
     };
@@ -138,7 +138,7 @@ export class StelliaUtils {
                 await autoCompleteWithoutGuildConfiguration.execute(this.client, autoCompleteInteraction);
             }
         } catch (error: any) {
-            logger.error(`Error while handling autocomplete interaction: ${error.stack}`);
+            logger.errorWithInformation("Error while handling autocomplete interaction", error);
         }
     };
 
@@ -166,7 +166,7 @@ export class StelliaUtils {
                 await buttonWithoutGuildConfiguration.execute(this.client, buttonInteraction);
             }
         } catch (error: any) {
-            logger.error(`Error while handling button interaction: ${error.stack}`);
+            logger.errorWithInformation("Error while handling button interaction", error);
         }
     };
 
@@ -192,7 +192,7 @@ export class StelliaUtils {
                 await commandWithoutGuildConfiguration.execute(this.client, commandInteraction);
             }
         } catch (error: any) {
-            logger.error(`Error while handling command interaction: ${error.stack}`);
+            logger.errorWithInformation("Error while handling command interaction", error);
         }
     };
 
@@ -207,7 +207,7 @@ export class StelliaUtils {
                 await this.handleUserContextMenuInteraction(userInteraction);
             }
         } catch (error: any) {
-            logger.error(`Error while handling context menu interaction: ${error.stack}`);
+            logger.errorWithInformation("Error while handling context menu interaction", error);
         }
     };
 
@@ -235,7 +235,7 @@ export class StelliaUtils {
                 await modalWithoutGuildConfiguration.execute(this.client, modalInteraction);
             }
         } catch (error: any) {
-            logger.error(`Error while handling modal interaction: ${error.stack}`);
+            logger.errorWithInformation("Error while handling modal interaction", error);
         }
     };
 
@@ -263,7 +263,7 @@ export class StelliaUtils {
                 await modalWithoutGuildConfiguration.execute(this.client, selectMenuInteraction);
             }
         } catch (error: any) {
-            logger.error(`Error while handling select menu interaction: ${error.stack}`);
+            logger.errorWithInformation("Error while handling select menu interaction", error);
         }
     };
 
@@ -288,7 +288,7 @@ export class StelliaUtils {
                 await messageContextMenuWithoutGuildConfiguration.execute(this.client, interaction);
             }
         } catch (error: any) {
-            logger.error(`Error while handling message context menu interaction: ${error.stack}`);
+            logger.errorWithInformation("Error while handling message context menu interaction", error);
         }
     };
 
@@ -313,7 +313,7 @@ export class StelliaUtils {
                 await userContextMenuWithoutGuildConfiguration.execute(this.client, interaction);
             }
         } catch (error: any) {
-            logger.error(`Error while handling user context menu interaction: ${error.stack}`);
+            logger.errorWithInformation("Error while handling user context menu interaction", error);
         }
     };
 
