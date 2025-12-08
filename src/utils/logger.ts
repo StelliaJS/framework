@@ -11,7 +11,10 @@ export const logger = {
 	warn: (message: string) => {
 		console.warn(`${logSymbols.warning} ${prefix} ${message}`);
 	},
-	error: (message: string) => {
-		console.error(`${logSymbols.error} ${prefix} ${message}`);
+    error: (message: string) => {
+        console.error(`${logSymbols.error} ${prefix} ${message}`);
+    },
+	errorWithInformation: (message: string, error: Error) => {
+		console.error(`${logSymbols.error} ${prefix} ${message}: `, error);
 	}
 };
