@@ -5,7 +5,7 @@
 	"types": "./dist/index.d.ts",
 	"scripts": {
 		"lint": "eslint src --ext .ts",
-		"format": "prettier --write .",
+		"format": "prettier --write ./src/**/*.ts",
 		"build": "tsc && tsc-alias"
 	},
 	"repository": {
