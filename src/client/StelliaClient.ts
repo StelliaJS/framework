@@ -14,11 +14,11 @@ import {
 	SelectMenuManager
 } from "@managers/index.js";
 import {
-    type ClientEnvironment,
-    type GuildConfiguration,
-    type GuildsConfiguration,
-    type Manager,
-    type Managers
+	type ClientEnvironment,
+	type GuildConfiguration,
+	type GuildsConfiguration,
+	type Manager,
+	type Managers
 } from "@typescript/index.js";
 import { logger } from "@utils/logger.js";
 
@@ -27,28 +27,28 @@ export class StelliaClient<Ready extends boolean = boolean> extends Client<Ready
 	public readonly managers: Managers = {};
 	public readonly environment?: ClientEnvironment;
 
-    private constructor(clientOptions: ClientOptions, stelliaOptions?: StelliaOptions) {
-        super(clientOptions);
+	private constructor(clientOptions: ClientOptions, stelliaOptions?: StelliaOptions) {
+		super(clientOptions);
 
-        if (stelliaOptions?.environment) {
-            this.environment = stelliaOptions.environment;
-        }
+		if (stelliaOptions?.environment) {
+			this.environment = stelliaOptions.environment;
+		}
 
-        process.on("unhandledRejection", (error: Error) => {
-            logger.errorWithInformation("Unhandled promise rejection", error);
-        });
+		process.on("unhandledRejection", (error: Error) => {
+			logger.errorWithInformation("Unhandled promise rejection", error);
+		});
 
-        process.on("uncaughtException", (error: Error) => {
-            logger.errorWithInformation("Uncaught exception", error);
-        });
-    }
+		process.on("uncaughtException", (error: Error) => {
+			logger.errorWithInformation("Uncaught exception", error);
+		});
+	}
 
-    public static async create(clientOptions: ClientOptions, stelliaOptions?: StelliaOptions): Promise<StelliaClient> {
-        const client = new StelliaClient(clientOptions, stelliaOptions);
-        await client.initializeAsyncFields(stelliaOptions);
+	public static async create(clientOptions: ClientOptions, stelliaOptions?: StelliaOptions): Promise<StelliaClient> {
+		const client = new StelliaClient(clientOptions, stelliaOptions);
+		await client.initializeAsyncFields(stelliaOptions);
 
-        return client;
-    }
+		return client;
+	}
 
 	public connect = async (token: string): Promise<void> => {
 		if (!this.areManagersLoaded()) {
@@ -79,24 +79,24 @@ export class StelliaClient<Ready extends boolean = boolean> extends Client<Ready
 		return new Promise((resolve, reject) => {
 			fs.readFile(filePath, async (err, data) => {
 				if (err) {
-                    return reject(new Error("stellia.json file not found"));
+					return reject(new Error("stellia.json file not found"));
 				}
 
-                const environments = JSON.parse(data.toString()).environments;
-                if (!Object.keys(environments).includes(chosenEnvironment)) {
-                    return reject(new Error("Invalid environment"));
-                }
+				const environments = JSON.parse(data.toString()).environments;
+				if (!Object.keys(environments).includes(chosenEnvironment)) {
+					return reject(new Error("Invalid environment"));
+				}
 
-                const environmentData = environments[chosenEnvironment];
-                const environmentPath = environmentData.production
-                    ? StelliaClient.convertFilePathToProduction(environmentData.file)
-                    : environmentData.file;
+				const environmentData = environments[chosenEnvironment];
+				const environmentPath = environmentData.production
+					? StelliaClient.convertFilePathToProduction(environmentData.file)
+					: environmentData.file;
 
-                const environmentAbsolutePath = pathToFileURL(path.join(srcPath, "..", environmentPath)).href;
-                import(environmentAbsolutePath)
-                    .then((environmentFile) => resolve(environmentFile.environment))
-                    .catch(() => reject(new Error("Error parsing stellia.json file")));
-            });
+				const environmentAbsolutePath = pathToFileURL(path.join(srcPath, "..", environmentPath)).href;
+				import(environmentAbsolutePath)
+					.then((environmentFile) => resolve(environmentFile.environment))
+					.catch(() => reject(new Error("Error parsing stellia.json file")));
+			});
 		});
 	};
 
@@ -108,50 +108,48 @@ export class StelliaClient<Ready extends boolean = boolean> extends Client<Ready
 		await this.utils.handleInteraction(interaction);
 	};
 
-    private async initializeAsyncFields(stelliaOptions?: StelliaOptions): Promise<void> {
-        this.utils = await StelliaUtils.create(this);
-        await this.initializeManagers(stelliaOptions?.managers);
-    };
+	private async initializeAsyncFields(stelliaOptions?: StelliaOptions): Promise<void> {
+		this.utils = await StelliaUtils.create(this);
+		await this.initializeManagers(stelliaOptions?.managers);
+	}
 
-    private async initializeManagers(managers: StelliaOptions["managers"] | undefined): Promise<void> {
-        if (!managers) {
-            return;
-        }
+	private async initializeManagers(managers: StelliaOptions["managers"] | undefined): Promise<void> {
+		if (!managers) {
+			return;
+		}
 
-        if (managers.autoCompletes?.directoryPath) {
-            this.managers.autoCompletes = await AutoCompleteManager.create(this, managers.autoCompletes.directoryPath);
-        }
+		if (managers.autoCompletes?.directoryPath) {
+			this.managers.autoCompletes = await AutoCompleteManager.create(this, managers.autoCompletes.directoryPath);
+		}
 
-        if (managers.buttons?.directoryPath) {
-            this.managers.buttons = await ButtonManager.create(this, managers.buttons.directoryPath);
-        }
+		if (managers.buttons?.directoryPath) {
+			this.managers.buttons = await ButtonManager.create(this, managers.buttons.directoryPath);
+		}
 
-        if (managers.commands?.directoryPath) {
-            this.managers.commands = await CommandManager.create(this, managers.commands.directoryPath);
-        }
+		if (managers.commands?.directoryPath) {
+			this.managers.commands = await CommandManager.create(this, managers.commands.directoryPath);
+		}
 
-        if (managers.contextMenus?.directoryPath) {
-            this.managers.contextMenus = await ContextMenuManager.create(this, managers.contextMenus.directoryPath);
-        }
+		if (managers.contextMenus?.directoryPath) {
+			this.managers.contextMenus = await ContextMenuManager.create(this, managers.contextMenus.directoryPath);
+		}
 
-        if (managers.events?.directoryPath) {
-            this.managers.events = await EventManager.create(this, managers.events.directoryPath);
-        }
+		if (managers.events?.directoryPath) {
+			this.managers.events = await EventManager.create(this, managers.events.directoryPath);
+		}
 
-        if (managers.selectMenus?.directoryPath) {
-            this.managers.selectMenus = await SelectMenuManager.create(this, managers.selectMenus.directoryPath);
-        }
+		if (managers.selectMenus?.directoryPath) {
+			this.managers.selectMenus = await SelectMenuManager.create(this, managers.selectMenus.directoryPath);
+		}
 
-        if (managers.modals?.directoryPath) {
-            this.managers.modals = await ModalManager.create(this, managers.modals.directoryPath);
-        }
-    };
+		if (managers.modals?.directoryPath) {
+			this.managers.modals = await ModalManager.create(this, managers.modals.directoryPath);
+		}
+	}
 
 	private readonly areManagersLoaded = (): boolean => {
 		const managers = Object.values(this.managers);
-		return managers.length === 0
-			? true
-			: managers.every((manager: Manager) => manager.isManagerLoaded());
+		return managers.length === 0 ? true : managers.every((manager: Manager) => manager.isManagerLoaded());
 	};
 
 	private static readonly convertFilePathToProduction = (filePath: string): string => {

@@ -8,16 +8,16 @@ import { requiredFiles } from "@utils/index.js";
 export class AutoCompleteManager extends BaseManager {
 	private interactions: Collection<StructureCustomId, AutoCompleteStructure> = new Collection();
 
-    private constructor(client: StelliaClient, directoryPath: string) {
-        super(client, directoryPath);
-    }
+	private constructor(client: StelliaClient, directoryPath: string) {
+		super(client, directoryPath);
+	}
 
-    public static async create(client: StelliaClient, directory: string): Promise<AutoCompleteManager> {
-        const manager = new AutoCompleteManager(client, directory);
-        await manager.loadData();
+	public static async create(client: StelliaClient, directory: string): Promise<AutoCompleteManager> {
+		const manager = new AutoCompleteManager(client, directory);
+		await manager.loadData();
 
-        return manager;
-    }
+		return manager;
+	}
 
 	public async loadData(): Promise<void> {
 		const autoCompletes = await requiredFiles<AutoCompleteStructure>(this.directoryPath);
@@ -31,15 +31,15 @@ export class AutoCompleteManager extends BaseManager {
 	}
 
 	public getByRegex<AutoCompleteStructure>(id: InteractionCustomId): AutoCompleteStructure | null {
-        let autoComplete = null;
-        for (const [customId, action] of this.interactions.entries()) {
-            if (customId instanceof RegExp && customId.test(id)) {
-                autoComplete = action as AutoCompleteStructure;
-                break;
-            }
-        }
+		let autoComplete = null;
+		for (const [customId, action] of this.interactions.entries()) {
+			if (customId instanceof RegExp && customId.test(id)) {
+				autoComplete = action as AutoCompleteStructure;
+				break;
+			}
+		}
 
-        return autoComplete;
+		return autoComplete;
 	}
 
 	public getAll<AutoCompleteStructure>(): Collection<StructureCustomId, AutoCompleteStructure> {
