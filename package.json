@@ -1,11 +1,11 @@
 {
 	"name": "@stelliajs/framework",
-	"version": "1.5.9",
+	"version": "1.6.0-dev-1",
 	"main": "./dist/index.js",
 	"types": "./dist/index.d.ts",
 	"scripts": {
 		"lint": "eslint src --ext .ts",
-		"format": "prettier --write .",
+		"format": "prettier --write ./src/**/*.ts",
 		"build": "tsc && tsc-alias"
 	},
 	"repository": {
@@ -23,8 +23,8 @@
 		"framework"
 	],
 	"dependencies": {
-		"discord.js": "^14.25.1",
-		"i18next": "^25.7.2",
+		"discord.js": "^14.26.0",
+		"i18next": "^26.0.3",
 		"log-symbols": "^7.0.1"
 	},
 	"devDependencies": {
@@ -32,10 +32,11 @@
 		"eslint-config-prettier": "^10.1.8",
 		"eslint-import-resolver-typescript": "^4.4.4",
 		"eslint-plugin-import": "^2.32.0",
-		"prettier": "^3.7.4",
+		"prettier": "^3.8.1",
 		"tsc-alias": "^1.8.16",
-		"typescript-eslint": "^8.49.0"
+		"typescript": "^6.0.2",
+		"typescript-eslint": "^8.58.0"
 	},
 	"type": "module",
-	"packageManager": "pnpm@10.24.0"
+	"packageManager": "pnpm@10.33.0"
 }

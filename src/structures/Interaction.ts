@@ -1,116 +1,104 @@
 import {
-    type AnySelectMenuInteraction,
-    type AutocompleteInteraction,
-    type Awaitable,
-    type ButtonInteraction,
-    type ChatInputCommandInteraction,
-    type ContextMenuCommandBuilder,
-    type MessageContextMenuCommandInteraction,
-    type ModalSubmitInteraction,
-    type SlashCommandOptionsOnlyBuilder,
-    type SlashCommandSubcommandsOnlyBuilder,
-    type UserContextMenuCommandInteraction
+	type AnySelectMenuInteraction,
+	type AutocompleteInteraction,
+	type Awaitable,
+	type ButtonInteraction,
+	type ChatInputCommandInteraction,
+	type ContextMenuCommandBuilder,
+	type MessageContextMenuCommandInteraction,
+	type ModalSubmitInteraction,
+	type SlashCommandOptionsOnlyBuilder,
+	type SlashCommandSubcommandsOnlyBuilder,
+	type UserContextMenuCommandInteraction
 } from "discord.js";
 import { type StelliaClient } from "@client/index.js";
 import { type EventStructure } from "@structures/Event.js";
 import { type GuildConfigurationType } from "@typescript/index.js";
 
 export interface AutoCompleteStructureWithGuildConfiguration extends Omit<MessageInteractionStructure, "data"> {
-    data: Omit<MessageDataStructure, "reply">;
-    execute(client: StelliaClient, guildConfiguration: GuildConfigurationType, interaction: AutocompleteInteraction<"cached">): Awaitable<unknown>;
+	data: Omit<MessageDataStructure, "reply">;
+	execute(client: StelliaClient, guildConfiguration: GuildConfigurationType, interaction: AutocompleteInteraction<"cached">): Awaitable<unknown>;
 }
 export interface AutoCompleteStructureWithoutGuildConfiguration extends Omit<MessageInteractionStructure, "data"> {
-    data: Omit<MessageDataStructure, "reply">;
-    execute(client: StelliaClient, interaction: AutocompleteInteraction<"cached">): Awaitable<unknown>;
+	data: Omit<MessageDataStructure, "reply">;
+	execute(client: StelliaClient, interaction: AutocompleteInteraction<"cached">): Awaitable<unknown>;
 }
-export type AutoCompleteStructure =
-    | AutoCompleteStructureWithGuildConfiguration
-    | AutoCompleteStructureWithoutGuildConfiguration;
+export type AutoCompleteStructure = AutoCompleteStructureWithGuildConfiguration | AutoCompleteStructureWithoutGuildConfiguration;
 
 export interface ButtonStructureWithGuildConfiguration extends MessageInteractionStructure {
-    execute(client: StelliaClient, guildConfiguration: GuildConfigurationType, interaction: ButtonInteraction<"cached">): Awaitable<unknown>;
+	execute(client: StelliaClient, guildConfiguration: GuildConfigurationType, interaction: ButtonInteraction<"cached">): Awaitable<unknown>;
 }
 export interface ButtonStructureWithoutGuildConfiguration extends MessageInteractionStructure {
-    execute(client: StelliaClient, interaction: ButtonInteraction<"cached">): Awaitable<unknown>;
+	execute(client: StelliaClient, interaction: ButtonInteraction<"cached">): Awaitable<unknown>;
 }
-export type ButtonStructure =
-    | ButtonStructureWithGuildConfiguration
-    | ButtonStructureWithoutGuildConfiguration;
+export type ButtonStructure = ButtonStructureWithGuildConfiguration | ButtonStructureWithoutGuildConfiguration;
 
 export interface CommandStructureWithGuildConfiguration extends CommandInteractionStructure {
-    execute(client: StelliaClient, guildConfiguration: GuildConfigurationType, interaction: ChatInputCommandInteraction<"cached">): Awaitable<unknown>;
+	execute(client: StelliaClient, guildConfiguration: GuildConfigurationType, interaction: ChatInputCommandInteraction<"cached">): Awaitable<unknown>;
 }
 export interface CommandStructureWithoutGuildConfiguration extends CommandInteractionStructure {
-    execute(client: StelliaClient, interaction: ChatInputCommandInteraction<"cached">): Awaitable<unknown>;
+	execute(client: StelliaClient, interaction: ChatInputCommandInteraction<"cached">): Awaitable<unknown>;
 }
-export type CommandStructure =
-    | CommandStructureWithGuildConfiguration
-    | CommandStructureWithoutGuildConfiguration;
+export type CommandStructure = CommandStructureWithGuildConfiguration | CommandStructureWithoutGuildConfiguration;
 
 export interface ContextMenuStructureWithGuildConfiguration extends ContextMenuInteractionStructure {
-    execute(client: StelliaClient, guildConfiguration: GuildConfigurationType, interaction: MessageContextMenuCommandInteraction<"cached"> | UserContextMenuCommandInteraction<"cached">): Awaitable<unknown>;
+	execute(client: StelliaClient, guildConfiguration: GuildConfigurationType, interaction: MessageContextMenuCommandInteraction<"cached"> | UserContextMenuCommandInteraction<"cached">): Awaitable<unknown>;
 }
 export interface ContextMenuStructureWithoutGuildConfiguration extends ContextMenuInteractionStructure {
-    execute(client: StelliaClient, interaction: MessageContextMenuCommandInteraction<"cached"> | UserContextMenuCommandInteraction<"cached">): Awaitable<unknown>;
+	execute(client: StelliaClient, interaction: MessageContextMenuCommandInteraction<"cached"> | UserContextMenuCommandInteraction<"cached">): Awaitable<unknown>;
 }
-export type ContextMenuStructure =
-    | ContextMenuStructureWithGuildConfiguration
-    | ContextMenuStructureWithoutGuildConfiguration;
+export type ContextMenuStructure = ContextMenuStructureWithGuildConfiguration | ContextMenuStructureWithoutGuildConfiguration;
 
 export interface ModalStructureWithGuildConfiguration extends MessageInteractionStructure {
-    execute(client: StelliaClient, guildConfiguration: GuildConfigurationType, interaction: ModalSubmitInteraction<"cached">): Awaitable<unknown>;
+	execute(client: StelliaClient, guildConfiguration: GuildConfigurationType, interaction: ModalSubmitInteraction<"cached">): Awaitable<unknown>;
 }
 export interface ModalStructureWithoutGuildConfiguration extends MessageInteractionStructure {
-    execute(client: StelliaClient, interaction: ModalSubmitInteraction<"cached">): Awaitable<unknown>;
+	execute(client: StelliaClient, interaction: ModalSubmitInteraction<"cached">): Awaitable<unknown>;
 }
-export type ModalStructure =
-    | ModalStructureWithGuildConfiguration
-    | ModalStructureWithoutGuildConfiguration;
+export type ModalStructure = ModalStructureWithGuildConfiguration | ModalStructureWithoutGuildConfiguration;
 
 export interface SelectMenuStructureWithGuildConfiguration extends MessageInteractionStructure {
-    execute(client: StelliaClient, guildConfiguration: GuildConfigurationType, interaction: AnySelectMenuInteraction<"cached">): Awaitable<unknown>;
+	execute(client: StelliaClient, guildConfiguration: GuildConfigurationType, interaction: AnySelectMenuInteraction<"cached">): Awaitable<unknown>;
 }
 export interface SelectMenuStructureWithoutGuildConfiguration extends MessageInteractionStructure {
-    execute(client: StelliaClient, interaction: AnySelectMenuInteraction<"cached">): Awaitable<unknown>;
+	execute(client: StelliaClient, interaction: AnySelectMenuInteraction<"cached">): Awaitable<unknown>;
 }
-export type SelectMenuStructure =
-    | SelectMenuStructureWithGuildConfiguration
-    | SelectMenuStructureWithoutGuildConfiguration;
+export type SelectMenuStructure = SelectMenuStructureWithGuildConfiguration | SelectMenuStructureWithoutGuildConfiguration;
 
 export type AnyInteractionStructure =
-    | AutoCompleteStructure
-    | ButtonStructure
-    | CommandStructure
-    | ContextMenuStructure
-    | EventStructure
-    | ModalStructure
-    | SelectMenuStructure;
+	| AutoCompleteStructure
+	| ButtonStructure
+	| CommandStructure
+	| ContextMenuStructure
+	| EventStructure
+	| ModalStructure
+	| SelectMenuStructure;
 
 interface CommandInteractionStructure {
-    data: CommandDataStructure;
+	data: CommandDataStructure;
 }
 interface CommandDataStructure {
-    command: SlashCommandOptionsOnlyBuilder | SlashCommandSubcommandsOnlyBuilder;
-    reply: ReplyStructure<true> | ReplyStructure<false>;
+	command: SlashCommandOptionsOnlyBuilder | SlashCommandSubcommandsOnlyBuilder;
+	reply: ReplyStructure<true> | ReplyStructure<false>;
 }
 
 interface ContextMenuInteractionStructure {
-    data: ContextMenuDataStructure;
+	data: ContextMenuDataStructure;
 }
 interface ContextMenuDataStructure {
-    command: ContextMenuCommandBuilder;
-    reply: ReplyStructure<true> | ReplyStructure<false>;
+	command: ContextMenuCommandBuilder;
+	reply: ReplyStructure<true> | ReplyStructure<false>;
 }
 
 interface MessageInteractionStructure {
-    data: MessageDataStructure;
+	data: MessageDataStructure;
 }
 interface MessageDataStructure {
-    name: string | RegExp;
-    once: boolean;
-    reply: ReplyStructure<true> | ReplyStructure<false>;
+	name: string | RegExp;
+	once: boolean;
+	reply: ReplyStructure<true> | ReplyStructure<false>;
 }
 
 type ReplyStructure<T extends boolean = false> = T extends true
-    ? { autoDefer: true; ephemeral: boolean }
-    : { autoDefer: false };
+	? { autoDefer: true; ephemeral: boolean }
+	: { autoDefer: false };

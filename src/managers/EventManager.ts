@@ -22,17 +22,17 @@ export class EventManager extends BaseManager {
 	private interactions: Collection<StructureCustomId, EventStructure> = new Collection();
 	private guildsConfiguration: GuildsConfiguration;
 
-    private constructor(client: StelliaClient, directoryPath: string) {
-        super(client, directoryPath);
-    }
+	private constructor(client: StelliaClient, directoryPath: string) {
+		super(client, directoryPath);
+	}
 
-    public static async create(client: StelliaClient, directoryPath: string): Promise<EventManager> {
-        const manager = new EventManager(client, directoryPath);
-        await manager.loadData();
-        await manager.initializeGuildsConfiguration();
+	public static async create(client: StelliaClient, directoryPath: string): Promise<EventManager> {
+		const manager = new EventManager(client, directoryPath);
+		await manager.loadData();
+		await manager.initializeGuildsConfiguration();
 
-        return manager;
-    };
+		return manager;
+	}
 
 	public async loadData(): Promise<void> {
 		const events = await requiredFiles<EventStructure>(this.directoryPath);
@@ -55,15 +55,15 @@ export class EventManager extends BaseManager {
 	}
 
 	public getByRegex<EventStructure>(id: InteractionCustomId): EventStructure | null {
-        let event = null;
-        for (const [customId, action] of this.interactions.entries()) {
-            if (customId instanceof RegExp && customId.test(id)) {
-                event = action as EventStructure;
-                break;
-            }
-        }
+		let event = null;
+		for (const [customId, action] of this.interactions.entries()) {
+			if (customId instanceof RegExp && customId.test(id)) {
+				event = action as EventStructure;
+				break;
+			}
+		}
 
-        return event;
+		return event;
 	}
 
 	public getAll<EventStructure>(): Collection<StructureCustomId, EventStructure> {
@@ -80,7 +80,7 @@ export class EventManager extends BaseManager {
 		} else {
 			this.client.on(name, (...args) => this.eventHandler(event, ...args));
 		}
-	};
+	}
 
 	private readonly eventHandler = (event: EventStructureWithConfiguration, ...args: ClientEventsArgs) => {
 		const mainArgument = args[0];
@@ -103,7 +103,7 @@ export class EventManager extends BaseManager {
 		} else {
 			this.client.on(name, (...args) => event.execute(this.client, ...args));
 		}
-	};
+	}
 
 	private getGuildConfiguration(mainArgument: ClientEventsArgs[0]): GuildConfigurationType | undefined {
 		if (mainArgument && typeof mainArgument === "object") {
@@ -113,27 +113,27 @@ export class EventManager extends BaseManager {
 			if ("guild" in mainArgument && mainArgument.guild) {
 				return this.client.getGuildConfiguration(mainArgument.guild.id);
 			}
-            if (mainArgument && typeof mainArgument === "object" &&
-                "message" in mainArgument && mainArgument.message &&
-                typeof mainArgument.message === "object" && "guild" in mainArgument.message &&
-                mainArgument.message.guild && "id" in mainArgument.message.guild
-            ) {
-                return this.client.getGuildConfiguration(mainArgument.message.guild.id);
-            }
+			if (mainArgument && typeof mainArgument === "object" &&
+				"message" in mainArgument && mainArgument.message &&
+				typeof mainArgument.message === "object" && "guild" in mainArgument.message &&
+				mainArgument.message.guild && "id" in mainArgument.message.guild
+			) {
+				return this.client.getGuildConfiguration(mainArgument.message.guild.id);
+			}
 		}
 
 		return undefined;
-	};
+	}
 
-    private async initializeGuildsConfiguration(): Promise<void> {
-        if (this.client.environment?.areGuildsConfigurationEnabled) {
-            try {
-                const guildsConfiguration = await this.client.getGuildsConfiguration();
-                this.guildsConfiguration = guildsConfiguration;
-                logger.success("Guilds configuration loaded successfully for events");
-            } catch (error: any) {
-                logger.errorWithInformation("Error while loading guilds configuration", error);
-            }
-        }
-    };
+	private async initializeGuildsConfiguration(): Promise<void> {
+		if (this.client.environment?.areGuildsConfigurationEnabled) {
+			try {
+				const guildsConfiguration = await this.client.getGuildsConfiguration();
+				this.guildsConfiguration = guildsConfiguration;
+				logger.success("Guilds configuration loaded successfully for events");
+			} catch (error: any) {
+				logger.errorWithInformation("Error while loading guilds configuration", error);
+			}
+		}
+	}
 }
