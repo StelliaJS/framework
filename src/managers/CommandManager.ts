@@ -8,16 +8,16 @@ import { requiredFiles } from "@utils/index.js";
 export class CommandManager extends BaseManager {
 	private interactions: Collection<StructureCustomId, CommandStructure> = new Collection();
 
-    private constructor(client: StelliaClient, directoryPath: string) {
-        super(client, directoryPath);
-    }
+	private constructor(client: StelliaClient, directoryPath: string) {
+		super(client, directoryPath);
+	}
 
-    public static async create(client: StelliaClient, directory: string): Promise<CommandManager> {
-        const manager = new CommandManager(client, directory);
-        await manager.loadData();
+	public static async create(client: StelliaClient, directory: string): Promise<CommandManager> {
+		const manager = new CommandManager(client, directory);
+		await manager.loadData();
 
-        return manager;
-    }
+		return manager;
+	}
 
 	public async loadData(): Promise<void> {
 		const commands = await requiredFiles<CommandStructure>(this.directoryPath);
@@ -31,15 +31,15 @@ export class CommandManager extends BaseManager {
 	}
 
 	public getByRegex<CommandStructure>(id: InteractionCustomId): CommandStructure | null {
-        let command = null;
-        for (const [customId, action] of this.interactions.entries()) {
-            if (customId instanceof RegExp && customId.test(id)) {
-                command = action as CommandStructure;
-                break;
-            }
-        }
+		let command = null;
+		for (const [customId, action] of this.interactions.entries()) {
+			if (customId instanceof RegExp && customId.test(id)) {
+				command = action as CommandStructure;
+				break;
+			}
+		}
 
-        return command;
+		return command;
 	}
 
 	public getAll<CommandStructure>(): Collection<StructureCustomId, CommandStructure> {

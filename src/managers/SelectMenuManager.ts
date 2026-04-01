@@ -8,16 +8,16 @@ import { requiredFiles } from "@utils/index.js";
 export class SelectMenuManager extends BaseManager {
 	private interactions: Collection<StructureCustomId, SelectMenuStructure> = new Collection();
 
-    private constructor(client: StelliaClient, directoryPath: string) {
-        super(client, directoryPath);
-    }
+	private constructor(client: StelliaClient, directoryPath: string) {
+		super(client, directoryPath);
+	}
 
-    public static async create(client: StelliaClient, directory: string): Promise<SelectMenuManager> {
-        const manager = new SelectMenuManager(client, directory);
-        await manager.loadData();
+	public static async create(client: StelliaClient, directory: string): Promise<SelectMenuManager> {
+		const manager = new SelectMenuManager(client, directory);
+		await manager.loadData();
 
-        return manager;
-    }
+		return manager;
+	}
 
 	public async loadData(): Promise<void> {
 		const selectMenus = await requiredFiles<SelectMenuStructure>(this.directoryPath);
@@ -34,7 +34,7 @@ export class SelectMenuManager extends BaseManager {
 		let selectMenu = null;
 		for (const [customId, action] of this.interactions.entries()) {
 			if (customId instanceof RegExp && customId.test(id)) {
-                selectMenu = action as SelectMenuStructure;
+				selectMenu = action as SelectMenuStructure;
 				break;
 			}
 		}
