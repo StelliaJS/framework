@@ -11,7 +11,7 @@ import {
 
 export type StructureCustomId = string | RegExp;
 
-// sonarjs/no-duplicate-string: off
+// NOSONAR
 export type InteractionCustomId = string;
 
 export enum InteractionType {
