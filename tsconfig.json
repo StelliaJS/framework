@@ -1,8 +1,7 @@
 {
 	"compilerOptions": {
-		"baseUrl": "./src",
 		"strictPropertyInitialization": false,
-		"target": "ES2024",
+		"target": "ES2025",
 		"module": "NodeNext",
 		"esModuleInterop": true,
 		"forceConsistentCasingInFileNames": true,
@@ -11,12 +10,14 @@
 		"outDir": "./dist",
 		"declaration": true,
 		"paths": {
-			"@client/*": ["client/*"],
-			"@constants/*": ["constants/*"],
-			"@managers/*": ["managers/*"],
-			"@structures/*": ["structures/*"],
-			"@typescript/*": ["typescript/*"],
-			"@utils/*": ["utils/*"]
-		}
+			"@client/*": ["./src/client/*"],
+			"@constants/*": ["./src/constants/*"],
+			"@managers/*": ["./src/managers/*"],
+			"@structures/*": ["./src/structures/*"],
+			"@typescript/*": ["./src/typescript/*"],
+			"@utils/*": ["./src/utils/*"],
+			"*": ["./src/*"]
+		},
+		"rootDir": "./src"
 	}
 }
