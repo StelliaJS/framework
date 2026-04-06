@@ -63,8 +63,8 @@ export class StelliaUtils {
 	}
 
 	public initializeCommands = async (): Promise<void> => {
-		const commands = this.client.managers.commands?.getAll<CommandStructure>().values();
-		const contextMenus = this.client.managers.contextMenus?.getAll<ContextMenuStructure>().values();
+		const commands = this.client.managers.commands?.getAll().values();
+		const contextMenus = this.client.managers.contextMenus?.getAll().values();
 		const applicationCommands = [...(commands || []), ...(contextMenus || [])].map((item) => item.data.command);
 
 		if (this.client.isReady()) {
@@ -126,7 +126,7 @@ export class StelliaUtils {
 			const autoCompleteManager = this.client.managers.autoCompletes;
 			if (!autoCompleteManager) return;
 
-			const autoComplete = autoCompleteManager.getByCustomId<AutoCompleteStructure>(autoCompleteInteraction.commandName);
+			const autoComplete = autoCompleteManager.getByCustomId(autoCompleteInteraction.commandName);
 			if (!autoComplete) return;
 
 			if (this.client.environment?.areGuildsConfigurationEnabled) {
@@ -149,8 +149,8 @@ export class StelliaUtils {
 			if (!buttonManager) return;
 
 			const button =
-				buttonManager.getByCustomId<ButtonStructure>(buttonInteraction.customId) ||
-				buttonManager.getByRegex<ButtonStructure>(buttonInteraction.customId);
+				buttonManager.getByCustomId(buttonInteraction.customId) ||
+				buttonManager.getByRegex(buttonInteraction.customId);
 			if (!button) return;
 
 			if (button.data.reply.autoDefer && !buttonInteraction.deferred) {
@@ -176,7 +176,7 @@ export class StelliaUtils {
 			const commandManager = this.client.managers.commands;
 			if (!commandManager) return;
 
-			const command = commandManager.getByCustomId<CommandStructure>(commandInteraction.commandName);
+			const command = commandManager.getByCustomId(commandInteraction.commandName);
 			if (!command) return;
 
 			if (command.data.reply.autoDefer && !commandInteraction.deferred) {
@@ -218,8 +218,8 @@ export class StelliaUtils {
 			if (!modalManager) return;
 
 			const modal =
-				modalManager.getByCustomId<ModalStructure>(modalInteraction.customId) ||
-				modalManager.getByRegex<ModalStructure>(modalInteraction.customId);
+				modalManager.getByCustomId(modalInteraction.customId) ||
+				modalManager.getByRegex(modalInteraction.customId);
 			if (!modal) return;
 
 			if (modal.data.reply.autoDefer && !modalInteraction.deferred) {
@@ -246,8 +246,8 @@ export class StelliaUtils {
 			if (!selectMenuManager) return;
 
 			const selectMenu =
-				selectMenuManager.getByCustomId<SelectMenuStructure>(selectMenuInteraction.customId) ||
-				selectMenuManager.getByRegex<SelectMenuStructure>(selectMenuInteraction.customId);
+				selectMenuManager.getByCustomId(selectMenuInteraction.customId) ||
+				selectMenuManager.getByRegex(selectMenuInteraction.customId);
 			if (!selectMenu) return;
 
 			if (selectMenu.data.reply.autoDefer && !selectMenuInteraction.deferred) {
@@ -272,7 +272,7 @@ export class StelliaUtils {
 			const contextMenuManager = this.client.managers.contextMenus;
 			if (!contextMenuManager) return;
 
-			const messageContextMenu = contextMenuManager.getByCustomId<ContextMenuStructure>(interaction.commandName);
+			const messageContextMenu = contextMenuManager.getByCustomId(interaction.commandName);
 			if (!messageContextMenu) return;
 
 			if (messageContextMenu.data.reply.autoDefer && !interaction.deferred) {
@@ -297,7 +297,7 @@ export class StelliaUtils {
 			const contextMenuManager = this.client.managers.contextMenus;
 			if (!contextMenuManager) return;
 
-			const userContextMenu = contextMenuManager.getByCustomId<ContextMenuStructure>(interaction.commandName);
+			const userContextMenu = contextMenuManager.getByCustomId(interaction.commandName);
 			if (!userContextMenu) return;
 
 			if (userContextMenu.data.reply.autoDefer && !interaction.deferred) {
