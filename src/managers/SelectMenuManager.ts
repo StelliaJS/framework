@@ -5,7 +5,7 @@ import { type SelectMenuStructure } from "@structures/index.js";
 import { type InteractionCustomId, type StructureCustomId } from "@typescript/index.js";
 import { requiredFiles } from "@utils/index.js";
 
-export class SelectMenuManager extends BaseManager {
+export class SelectMenuManager extends BaseManager<SelectMenuStructure> {
 	private interactions: Collection<StructureCustomId, SelectMenuStructure> = new Collection();
 
 	private constructor(client: StelliaClient, directoryPath: string) {
@@ -25,16 +25,15 @@ export class SelectMenuManager extends BaseManager {
 		this.setManagerLoaded();
 	}
 
-	public getByCustomId<SelectMenuStructure>(id: InteractionCustomId): SelectMenuStructure | null {
-		const selectMenu = (this.interactions.get(id) as SelectMenuStructure) ?? null;
-		return selectMenu;
+	public getByCustomId(id: InteractionCustomId): SelectMenuStructure | null {
+		return this.interactions.get(id) ?? null;
 	}
 
-	public getByRegex<SelectMenuStructure>(id: InteractionCustomId): SelectMenuStructure | null {
-		let selectMenu = null;
+	public getByRegex(id: InteractionCustomId): SelectMenuStructure | null {
+		let selectMenu: SelectMenuStructure | null = null;
 		for (const [customId, action] of this.interactions.entries()) {
 			if (customId instanceof RegExp && customId.test(id)) {
-				selectMenu = action as SelectMenuStructure;
+				selectMenu = action;
 				break;
 			}
 		}
@@ -42,8 +41,7 @@ export class SelectMenuManager extends BaseManager {
 		return selectMenu;
 	}
 
-	public getAll<SelectMenuStructure>(): Collection<StructureCustomId, SelectMenuStructure> {
-		const selectMenus = this.interactions as Collection<StructureCustomId, SelectMenuStructure>;
-		return selectMenus;
+	public getAll(): Collection<StructureCustomId, SelectMenuStructure> {
+		return this.interactions;
 	}
 }

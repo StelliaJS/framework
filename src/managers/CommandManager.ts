@@ -5,7 +5,7 @@ import { type CommandStructure } from "@structures/index.js";
 import { type InteractionCustomId, type StructureCustomId } from "@typescript/index.js";
 import { requiredFiles } from "@utils/index.js";
 
-export class CommandManager extends BaseManager {
+export class CommandManager extends BaseManager<CommandStructure> {
 	private interactions: Collection<StructureCustomId, CommandStructure> = new Collection();
 
 	private constructor(client: StelliaClient, directoryPath: string) {
@@ -25,16 +25,15 @@ export class CommandManager extends BaseManager {
 		this.setManagerLoaded();
 	}
 
-	public getByCustomId<CommandStructure>(id: InteractionCustomId): CommandStructure | null {
-		const command = (this.interactions.get(id) as CommandStructure) ?? null;
-		return command;
+	public getByCustomId(id: InteractionCustomId): CommandStructure | null {
+		return this.interactions.get(id) ?? null;
 	}
 
-	public getByRegex<CommandStructure>(id: InteractionCustomId): CommandStructure | null {
-		let command = null;
+	public getByRegex(id: InteractionCustomId): CommandStructure | null {
+		let command: CommandStructure | null = null;
 		for (const [customId, action] of this.interactions.entries()) {
 			if (customId instanceof RegExp && customId.test(id)) {
-				command = action as CommandStructure;
+				command = action;
 				break;
 			}
 		}
@@ -42,8 +41,7 @@ export class CommandManager extends BaseManager {
 		return command;
 	}
 
-	public getAll<CommandStructure>(): Collection<StructureCustomId, CommandStructure> {
-		const commands = this.interactions as Collection<StructureCustomId, CommandStructure>;
-		return commands;
+	public getAll(): Collection<StructureCustomId, CommandStructure> {
+		return this.interactions;
 	}
 }

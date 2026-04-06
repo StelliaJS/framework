@@ -5,7 +5,7 @@ import { type ModalStructure } from "@structures/index.js";
 import { type InteractionCustomId, type StructureCustomId } from "@typescript/index.js";
 import { requiredFiles } from "@utils/index.js";
 
-export class ModalManager extends BaseManager {
+export class ModalManager extends BaseManager<ModalStructure> {
 	private interactions: Collection<StructureCustomId, ModalStructure> = new Collection();
 
 	private constructor(client: StelliaClient, directoryPath: string) {
@@ -25,16 +25,15 @@ export class ModalManager extends BaseManager {
 		this.setManagerLoaded();
 	}
 
-	public getByCustomId<ModalStructure>(id: InteractionCustomId): ModalStructure | null {
-		const modal = (this.interactions.get(id) as ModalStructure) ?? null;
-		return modal;
+	public getByCustomId(id: InteractionCustomId): ModalStructure | null {
+		return this.interactions.get(id) ?? null;
 	}
 
-	public getByRegex<ModalStructure>(id: InteractionCustomId): ModalStructure | null {
-		let modal = null;
+	public getByRegex(id: InteractionCustomId): ModalStructure | null {
+		let modal: ModalStructure | null = null;
 		for (const [customId, action] of this.interactions.entries()) {
 			if (customId instanceof RegExp && customId.test(id)) {
-				modal = action as ModalStructure;
+				modal = action;
 				break;
 			}
 		}
@@ -42,8 +41,7 @@ export class ModalManager extends BaseManager {
 		return modal;
 	}
 
-	public getAll<ModalStructure>(): Collection<StructureCustomId, ModalStructure> {
-		const modals = this.interactions as Collection<StructureCustomId, ModalStructure>;
-		return modals;
+	public getAll(): Collection<StructureCustomId, ModalStructure> {
+		return this.interactions;
 	}
 }

@@ -5,7 +5,7 @@ import { type ContextMenuStructure } from "@structures/index.js";
 import { type InteractionCustomId, type StructureCustomId } from "@typescript/index.js";
 import { requiredFiles } from "@utils/index.js";
 
-export class ContextMenuManager extends BaseManager {
+export class ContextMenuManager extends BaseManager<ContextMenuStructure> {
 	private interactions: Collection<StructureCustomId, ContextMenuStructure> = new Collection();
 
 	private constructor(client: StelliaClient, directoryPath: string) {
@@ -25,16 +25,15 @@ export class ContextMenuManager extends BaseManager {
 		this.setManagerLoaded();
 	}
 
-	public getByCustomId<ContextMenuStructure>(id: InteractionCustomId): ContextMenuStructure | null {
-		const contextMenu = (this.interactions.get(id) as ContextMenuStructure) ?? null;
-		return contextMenu;
+	public getByCustomId(id: InteractionCustomId): ContextMenuStructure | null {
+		return this.interactions.get(id) ?? null;
 	}
 
-	public getByRegex<ContextMenuStructure>(id: InteractionCustomId): ContextMenuStructure | null {
-		let contextMenu = null;
+	public getByRegex(id: InteractionCustomId): ContextMenuStructure | null {
+		let contextMenu: ContextMenuStructure | null = null;
 		for (const [customId, action] of this.interactions.entries()) {
 			if (customId instanceof RegExp && customId.test(id)) {
-				contextMenu = action as ContextMenuStructure;
+				contextMenu = action;
 				break;
 			}
 		}
@@ -42,8 +41,7 @@ export class ContextMenuManager extends BaseManager {
 		return contextMenu;
 	}
 
-	public getAll<ContextMenuStructure>(): Collection<StructureCustomId, ContextMenuStructure> {
-		const contextMenus = this.interactions as Collection<StructureCustomId, ContextMenuStructure>;
-		return contextMenus;
+	public getAll(): Collection<StructureCustomId, ContextMenuStructure> {
+		return this.interactions;
 	}
 }
