@@ -18,7 +18,7 @@ import {
 import { requiredFiles } from "@utils/index.js";
 import { logger } from "@utils/logger.js";
 
-export class EventManager extends BaseManager {
+export class EventManager extends BaseManager<EventStructure> {
 	private interactions: Collection<StructureCustomId, EventStructure> = new Collection();
 	private guildsConfiguration: GuildsConfiguration;
 
@@ -35,8 +35,7 @@ export class EventManager extends BaseManager {
 	}
 
 	public async loadData(): Promise<void> {
-		const events = await requiredFiles<EventStructure>(this.directoryPath);
-		this.interactions = events;
+		this.interactions = await requiredFiles<EventStructure>(this.directoryPath);
 
 		for (const eventStructure of this.interactions.values()) {
 			if (this.client.environment?.areGuildsConfigurationEnabled) {
@@ -49,16 +48,15 @@ export class EventManager extends BaseManager {
 		this.setManagerLoaded();
 	}
 
-	public getByCustomId<EventStructure>(id: InteractionCustomId): EventStructure | null {
-		const event = (this.interactions.get(id) as EventStructure) ?? null;
-		return event;
+	public getByCustomId(id: InteractionCustomId): EventStructure | null {
+		return this.interactions.get(id) ?? null;
 	}
 
-	public getByRegex<EventStructure>(id: InteractionCustomId): EventStructure | null {
-		let event = null;
+	public getByRegex(id: InteractionCustomId): EventStructure | null {
+		let event: EventStructure | null = null;
 		for (const [customId, action] of this.interactions.entries()) {
 			if (customId instanceof RegExp && customId.test(id)) {
-				event = action as EventStructure;
+				event = action;
 				break;
 			}
 		}
@@ -66,9 +64,8 @@ export class EventManager extends BaseManager {
 		return event;
 	}
 
-	public getAll<EventStructure>(): Collection<StructureCustomId, EventStructure> {
-		const events = this.interactions as Collection<StructureCustomId, EventStructure>;
-		return events;
+	public getAll(): Collection<StructureCustomId, EventStructure> {
+		return this.interactions;
 	}
 
 	private async loadEventWithGuildConfiguration(eventStructure: EventStructure) {
@@ -113,8 +110,7 @@ export class EventManager extends BaseManager {
 			if ("guild" in mainArgument && mainArgument.guild) {
 				return this.client.getGuildConfiguration(mainArgument.guild.id);
 			}
-			if (mainArgument && typeof mainArgument === "object" &&
-				"message" in mainArgument && mainArgument.message &&
+			if ("message" in mainArgument && mainArgument.message &&
 				typeof mainArgument.message === "object" && "guild" in mainArgument.message &&
 				mainArgument.message.guild && "id" in mainArgument.message.guild
 			) {

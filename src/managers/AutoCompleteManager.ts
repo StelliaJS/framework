@@ -5,7 +5,7 @@ import { type AutoCompleteStructure } from "@structures/index.js";
 import { type InteractionCustomId, type StructureCustomId } from "@typescript/index.js";
 import { requiredFiles } from "@utils/index.js";
 
-export class AutoCompleteManager extends BaseManager {
+export class AutoCompleteManager extends BaseManager<AutoCompleteStructure> {
 	private interactions: Collection<StructureCustomId, AutoCompleteStructure> = new Collection();
 
 	private constructor(client: StelliaClient, directoryPath: string) {
@@ -25,16 +25,15 @@ export class AutoCompleteManager extends BaseManager {
 		this.setManagerLoaded();
 	}
 
-	public getByCustomId<AutoCompleteStructure>(id: InteractionCustomId): AutoCompleteStructure | null {
-		const autoComplete = (this.interactions.get(id) as AutoCompleteStructure) ?? null;
-		return autoComplete;
+	public getByCustomId(id: InteractionCustomId): AutoCompleteStructure | null {
+		return this.interactions.get(id) ?? null;
 	}
 
-	public getByRegex<AutoCompleteStructure>(id: InteractionCustomId): AutoCompleteStructure | null {
-		let autoComplete = null;
+	public getByRegex(id: InteractionCustomId): AutoCompleteStructure | null {
+		let autoComplete: AutoCompleteStructure | null = null;
 		for (const [customId, action] of this.interactions.entries()) {
 			if (customId instanceof RegExp && customId.test(id)) {
-				autoComplete = action as AutoCompleteStructure;
+				autoComplete = action;
 				break;
 			}
 		}
@@ -42,8 +41,7 @@ export class AutoCompleteManager extends BaseManager {
 		return autoComplete;
 	}
 
-	public getAll<AutoCompleteStructure>(): Collection<StructureCustomId, AutoCompleteStructure> {
-		const autoCompletes = this.interactions as Collection<StructureCustomId, AutoCompleteStructure>;
-		return autoCompletes;
+	public getAll(): Collection<StructureCustomId, AutoCompleteStructure> {
+		return this.interactions;
 	}
 }

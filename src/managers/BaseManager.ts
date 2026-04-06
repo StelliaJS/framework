@@ -7,7 +7,7 @@ export interface ManagerOptions {
 	directoryPath: string;
 }
 
-export abstract class BaseManager {
+export abstract class BaseManager<TStructure extends AnyInteractionStructure> {
 	public readonly client: StelliaClient;
 	public readonly directoryPath: string;
 	private isLoaded = false;
@@ -26,7 +26,7 @@ export abstract class BaseManager {
 	}
 
 	public abstract loadData(): Promise<void>;
-	public abstract getByCustomId<InteractionStructure extends AnyInteractionStructure>(id: InteractionCustomId): InteractionStructure | null;
-	public abstract getByRegex<InteractionStructure extends AnyInteractionStructure>(id: InteractionCustomId): InteractionStructure | null;
-	public abstract getAll<InteractionStructure extends AnyInteractionStructure>(): Collection<StructureCustomId, InteractionStructure>;
+	public abstract getByCustomId(id: InteractionCustomId): TStructure | null;
+	public abstract getByRegex(id: InteractionCustomId): TStructure | null;
+	public abstract getAll(): Collection<StructureCustomId, TStructure>;
 }

@@ -5,7 +5,7 @@ import { type ButtonStructure } from "@structures/index.js";
 import { type InteractionCustomId, type StructureCustomId } from "@typescript/index.js";
 import { requiredFiles } from "@utils/index.js";
 
-export class ButtonManager extends BaseManager {
+export class ButtonManager extends BaseManager<ButtonStructure> {
 	public interactions: Collection<StructureCustomId, ButtonStructure> = new Collection();
 
 	private constructor(client: StelliaClient, directoryPath: string) {
@@ -25,16 +25,15 @@ export class ButtonManager extends BaseManager {
 		this.setManagerLoaded();
 	}
 
-	public getByCustomId<ButtonStructure>(id: InteractionCustomId): ButtonStructure | null {
-		const button = (this.interactions.get(id) as ButtonStructure) ?? null;
-		return button;
+	public getByCustomId(id: InteractionCustomId): ButtonStructure | null {
+		return this.interactions.get(id) ?? null;
 	}
 
-	public getByRegex<ButtonStructure>(id: InteractionCustomId): ButtonStructure | null {
-		let button = null;
+	public getByRegex(id: InteractionCustomId): ButtonStructure | null {
+		let button: ButtonStructure | null = null;
 		for (const [customId, action] of this.interactions.entries()) {
 			if (customId instanceof RegExp && customId.test(id)) {
-				button = action as ButtonStructure;
+				button = action;
 				break;
 			}
 		}
@@ -42,8 +41,7 @@ export class ButtonManager extends BaseManager {
 		return button;
 	}
 
-	public getAll<ButtonStructure>(): Collection<StructureCustomId, ButtonStructure> {
-		const buttons = this.interactions as Collection<StructureCustomId, ButtonStructure>;
-		return buttons;
+	public getAll(): Collection<StructureCustomId, ButtonStructure> {
+		return this.interactions;
 	}
 }
