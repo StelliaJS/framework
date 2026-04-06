@@ -1,5 +1,6 @@
 import { readdirSync, statSync } from "node:fs";
 import path from "node:path";
+import { pathToFileURL } from "node:url";
 import { Collection } from "discord.js";
 import { type AnyInteractionStructure } from "@structures/index.js";
 import { type StructureCustomId } from "@typescript/index.js";
@@ -17,20 +18,20 @@ export const requiredFiles = async <InteractionStructure extends AnyInteractionS
 };
 
 const loadInteraction = async <InteractionStructure extends AnyInteractionStructure>(filePath: string): Promise<InteractionStructure> => {
-	const module = await import(`file://${filePath}`);
-	const data: InteractionStructure = module.default;
+	const moduleUrl = pathToFileURL(filePath).href;
+	const module = await import(moduleUrl);
 
-	return data;
+	return module.default as InteractionStructure;
 };
 
 const getAllFilesPath = (dirPath: string, arrayOfFiles: string[] = []): string[] => {
 	const files = readdirSync(dirPath);
 	for (const file of files) {
-		if (statSync(dirPath + "/" + file).isDirectory()) {
-			arrayOfFiles = getAllFilesPath(dirPath + "/" + file, arrayOfFiles);
+		const fullPath = path.join(dirPath, file);
+		if (statSync(fullPath).isDirectory()) {
+			arrayOfFiles = getAllFilesPath(fullPath, arrayOfFiles);
 		} else {
-			const __dirname = path.resolve();
-			arrayOfFiles.push(path.join(__dirname, dirPath, "/", file));
+			arrayOfFiles.push(path.resolve(fullPath));
 		}
 	}
 
