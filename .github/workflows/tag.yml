@@ -1,0 +1,26 @@
+name: Tag on version bump
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'package.json'
+
+jobs:
+  tag:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 2
+
+      - name: Check & tag new version
+        run: |
+          PREV=$(git show HEAD~1:package.json | jq -r '.version')
+          CURR=$(jq -r '.version' package.json)
+          if [ "$PREV" != "$CURR" ]; then
+            git tag "v$CURR"
+            git push origin "v$CURR"
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
