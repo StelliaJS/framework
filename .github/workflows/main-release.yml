@@ -8,11 +8,14 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    outputs:
+      tag: ${{ steps.create_tag.outputs.TAG }}
 
     steps:
       - uses: actions/checkout@v5
 
       - name: Create release tag
+        id: create_tag
         run: |
           VERSION=$(jq -r '.version' package.json)
           TAG="${VERSION}"
@@ -27,3 +30,9 @@ jobs:
           gh release create "$TAG" \
             --title "$TAG" \
             --generate-notes
+
+  publish-npm:
+    needs: tag-release
+    uses: ./.github/workflows/publish-npm.yml
+    with:
+      version: ${{ needs.tag-release.outputs.tag }}

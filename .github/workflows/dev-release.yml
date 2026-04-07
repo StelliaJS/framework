@@ -8,10 +8,13 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    outputs:
+      tag: ${{ steps.create_tag.outputs.TAG }}
 
     steps:
       - uses: actions/checkout@v5
       - name: Create dev tag
+        id: create_tag
         run: |
           SHA=$(git rev-parse --short HEAD)
           VERSION=$(jq -r '.version' package.json)
@@ -28,3 +31,9 @@ jobs:
             --title "$TAG" \
             --notes "Dev build from commit $SHA" \
             --prerelease
+
+  publish-npm:
+    needs: tag-release
+    uses: ./.github/workflows/publish-npm.yml
+    with:
+      version: ${{ needs.tag-release.outputs.tag }}
