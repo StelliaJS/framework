@@ -1,13 +1,20 @@
-name: Publish Package to npmjs
+name: NPM Publish
 on:
-  release:
-    types: [published]
+  workflow_call:
+    inputs:
+      version:
+        description: "The version to publish"
+        required: true
+        type: string
 
 jobs:
-  build:
+  publish:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+        with:
+          ref: ${{ inputs.version }}
+
       - uses: actions/setup-node@v6
         with:
           node-version: "24.x"
@@ -21,6 +28,9 @@ jobs:
 
       - name: Build
         run: pnpm run build
+
+      - name: Set dynamic package version
+        run: npm version ${{ inputs.version }} --no-git-tag-version
 
       - name: Publish to npm
         run: npm publish --access public
