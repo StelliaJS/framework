@@ -88,7 +88,7 @@ export class EventManager extends BaseManager<EventStructure> {
 		}
 
 		const eventStructure = event as EventStructureWithAllGuildsConfiguration;
-		return eventStructure.execute(this.client, this.guildsConfiguration);
+		return eventStructure.execute(this.client, this.guildsConfiguration, ...args);
 	};
 
 	private async loadEventWithoutGuildConfiguration(eventStructure: EventStructure): Promise<void> {
@@ -124,8 +124,7 @@ export class EventManager extends BaseManager<EventStructure> {
 	private async initializeGuildsConfiguration(): Promise<void> {
 		if (this.client.environment?.areGuildsConfigurationEnabled) {
 			try {
-				const guildsConfiguration = await this.client.getGuildsConfiguration();
-				this.guildsConfiguration = guildsConfiguration;
+				this.guildsConfiguration = await this.client.getGuildsConfiguration();
 				logger.success("Guilds configuration loaded successfully for events");
 			} catch (error: any) {
 				logger.errorWithInformation("Error while loading guilds configuration", error);
