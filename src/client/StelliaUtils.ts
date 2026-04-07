@@ -16,22 +16,16 @@ import {
 import { type StelliaClient } from "@client/index.js";
 import { DISCORD_API_VERSION } from "@constants/index.js";
 import {
-	type AutoCompleteStructure,
 	type AutoCompleteStructureWithGuildConfiguration,
 	type AutoCompleteStructureWithoutGuildConfiguration,
-	type ButtonStructure,
 	type ButtonStructureWithGuildConfiguration,
 	type ButtonStructureWithoutGuildConfiguration,
-	type CommandStructure,
 	type CommandStructureWithGuildConfiguration,
 	type CommandStructureWithoutGuildConfiguration,
-	type ContextMenuStructure,
 	type ContextMenuStructureWithGuildConfiguration,
 	type ContextMenuStructureWithoutGuildConfiguration,
-	type ModalStructure,
 	type ModalStructureWithGuildConfiguration,
 	type ModalStructureWithoutGuildConfiguration,
-	type SelectMenuStructure,
 	type SelectMenuStructureWithGuildConfiguration,
 	type SelectMenuStructureWithoutGuildConfiguration
 } from "@structures/index.js";
@@ -111,8 +105,7 @@ export class StelliaUtils {
 	private async initializeGuildsConfiguration(): Promise<void> {
 		if (this.client.environment?.areGuildsConfigurationEnabled) {
 			try {
-				const guildsConfiguration = await this.client.getGuildsConfiguration();
-				this.guildsConfiguration = guildsConfiguration;
+				this.guildsConfiguration = await this.client.getGuildsConfiguration();
 				logger.success("Guilds configuration loaded successfully for interactions");
 			} catch (error: any) {
 				logger.errorWithInformation("Error while loading guilds configuration", error);
