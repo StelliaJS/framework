@@ -17,3 +17,12 @@ jobs:
           TAG="v${VERSION}-dev-${SHA}"
           git tag "$TAG"
           git push origin "$TAG"
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "$TAG" \
+            --title "$TAG" \
+            --notes "Dev build from commit $SHA" \
+            --prerelease
