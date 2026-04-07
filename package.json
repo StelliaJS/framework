@@ -10,7 +10,7 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/stelliajs/framework.git"
+		"url": "https://github.com/StelliaJS/framework.git"
 	},
 	"author": "Tweenty_",
 	"license": "ISC",
