@@ -1,6 +1,6 @@
 # StelliaJS
 
-## About
+## Accbout
 
 StelliaJS is built using Discord JS V14 and TypeScript. It allows you to quickly set up a new bot with a simple and complete architecture.
 A CLI is available to help you set up a project with StelliaJS : [link to the CLI](https://github.com/StelliaJS/cli)
