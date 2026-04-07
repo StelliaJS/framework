@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  tag:
+  tag-release:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     permissions:
@@ -15,7 +15,7 @@ jobs:
       - name: Create release tag
         run: |
           VERSION=$(jq -r '.version' package.json)
-          TAG="v${VERSION}"
+          TAG="${VERSION}"
           git tag "$TAG"
           git push origin "$TAG"
           echo "TAG=$TAG" >> "$GITHUB_ENV"
