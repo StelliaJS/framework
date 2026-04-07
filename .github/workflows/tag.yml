@@ -1,10 +1,6 @@
-name: Tag on version bump
+name: Tag dev version
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - "package.json"
+  workflow_dispatch:
 
 jobs:
   tag:
@@ -12,17 +8,12 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v6
-        with:
-          fetch-depth: 2
+      - uses: actions/checkout@v5
 
-      - name: Check & tag new version
+      - name: Create dev tag
         run: |
-          PREV=$(git show HEAD~1:package.json | jq -r '.version')
-          CURR=$(jq -r '.version' package.json)
-          if [ "$PREV" != "$CURR" ]; then
-            git tag "v$CURR"
-            git push origin "v$CURR"
-          fi
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SHA=$(git rev-parse --short HEAD)
+          VERSION=$(jq -r '.version' package.json)
+          TAG="v${VERSION}-dev-${SHA}"
+          git tag "$TAG"
+          git push origin "$TAG"
