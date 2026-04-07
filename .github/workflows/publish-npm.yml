@@ -38,7 +38,7 @@ jobs:
         run: pnpm run build
 
       - name: Set dynamic package version
-        run: npm version ${{ inputs.version }} --no-git-tag-version
+        run: npm version ${{ inputs.version }} --no-git-tag-version --allow-same-version
 
       - name: Publish to npm
         run: npm publish --access public --tag ${{ inputs.npm_tag }}
