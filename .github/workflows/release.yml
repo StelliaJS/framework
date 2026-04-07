@@ -6,7 +6,6 @@ jobs:
   tag-release:
     runs-on: ubuntu-latest
     permissions:
-      id-token: write
       contents: write
     outputs:
       version_tag: ${{ steps.create_tag.outputs.TAG }}
