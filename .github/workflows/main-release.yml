@@ -36,4 +36,3 @@ jobs:
     uses: ./.github/workflows/publish-npm.yml
     with:
       version: ${{ needs.tag-release.outputs.tag }}
-    secrets: inherit
