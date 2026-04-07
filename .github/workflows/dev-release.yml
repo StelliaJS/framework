@@ -1,0 +1,29 @@
+name: Develop version release
+on:
+  workflow_dispatch:
+
+jobs:
+  tag:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Create dev tag
+        run: |
+          SHA=$(git rev-parse --short HEAD)
+          VERSION=$(jq -r '.version' package.json)
+          TAG="v${VERSION}-dev-${SHA}"
+          git tag "$TAG"
+          git push origin "$TAG"
+          echo "TAG=$TAG" >> "$GITHUB_ENV"
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "$TAG" \
+            --title "$TAG" \
+            --notes "Dev build from commit $SHA" \
+            --prerelease
