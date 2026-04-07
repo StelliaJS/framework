@@ -10,19 +10,10 @@ jobs:
       contents: write
     outputs:
       version_tag: ${{ steps.create_tag.outputs.TAG }}
-      npm_tag: ${{ steps.env_setup.outputs.NPM_TAG }}
+      npm_tag: ${{ steps.create_tag.outputs.NPM_TAG }}
 
     steps:
       - uses: actions/checkout@v6
-
-      - name: Setup Environment
-        id: env_setup
-        run: |
-          if [ "${{ github.ref }}" = "refs/heads/main" ]; then
-            echo "NPM_TAG=latest" >> "$GITHUB_OUTPUT"
-          else
-            echo "NPM_TAG=dev" >> "$GITHUB_OUTPUT"
-          fi
 
       - name: Create tag and define NPM environment
         id: create_tag
@@ -48,6 +39,8 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          TAG="${{ steps.create_tag.outputs.TAG }}"
+          
           if [ "${{ github.ref }}" = "refs/heads/main" ]; then
             gh release create "$TAG" --title "$TAG" --generate-notes
           else
