@@ -4,12 +4,13 @@ on:
 
 jobs:
   tag:
+    if: github.ref == 'refs/heads/develop'
     runs-on: ubuntu-latest
     permissions:
       contents: write
+
     steps:
       - uses: actions/checkout@v5
-
       - name: Create dev tag
         run: |
           SHA=$(git rev-parse --short HEAD)
