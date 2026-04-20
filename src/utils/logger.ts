@@ -1,4 +1,5 @@
 import logSymbols from "log-symbols";
+import { toError } from "utils/error.js";
 
 const prefix = "[StelliaJS]";
 export const logger = {
@@ -15,7 +16,6 @@ export const logger = {
 		console.error(`${logSymbols.error} ${prefix} ${message}`);
 	},
 	errorWithInformation: (message: string, error: unknown) => {
-		const err = error instanceof Error ? error : new Error(String(error));
-		console.error(`${logSymbols.error} ${prefix} ${message}:`, err);
+		console.error(`${logSymbols.error} ${prefix} ${message}:`, toError(error));
 	}
 };
