@@ -126,7 +126,7 @@ export class EventManager extends BaseManager<EventStructure> {
 			try {
 				this.guildsConfiguration = await this.client.getGuildsConfiguration();
 				logger.success("Guilds configuration loaded successfully for events");
-			} catch (error: any) {
+			} catch (error: unknown) {
 				logger.errorWithInformation("Error while loading guilds configuration", error);
 			}
 		}
