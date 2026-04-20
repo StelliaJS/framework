@@ -1,4 +1,5 @@
 export * from "@utils/dateFormatters.js";
+export * from "@utils/error.js";
 export * from "@utils/files.js";
 export * from "@utils/logger.js";
 export * from "@utils/translation.js";
