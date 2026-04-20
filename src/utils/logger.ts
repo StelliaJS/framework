@@ -14,7 +14,8 @@ export const logger = {
 	error: (message: string) => {
 		console.error(`${logSymbols.error} ${prefix} ${message}`);
 	},
-	errorWithInformation: (message: string, error: Error) => {
-		console.error(`${logSymbols.error} ${prefix} ${message}: `, error);
+	errorWithInformation: (message: string, error: unknown) => {
+		const err = error instanceof Error ? error : new Error(String(error));
+		console.error(`${logSymbols.error} ${prefix} ${message}:`, err);
 	}
 };
