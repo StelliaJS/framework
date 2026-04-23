@@ -9,12 +9,7 @@ import {
 	type EventStructureWithGuildConfiguration,
 	type EventStructureWithoutGuildConfiguration
 } from "@structures/index.js";
-import {
-	type GuildConfigurationType,
-	type GuildsConfiguration,
-	type InteractionCustomId,
-	type StructureCustomId
-} from "@typescript/index.js";
+import { type GuildConfigurationType, type GuildsConfiguration, type InteractionCustomId, type StructureCustomId } from "@typescript/index.js";
 import { requiredFiles } from "@utils/index.js";
 import { logger } from "@utils/logger.js";
 

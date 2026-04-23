@@ -32,8 +32,6 @@ export const formatTimestampToShortDateMediumTime = (timestamp: number): string 
 	return time(Math.round(timestamp / 1000), TimestampStyles.ShortDateMediumTime);
 };
 
-
 export const formatTimestampToRelativeTime = (timestamp: number): string => {
 	return time(Math.round(timestamp / 1000), TimestampStyles.RelativeTime);
 };
-
