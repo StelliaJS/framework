@@ -100,7 +100,7 @@ export class StelliaClient<Ready extends boolean = boolean> extends Client<Ready
 		});
 	};
 
-	public getGuildConfiguration = <CustomGuildConfiguration extends GuildConfiguration>(guildId: string): CustomGuildConfiguration | undefined => {
+	public getGuildConfiguration = <CustomGuildConfiguration extends GuildConfiguration>(guildId: string): CustomGuildConfiguration | null => {
 		return this.utils.getGuildConfiguration(guildId);
 	};
 
