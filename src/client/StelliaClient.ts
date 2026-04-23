@@ -13,13 +13,7 @@ import {
 	ModalManager,
 	SelectMenuManager
 } from "@managers/index.js";
-import {
-	type ClientEnvironment,
-	type GuildConfiguration,
-	type GuildsConfiguration,
-	type Manager,
-	type Managers
-} from "@typescript/index.js";
+import { type ClientEnvironment, type GuildConfiguration, type GuildsConfiguration, type Manager, type Managers } from "@typescript/index.js";
 import { logger } from "@utils/logger.js";
 
 export class StelliaClient<Ready extends boolean = boolean> extends Client<Ready> {
