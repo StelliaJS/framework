@@ -1,4 +1,4 @@
-import { type Locale, type Snowflake } from "discord.js";
+import { type Snowflake } from "discord.js";
 import {
 	type AutoCompleteManager,
 	type ButtonManager,
@@ -8,6 +8,7 @@ import {
 	type ModalManager,
 	type SelectMenuManager
 } from "@managers/index.js";
+import { type StelliaLocale } from "@typescript/index.js";
 
 export type StructureCustomId = string | RegExp;
 
@@ -47,7 +48,7 @@ export interface ClientEnvironment {
 }
 
 export interface BaseGuildConfiguration {
-	locale: Locale;
+	locale: StelliaLocale;
 	[key: string]: unknown;
 }
 export interface BaseGeneralConfiguration {
@@ -65,4 +66,4 @@ export interface GuildConfiguration {
 	general: BaseGeneralConfiguration;
 	guild: BaseGuildConfiguration;
 }
-export type GuildConfigurationType = GuildConfiguration | undefined;
+export type GuildConfigurationType = GuildConfiguration | null;
