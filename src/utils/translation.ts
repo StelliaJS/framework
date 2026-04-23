@@ -1,9 +1,8 @@
 import { type Locale } from "discord.js";
-import { changeLanguage, t } from "i18next";
+import { t } from "i18next";
 
 type TranslateArgs = Record<string, unknown>;
 
-export const translateToLocale = async <T = unknown>(locale: Locale, key: string, args?: TranslateArgs): Promise<T> => {
-	await changeLanguage(locale);
-	return t(key, { interpolation: { escapeValue: false }, returnObjects: true, ...args }) as T;
+export const translateToLocale = <T = unknown>(locale: Locale, key: string, args?: TranslateArgs): T => {
+	return t(key, { lng: locale, interpolation: { escapeValue: false }, returnObjects: true, ...args }) as T;
 };
