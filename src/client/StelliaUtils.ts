@@ -30,9 +30,7 @@ import {
 	type SelectMenuStructureWithGuildConfiguration,
 	type SelectMenuStructureWithoutGuildConfiguration
 } from "@structures/index.js";
-import {
-	type GuildConfiguration, type GuildsConfiguration, InteractionType, type StelliaLocale
-} from "@typescript/index.js";
+import { type GuildConfiguration, type GuildsConfiguration, InteractionType, type StelliaLocale } from "@typescript/index.js";
 import { logger } from "@utils/logger.js";
 
 export class StelliaUtils {
@@ -274,8 +272,8 @@ export class StelliaUtils {
 				const guildConfiguration = this.getGuildConfiguration(selectMenuInteraction.guildId);
 				await selectMenuWithGuildConfiguration.execute(this.client, guildConfiguration, memberLocale, selectMenuInteraction);
 			} else {
-				const modalWithoutGuildConfiguration = selectMenu as SelectMenuStructureWithoutGuildConfiguration;
-				await modalWithoutGuildConfiguration.execute(this.client, memberLocale, selectMenuInteraction);
+				const selectMenuWithoutGuildConfiguration = selectMenu as SelectMenuStructureWithoutGuildConfiguration;
+				await selectMenuWithoutGuildConfiguration.execute(this.client, memberLocale, selectMenuInteraction);
 			}
 		} catch (error: unknown) {
 			logger.errorWithInformation("Error while handling select menu interaction", error);
