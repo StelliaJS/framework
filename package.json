@@ -22,9 +22,12 @@
 		"typescript",
 		"framework"
 	],
+	"files": [
+		"dist/"
+	],
 	"dependencies": {
 		"discord.js": "^14.26.3",
-		"i18next": "^26.0.6",
+		"i18next": "^26.0.7",
 		"log-symbols": "^7.0.1"
 	},
 	"devDependencies": {
