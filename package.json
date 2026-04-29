@@ -27,7 +27,7 @@
 	],
 	"dependencies": {
 		"discord.js": "^14.26.3",
-		"i18next": "^26.0.7",
+		"i18next": "^26.0.8",
 		"log-symbols": "^7.0.1"
 	},
 	"devDependencies": {
@@ -41,7 +41,7 @@
 		"prettier": "^3.8.3",
 		"tsc-alias": "^1.8.16",
 		"typescript": "^6.0.3",
-		"typescript-eslint": "^8.59.0"
+		"typescript-eslint": "^8.59.1"
 	},
 	"type": "module",
 	"packageManager": "pnpm@10.33.2"
