@@ -2,10 +2,14 @@
 	"name": "@stelliajs/framework",
 	"version": "1.7.2",
 	"type": "module",
-	"description": "A framework for simplify the creation of discord bots",
+	"description": "A framework for simplifying the creation of discord bots",
 	"author": "Tweenty_",
 	"license": "ISC",
 	"packageManager": "pnpm@10.33.2",
+	"engines": {
+		"node": ">=20.19.0"
+	},
+	"engineStrict": true,
 	"keywords": ["discord", "bot", "discordjs", "typescript", "framework"],
 	"repository": {
 		"type": "git",
