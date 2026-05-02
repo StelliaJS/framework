@@ -79,7 +79,7 @@ interface CommandInteractionStructure {
 }
 interface CommandDataStructure {
 	command: SlashCommandOptionsOnlyBuilder | SlashCommandSubcommandsOnlyBuilder;
-	reply: ReplyStructure<true> | ReplyStructure<false>;
+	reply: ReplyStructure;
 }
 
 interface ContextMenuInteractionStructure {
@@ -87,7 +87,7 @@ interface ContextMenuInteractionStructure {
 }
 interface ContextMenuDataStructure {
 	command: ContextMenuCommandBuilder;
-	reply: ReplyStructure<true> | ReplyStructure<false>;
+	reply: ReplyStructure;
 }
 
 interface MessageInteractionStructure {
@@ -96,9 +96,7 @@ interface MessageInteractionStructure {
 interface MessageDataStructure {
 	name: string | RegExp;
 	once: boolean;
-	reply: ReplyStructure<true> | ReplyStructure<false>;
+	reply: ReplyStructure;
 }
 
-type ReplyStructure<T extends boolean = false> = T extends true
-	? { autoDefer: true; ephemeral: boolean }
-	: { autoDefer: false };
+type ReplyStructure = { autoDefer: true; ephemeral: boolean }
