@@ -7,8 +7,6 @@
 		"forceConsistentCasingInFileNames": true,
 		"strict": true,
 		"skipLibCheck": true,
-		"outDir": "./dist",
-		"declaration": true,
 		"paths": {
 			"@client/*": ["./src/client/*"],
 			"@constants/*": ["./src/constants/*"],
@@ -17,8 +15,7 @@
 			"@typescript/*": ["./src/typescript/*"],
 			"@utils/*": ["./src/utils/*"],
 			"*": ["./src/*"]
-		},
-		"rootDir": "./src"
+		}
 	},
 	"include": ["src/**/*"]
 }
