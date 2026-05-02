@@ -11,6 +11,6 @@ export default defineConfig({
     "@managers": "./src/managers",
     "@structures": "./src/structures",
     "@typescript": "./src/typescript",
-    "@utils": "./src/utils",
+    "@utils": "./src/utils"
   }
 });
