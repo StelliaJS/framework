@@ -9,7 +9,12 @@ import {
 	type EventStructureWithGuildConfiguration,
 	type EventStructureWithoutGuildConfiguration
 } from "@structures/index.js";
-import { type GuildConfigurationType, type GuildsConfiguration, type InteractionCustomId, type StructureCustomId } from "@typescript/index.js";
+import {
+	type GuildConfigurationType,
+	type GuildsConfiguration,
+	type InteractionCustomId,
+	type StructureCustomId
+} from "@typescript/index.js";
 import { requiredFiles } from "@utils/index.js";
 import { logger } from "@utils/logger.js";
 
@@ -105,9 +110,13 @@ export class EventManager extends BaseManager<EventStructure> {
 			if ("guild" in mainArgument && mainArgument.guild) {
 				return this.client.getGuildConfiguration(mainArgument.guild.id);
 			}
-			if ("message" in mainArgument && mainArgument.message &&
-				typeof mainArgument.message === "object" && "guild" in mainArgument.message &&
-				mainArgument.message.guild && "id" in mainArgument.message.guild
+			if (
+				"message" in mainArgument &&
+				mainArgument.message &&
+				typeof mainArgument.message === "object" &&
+				"guild" in mainArgument.message &&
+				mainArgument.message.guild &&
+				"id" in mainArgument.message.guild
 			) {
 				return this.client.getGuildConfiguration(mainArgument.message.guild.id);
 			}
