@@ -6,7 +6,7 @@ import {
 	type ContextMenuManager,
 	type EventManager,
 	type ModalManager,
-	type SelectMenuManager,
+	type SelectMenuManager
 } from "@managers/index.js";
 import { type StelliaLocale } from "@typescript/index.js";
 

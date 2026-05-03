@@ -17,7 +17,12 @@ import { type GuildConfigurationType, type StelliaLocale } from "@typescript/ind
 
 export interface AutoCompleteStructureWithGuildConfiguration extends Omit<MessageInteractionStructure, "data"> {
 	data: Omit<MessageDataStructure, "reply">;
-	execute(client: StelliaClient, guildConfiguration: GuildConfigurationType, memberLocale: StelliaLocale, interaction: AutocompleteInteraction<"cached">): Awaitable<unknown>;
+	execute(
+		client: StelliaClient,
+		guildConfiguration: GuildConfigurationType,
+		memberLocale: StelliaLocale,
+		interaction: AutocompleteInteraction<"cached">
+	): Awaitable<unknown>;
 }
 export interface AutoCompleteStructureWithoutGuildConfiguration extends Omit<MessageInteractionStructure, "data"> {
 	data: Omit<MessageDataStructure, "reply">;
@@ -26,7 +31,12 @@ export interface AutoCompleteStructureWithoutGuildConfiguration extends Omit<Mes
 export type AutoCompleteStructure = AutoCompleteStructureWithGuildConfiguration | AutoCompleteStructureWithoutGuildConfiguration;
 
 export interface ButtonStructureWithGuildConfiguration extends MessageInteractionStructure {
-	execute(client: StelliaClient, guildConfiguration: GuildConfigurationType, memberLocale: StelliaLocale, interaction: ButtonInteraction<"cached">): Awaitable<unknown>;
+	execute(
+		client: StelliaClient,
+		guildConfiguration: GuildConfigurationType,
+		memberLocale: StelliaLocale,
+		interaction: ButtonInteraction<"cached">
+	): Awaitable<unknown>;
 }
 export interface ButtonStructureWithoutGuildConfiguration extends MessageInteractionStructure {
 	execute(client: StelliaClient, memberLocale: StelliaLocale, interaction: ButtonInteraction<"cached">): Awaitable<unknown>;
@@ -34,7 +44,12 @@ export interface ButtonStructureWithoutGuildConfiguration extends MessageInterac
 export type ButtonStructure = ButtonStructureWithGuildConfiguration | ButtonStructureWithoutGuildConfiguration;
 
 export interface CommandStructureWithGuildConfiguration extends CommandInteractionStructure {
-	execute(client: StelliaClient, guildConfiguration: GuildConfigurationType, memberLocale: StelliaLocale, interaction: ChatInputCommandInteraction<"cached">): Awaitable<unknown>;
+	execute(
+		client: StelliaClient,
+		guildConfiguration: GuildConfigurationType,
+		memberLocale: StelliaLocale,
+		interaction: ChatInputCommandInteraction<"cached">
+	): Awaitable<unknown>;
 }
 export interface CommandStructureWithoutGuildConfiguration extends CommandInteractionStructure {
 	execute(client: StelliaClient, memberLocale: StelliaLocale, interaction: ChatInputCommandInteraction<"cached">): Awaitable<unknown>;
@@ -42,15 +57,29 @@ export interface CommandStructureWithoutGuildConfiguration extends CommandIntera
 export type CommandStructure = CommandStructureWithGuildConfiguration | CommandStructureWithoutGuildConfiguration;
 
 export interface ContextMenuStructureWithGuildConfiguration extends ContextMenuInteractionStructure {
-	execute(client: StelliaClient, guildConfiguration: GuildConfigurationType, memberLocale: StelliaLocale, interaction: MessageContextMenuCommandInteraction<"cached"> | UserContextMenuCommandInteraction<"cached">): Awaitable<unknown>;
+	execute(
+		client: StelliaClient,
+		guildConfiguration: GuildConfigurationType,
+		memberLocale: StelliaLocale,
+		interaction: MessageContextMenuCommandInteraction<"cached"> | UserContextMenuCommandInteraction<"cached">
+	): Awaitable<unknown>;
 }
 export interface ContextMenuStructureWithoutGuildConfiguration extends ContextMenuInteractionStructure {
-	execute(client: StelliaClient, memberLocale: StelliaLocale, interaction: MessageContextMenuCommandInteraction<"cached"> | UserContextMenuCommandInteraction<"cached">): Awaitable<unknown>;
+	execute(
+		client: StelliaClient,
+		memberLocale: StelliaLocale,
+		interaction: MessageContextMenuCommandInteraction<"cached"> | UserContextMenuCommandInteraction<"cached">
+	): Awaitable<unknown>;
 }
 export type ContextMenuStructure = ContextMenuStructureWithGuildConfiguration | ContextMenuStructureWithoutGuildConfiguration;
 
 export interface ModalStructureWithGuildConfiguration extends MessageInteractionStructure {
-	execute(client: StelliaClient, guildConfiguration: GuildConfigurationType, memberLocale: StelliaLocale, interaction: ModalSubmitInteraction<"cached">): Awaitable<unknown>;
+	execute(
+		client: StelliaClient,
+		guildConfiguration: GuildConfigurationType,
+		memberLocale: StelliaLocale,
+		interaction: ModalSubmitInteraction<"cached">
+	): Awaitable<unknown>;
 }
 export interface ModalStructureWithoutGuildConfiguration extends MessageInteractionStructure {
 	execute(client: StelliaClient, memberLocale: StelliaLocale, interaction: ModalSubmitInteraction<"cached">): Awaitable<unknown>;
@@ -58,7 +87,12 @@ export interface ModalStructureWithoutGuildConfiguration extends MessageInteract
 export type ModalStructure = ModalStructureWithGuildConfiguration | ModalStructureWithoutGuildConfiguration;
 
 export interface SelectMenuStructureWithGuildConfiguration extends MessageInteractionStructure {
-	execute(client: StelliaClient, guildConfiguration: GuildConfigurationType, memberLocale: StelliaLocale, interaction: AnySelectMenuInteraction<"cached">): Awaitable<unknown>;
+	execute(
+		client: StelliaClient,
+		guildConfiguration: GuildConfigurationType,
+		memberLocale: StelliaLocale,
+		interaction: AnySelectMenuInteraction<"cached">
+	): Awaitable<unknown>;
 }
 export interface SelectMenuStructureWithoutGuildConfiguration extends MessageInteractionStructure {
 	execute(client: StelliaClient, memberLocale: StelliaLocale, interaction: AnySelectMenuInteraction<"cached">): Awaitable<unknown>;
@@ -99,6 +133,4 @@ interface MessageDataStructure {
 	reply: ReplyStructure<true> | ReplyStructure<false>;
 }
 
-type ReplyStructure<T extends boolean = false> = T extends true
-	? { autoDefer: true; ephemeral: boolean }
-	: { autoDefer: false };
+type ReplyStructure<T extends boolean = false> = T extends true ? { autoDefer: true; ephemeral: boolean } : { autoDefer: false };
