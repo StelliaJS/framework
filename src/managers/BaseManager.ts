@@ -1,4 +1,4 @@
-import { Collection } from "discord.js";
+import { type Collection } from "discord.js";
 import { type StelliaClient } from "@client/index.js";
 import { type AnyInteractionStructure } from "@structures/index.js";
 import { type InteractionCustomId, type StructureCustomId } from "@typescript/index.js";
