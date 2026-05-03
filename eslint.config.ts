@@ -20,9 +20,6 @@ export default defineConfig([
 	prettierConfig,
 	{
 		files: ["**/*.{js,mjs,cjs,ts,mts,cts}"],
-		plugins: {
-			import: importPlugin
-		},
 		languageOptions: {
 			parserOptions: {
 				project: "./tsconfig.json",
@@ -31,10 +28,11 @@ export default defineConfig([
 			}
 		},
 		rules: {
-			"import/namespace": "off",
-			"@typescript-eslint/explicit-function-return-type": "off",
-			"@typescript-eslint/no-explicit-any": "warn",
-			"import/order": [
+			"import-x/namespace": "off",
+			"import-x/no-unresolved": "error",
+			"import-x/no-duplicates": "error",
+			"import-x/newline-after-import": ["error", { count: 1 }],
+			"import-x/order": [
 				"error",
 				{
 					groups: ["builtin", "external", "internal", ["parent", "sibling", "index"], "object", "type"],
@@ -51,6 +49,8 @@ export default defineConfig([
 					}
 				}
 			],
+			"@typescript-eslint/explicit-function-return-type": "off",
+			"@typescript-eslint/no-explicit-any": "warn",
 			"@typescript-eslint/consistent-type-imports": [
 				"error",
 				{
@@ -76,15 +76,12 @@ export default defineConfig([
 					memberSyntaxSortOrder: ["none", "all", "multiple", "single"]
 				}
 			],
-			"import/newline-after-import": ["error", { count: 1 }],
-			"import/no-unresolved": "error",
-			"import/no-duplicates": "error",
 			"no-console": "off",
 			"no-var": "error",
 			"prefer-const": "error"
 		},
 		settings: {
-			"import/resolver": {
+			"import-x/resolver": {
 				typescript: {
 					alwaysTryTypes: true,
 					project: "./tsconfig.json"
