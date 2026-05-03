@@ -58,6 +58,9 @@ export default defineConfig([
 					fixStyle: "inline-type-imports"
 				}
 			],
+			"@typescript-eslint/no-unnecessary-type-assertion": "error",
+			"@typescript-eslint/no-non-null-assertion": "warn",
+			"@typescript-eslint/return-await": ["error", "in-try-catch"],
 			"no-unused-vars": "off",
 			"@typescript-eslint/no-unused-vars": [
 				"warn",
@@ -76,6 +79,11 @@ export default defineConfig([
 					memberSyntaxSortOrder: ["none", "all", "multiple", "single"]
 				}
 			],
+			eqeqeq: ["error", "always"],
+			curly: ["error", "all"],
+			"no-useless-return": "error",
+			"no-throw-literal": "error",
+			"no-void": ["error", { allowAsStatement: true }],
 			"no-console": "off",
 			"no-var": "error",
 			"prefer-const": "error"
