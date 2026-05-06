@@ -30,7 +30,7 @@
 	},
 	"dependencies": {
 		"discord.js": "^14.26.4",
-		"i18next": "^26.0.8",
+		"i18next": "^26.0.9",
 		"log-symbols": "^7.0.1"
 	},
 	"devDependencies": {
@@ -40,10 +40,10 @@
 		"eslint-import-resolver-typescript": "^4.4.4",
 		"eslint-plugin-import-x": "^4.16.2",
 		"globals": "^17.6.0",
-		"jiti": "^2.6.1",
+		"jiti": "^2.7.0",
 		"prettier": "^3.8.3",
 		"tsdown": "^0.21.10",
 		"typescript": "^6.0.3",
-		"typescript-eslint": "^8.59.1"
+		"typescript-eslint": "^8.59.2"
 	}
 }
