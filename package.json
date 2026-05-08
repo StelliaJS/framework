@@ -5,9 +5,9 @@
 	"description": "A framework for simplifying the creation of discord bots",
 	"author": "Tweenty_",
 	"license": "ISC",
-	"packageManager": "pnpm@10.33.2",
+	"packageManager": "pnpm@11.0.8",
 	"engines": {
-		"node": ">=20.19.0"
+		"node": ">=24.0.0"
 	},
 	"engineStrict": true,
 	"keywords": ["discord", "bot", "discordjs", "typescript", "framework"],
