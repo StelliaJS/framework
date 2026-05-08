@@ -3,10 +3,10 @@ import { type StelliaClient } from "@client/index.js";
 import { BaseManager } from "@managers/index.js";
 import { type ModalStructure } from "@structures/index.js";
 import { type InteractionCustomId, type StructureCustomId } from "@typescript/index.js";
-import { requiredFiles } from "@utils/index.js";
+import { logger, requiredFiles } from "@utils/index.js";
 
 export class ModalManager extends BaseManager<ModalStructure> {
-	private interactions: Collection<StructureCustomId, ModalStructure> = new Collection();
+	private modals: Collection<StructureCustomId, ModalStructure> = new Collection();
 
 	private constructor(client: StelliaClient, directoryPath: string) {
 		super(client, directoryPath);
@@ -20,18 +20,19 @@ export class ModalManager extends BaseManager<ModalStructure> {
 	}
 
 	public async loadData(): Promise<void> {
-		const modals = await requiredFiles<ModalStructure>(this.directoryPath);
-		this.interactions = modals;
+		this.modals = await requiredFiles<ModalStructure>(this.directoryPath);
 		this.setManagerLoaded();
+
+		logger.info(`Loaded ${this.modals.size} modals`);
 	}
 
 	public getByCustomId(id: InteractionCustomId): ModalStructure | null {
-		return this.interactions.get(id) ?? null;
+		return this.modals.get(id) ?? null;
 	}
 
 	public getByRegex(id: InteractionCustomId): ModalStructure | null {
 		let modal: ModalStructure | null = null;
-		for (const [customId, action] of this.interactions.entries()) {
+		for (const [customId, action] of this.modals.entries()) {
 			if (customId instanceof RegExp && customId.test(id)) {
 				modal = action;
 				break;
@@ -42,6 +43,6 @@ export class ModalManager extends BaseManager<ModalStructure> {
 	}
 
 	public getAll(): Collection<StructureCustomId, ModalStructure> {
-		return this.interactions;
+		return this.modals;
 	}
 }

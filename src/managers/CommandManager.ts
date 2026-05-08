@@ -3,10 +3,10 @@ import { type StelliaClient } from "@client/index.js";
 import { BaseManager } from "@managers/index.js";
 import { type CommandStructure } from "@structures/index.js";
 import { type InteractionCustomId, type StructureCustomId } from "@typescript/index.js";
-import { requiredFiles } from "@utils/index.js";
+import { logger, requiredFiles } from "@utils/index.js";
 
 export class CommandManager extends BaseManager<CommandStructure> {
-	private interactions: Collection<StructureCustomId, CommandStructure> = new Collection();
+	private commands: Collection<StructureCustomId, CommandStructure> = new Collection();
 
 	private constructor(client: StelliaClient, directoryPath: string) {
 		super(client, directoryPath);
@@ -20,18 +20,19 @@ export class CommandManager extends BaseManager<CommandStructure> {
 	}
 
 	public async loadData(): Promise<void> {
-		const commands = await requiredFiles<CommandStructure>(this.directoryPath);
-		this.interactions = commands;
+		this.commands = await requiredFiles<CommandStructure>(this.directoryPath);
 		this.setManagerLoaded();
+
+		logger.info(`Loaded ${this.commands.size} commands`);
 	}
 
 	public getByCustomId(id: InteractionCustomId): CommandStructure | null {
-		return this.interactions.get(id) ?? null;
+		return this.commands.get(id) ?? null;
 	}
 
 	public getByRegex(id: InteractionCustomId): CommandStructure | null {
 		let command: CommandStructure | null = null;
-		for (const [customId, action] of this.interactions.entries()) {
+		for (const [customId, action] of this.commands.entries()) {
 			if (customId instanceof RegExp && customId.test(id)) {
 				command = action;
 				break;
@@ -42,6 +43,6 @@ export class CommandManager extends BaseManager<CommandStructure> {
 	}
 
 	public getAll(): Collection<StructureCustomId, CommandStructure> {
-		return this.interactions;
+		return this.commands;
 	}
 }

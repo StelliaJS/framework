@@ -19,7 +19,7 @@ import { requiredFiles } from "@utils/index.js";
 import { logger } from "@utils/logger.js";
 
 export class EventManager extends BaseManager<EventStructure> {
-	private interactions: Collection<StructureCustomId, EventStructure> = new Collection();
+	private events: Collection<StructureCustomId, EventStructure> = new Collection();
 	private guildsConfiguration: GuildsConfiguration;
 
 	private constructor(client: StelliaClient, directoryPath: string) {
@@ -35,9 +35,9 @@ export class EventManager extends BaseManager<EventStructure> {
 	}
 
 	public async loadData(): Promise<void> {
-		this.interactions = await requiredFiles<EventStructure>(this.directoryPath);
+		this.events = await requiredFiles<EventStructure>(this.directoryPath);
 
-		for (const eventStructure of this.interactions.values()) {
+		for (const eventStructure of this.events.values()) {
 			if (this.client.environment?.areGuildsConfigurationEnabled) {
 				await this.loadEventWithGuildConfiguration(eventStructure);
 			} else {
@@ -46,15 +46,16 @@ export class EventManager extends BaseManager<EventStructure> {
 		}
 
 		this.setManagerLoaded();
+		logger.info(`Loaded ${this.events.size} events`);
 	}
 
 	public getByCustomId(id: InteractionCustomId): EventStructure | null {
-		return this.interactions.get(id) ?? null;
+		return this.events.get(id) ?? null;
 	}
 
 	public getByRegex(id: InteractionCustomId): EventStructure | null {
 		let event: EventStructure | null = null;
-		for (const [customId, action] of this.interactions.entries()) {
+		for (const [customId, action] of this.events.entries()) {
 			if (customId instanceof RegExp && customId.test(id)) {
 				event = action;
 				break;
@@ -65,7 +66,7 @@ export class EventManager extends BaseManager<EventStructure> {
 	}
 
 	public getAll(): Collection<StructureCustomId, EventStructure> {
-		return this.interactions;
+		return this.events;
 	}
 
 	private async loadEventWithGuildConfiguration(eventStructure: EventStructure) {
