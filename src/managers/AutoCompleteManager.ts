@@ -23,7 +23,7 @@ export class AutoCompleteManager extends BaseManager<AutoCompleteStructure> {
 		this.autoCompletes = await requiredFiles<AutoCompleteStructure>(this.directoryPath);
 		this.setManagerLoaded();
 
-		logger.info(`Loaded ${this.autoCompletes.size} auto complete`);
+		logger.info(`Loaded ${this.autoCompletes.size} auto completes`);
 	}
 
 	public getByCustomId(id: InteractionCustomId): AutoCompleteStructure | null {
