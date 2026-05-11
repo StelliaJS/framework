@@ -12,7 +12,7 @@ import {
 	type UserContextMenuCommandInteraction
 } from "discord.js";
 import { type StelliaClient } from "@client/index.js";
-import { type EventStructure } from "@structures/Event.js";
+import { type EventStructure } from "@structures/index.js";
 import { type GuildConfigurationType, type StelliaLocale } from "@typescript/index.js";
 
 export interface AutoCompleteStructureWithGuildConfiguration extends Omit<MessageInteractionStructure, "data"> {

@@ -20,7 +20,7 @@ import {
 	type Manager,
 	type Managers
 } from "@typescript/index.js";
-import { logger } from "@utils/logger.js";
+import { logger } from "@utils/index.js";
 
 export class StelliaClient<Ready extends boolean = boolean> extends Client<Ready> {
 	private utils: StelliaUtils;

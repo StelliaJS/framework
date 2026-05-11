@@ -1,5 +1,5 @@
 import logSymbols from "log-symbols";
-import { toError } from "@utils/error.js";
+import { toError } from "@utils/index.js";
 
 const prefix = "[StelliaJS]";
 export const logger = {
