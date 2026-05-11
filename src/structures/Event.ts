@@ -1,6 +1,6 @@
 import { type Awaitable, type ClientEvents } from "discord.js";
 import { type StelliaClient } from "@client/index.js";
-import { type GuildConfigurationType, type GuildsConfiguration } from "@typescript/types.js";
+import { type GuildConfigurationType, type GuildsConfiguration } from "@typescript/index.js";
 
 export interface EventStructureWithGuildConfiguration extends EventInteractionStructure {
 	execute(client: StelliaClient, guildConfiguration: GuildConfigurationType, ...args: ClientEventsArgs): Awaitable<unknown>;

@@ -31,7 +31,7 @@ import {
 	type SelectMenuStructureWithoutGuildConfiguration
 } from "@structures/index.js";
 import { type GuildConfiguration, type GuildsConfiguration, InteractionType, type StelliaLocale } from "@typescript/index.js";
-import { logger } from "@utils/logger.js";
+import { logger } from "@utils/index.js";
 
 export class StelliaUtils {
 	public readonly client: StelliaClient;

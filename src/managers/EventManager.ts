@@ -15,8 +15,7 @@ import {
 	type InteractionCustomId,
 	type StructureCustomId
 } from "@typescript/index.js";
-import { requiredFiles } from "@utils/index.js";
-import { logger } from "@utils/logger.js";
+import { logger, requiredFiles } from "@utils/index.js";
 
 export class EventManager extends BaseManager<EventStructure> {
 	private events: Collection<StructureCustomId, EventStructure> = new Collection();
