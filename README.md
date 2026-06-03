@@ -95,6 +95,29 @@ import { GatewayIntentBits, Partials } from "discord.js";
 
     await client.connect(process.env.TOKEN);
 })();
+
+// If you need internationalisation:
+import { initTranslations } from "@stelliajs/framework";
+
+await use(Backend).init(
+    {
+        lng: StelliaLocale.English, // StelliaLocale is an enum with all the supported languages by Discord
+        backend: {
+            // With namespace: path.join(import.meta.dirname, "../locales/{{lng}}/{{ns}}.json")
+            loadPath: path.join(import.meta.dirname, "../locales/{{lng}}.json")
+        },
+        fallbackLng: StelliaLocale.English,
+        supportedLngs: Object.values(AmariLocale),
+        preload: Object.values(AmariLocale)
+        // ns: ["common", "commands", "errors"]
+    },
+    (error) => {
+        if (error) {
+            console.error(error);
+        }
+    }
+);
+initTranslations(i18next);
 ```
 
 #### Environment model
