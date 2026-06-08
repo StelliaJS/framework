@@ -1,11 +1,11 @@
 {
 	"name": "@stelliajs/framework",
-	"version": "1.7.4",
+	"version": "1.8.0",
 	"type": "module",
 	"description": "A framework for simplifying the creation of discord bots",
 	"author": "Tweenty_",
 	"license": "ISC",
-	"packageManager": "pnpm@11.5.1",
+	"packageManager": "pnpm@11.5.2",
 	"engines": {
 		"node": ">=24.0.0"
 	},
@@ -52,8 +52,8 @@
 		"globals": "^17.6.0",
 		"jiti": "^2.7.0",
 		"prettier": "^3.8.3",
-		"tsdown": "^0.22.1",
+		"tsdown": "^0.22.2",
 		"typescript": "^6.0.3",
-		"typescript-eslint": "^8.60.1"
+		"typescript-eslint": "^8.61.0"
 	}
 }
