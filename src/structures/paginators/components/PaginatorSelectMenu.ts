@@ -1,5 +1,6 @@
 import {
 	ActionRowBuilder,
+	type APISelectMenuOption,
 	type ComponentEmojiResolvable,
 	ComponentType,
 	type Message,
@@ -8,16 +9,9 @@ import {
 	StringSelectMenuOptionBuilder
 } from "discord.js";
 
-export interface PaginatorSelectMenuOption {
-	label: string;
-	customId: string;
-	description?: string;
-	emoji?: ComponentEmojiResolvable;
-}
-
 export interface PaginatorSelectMenuConfiguration {
 	customId: string;
-	options: PaginatorSelectMenuOption[];
+	options: APISelectMenuOption[];
 	placeholder?: string;
 	chunkSize?: number;
 	timeout?: number;
@@ -37,8 +31,8 @@ const PREV_PAGE_VALUE = "__paginator_prev__";
 
 export class PaginatorSelectMenu {
 	private readonly customId: string;
-	private readonly options: PaginatorSelectMenuOption[];
-	private readonly chunks: PaginatorSelectMenuOption[][];
+	private readonly options: APISelectMenuOption[];
+	private readonly chunks: APISelectMenuOption[][];
 	private readonly placeholder: string;
 	private readonly chunkSize: number;
 	private readonly timeout: number;
@@ -103,8 +97,6 @@ export class PaginatorSelectMenu {
 			if (value === NEXT_PAGE_VALUE || value === PREV_PAGE_VALUE) {
 				this.currentChunk += value === NEXT_PAGE_VALUE ? 1 : -1;
 				await selectInteraction.update({ components: this.buildComponents() });
-			} else {
-				collector.stop();
 			}
 		});
 
@@ -118,8 +110,8 @@ export class PaginatorSelectMenu {
 		});
 	}
 
-	private buildChunks(): PaginatorSelectMenuOption[][] {
-		const chunks: PaginatorSelectMenuOption[][] = [];
+	private buildChunks(): APISelectMenuOption[][] {
+		const chunks: APISelectMenuOption[][] = [];
 		for (let i = 0; i < this.options.length; i += this.chunkSize) {
 			chunks.push(this.options.slice(i, i + this.chunkSize));
 		}
@@ -153,7 +145,10 @@ export class PaginatorSelectMenu {
 		}
 
 		for (const page of chunk) {
-			const option = new StringSelectMenuOptionBuilder().setLabel(page.label).setValue(page.customId);
+			const option = new StringSelectMenuOptionBuilder()
+				.setLabel(page.label)
+				.setValue(page.value);
+			
 			if (page.description) {
 				option.setDescription(page.description);
 			}

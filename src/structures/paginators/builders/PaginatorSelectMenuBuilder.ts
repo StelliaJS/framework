@@ -1,13 +1,12 @@
+import { type APISelectMenuOption, type ComponentEmojiResolvable } from "discord.js";
 import {
 	type PaginatorComponents,
-	PaginatorSelectMenu,
-	type PaginatorSelectMenuOption
-} from "structures/paginators/components/PaginatorSelectMenu.js";
-import { type ComponentEmojiResolvable } from "discord.js";
+	PaginatorSelectMenu
+} from "@structures/paginators/components/PaginatorSelectMenu.js";
 
 export class PaginatorSelectMenuBuilder {
 	private customId: string;
-	private options: PaginatorSelectMenuOption[] = [];
+	private options: APISelectMenuOption[] = [];
 	private placeholder?: string;
 	private chunkSize?: number;
 	private timeout?: number;
@@ -21,12 +20,12 @@ export class PaginatorSelectMenuBuilder {
 		return this;
 	}
 
-	setOptions(options: PaginatorSelectMenuOption[]): this {
+	setOptions(options: APISelectMenuOption[]): this {
 		this.options = options;
 		return this;
 	}
 
-	addOption(option: PaginatorSelectMenuOption): this {
+	addOption(option: APISelectMenuOption): this {
 		this.options.push(option);
 		return this;
 	}
