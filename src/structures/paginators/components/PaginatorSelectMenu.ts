@@ -21,7 +21,7 @@ interface PaginatorSelectMenuConfiguration {
 	previousPageEmoji?: ComponentEmojiResolvable;
 }
 
-export interface PaginatorComponents {
+export interface PaginatorSelectMenuComponents {
 	components: ActionRowBuilder<StringSelectMenuBuilder>[];
 	attachCollector: (message: Message, interaction: RepliableInteraction, filterUserId?: string) => void;
 }
@@ -74,7 +74,7 @@ export class PaginatorSelectMenu {
 		this.chunks = this.buildChunks();
 	}
 
-	build(): PaginatorComponents {
+	build(): PaginatorSelectMenuComponents {
 		this.currentChunk = 0;
 
 		return {
@@ -148,7 +148,7 @@ export class PaginatorSelectMenu {
 			const option = new StringSelectMenuOptionBuilder()
 				.setLabel(page.label)
 				.setValue(page.value);
-			
+
 			if (page.description) {
 				option.setDescription(page.description);
 			}
