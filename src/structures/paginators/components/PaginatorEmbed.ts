@@ -9,7 +9,7 @@ import {
 	type RepliableInteraction
 } from "discord.js";
 
-export interface PaginatorEmbedConfiguration {
+interface PaginatorEmbedConfiguration {
 	pages: APIEmbed[];
 	timeout?: number;
 	firstPageLabel?: string;
@@ -61,7 +61,7 @@ export class PaginatorEmbed {
 		previousPageEmoji,
 		nextPageEmoji,
 		lastPageEmoji,
-		showFirstLastButtons = true,
+		showFirstLastButtons = true
 	}: PaginatorEmbedConfiguration) {
 		if (pages.length === 0) {
 			throw new Error("PaginatorEmbed: at least one page is required.");
@@ -85,7 +85,7 @@ export class PaginatorEmbed {
 
 		return {
 			embeds: [this.buildCurrentEmbed()],
-			components: this.isPaginated ? this.buildComponents() : [],
+			components: this.isPaginated ? this.buildPaginatorComponents() : [],
 			attachCollector: (message: Message, interaction?: RepliableInteraction, filterUserId?: string) => {
 				this.attachCollector(message, interaction, filterUserId);
 			}
@@ -93,7 +93,9 @@ export class PaginatorEmbed {
 	}
 
 	private attachCollector(message: Message, interaction?: RepliableInteraction, filterUserId?: string): void {
-		if (!this.isPaginated) {return;}
+		if (!this.isPaginated) {
+			return;
+		}
 
 		const collector = message.createMessageComponentCollector({
 			componentType: ComponentType.Button,
@@ -121,14 +123,14 @@ export class PaginatorEmbed {
 
 			await buttonInteraction.update({
 				embeds: [this.buildCurrentEmbed()],
-				components: this.buildComponents()
+				components: this.buildPaginatorComponents()
 			});
 		});
 
 		collector.on("end", async () => {
 			const disabledPayload = {
 				embeds: [this.buildCurrentEmbed()],
-				components: this.buildComponents(true)
+				components: this.buildPaginatorComponents(true)
 			};
 
 			if (interaction) {
@@ -140,15 +142,10 @@ export class PaginatorEmbed {
 	}
 
 	private buildCurrentEmbed(): APIEmbed {
-		const embed = { ...this.pages[this.currentPage] };
-		if (!this.isPaginated) {
-			return embed;
-		}
-
-		return embed;
+		return this.pages[this.currentPage];
 	}
 
-	private buildComponents(disabled = false): ActionRowBuilder<ButtonBuilder>[] {
+	private buildPaginatorComponents(disabled = false): ActionRowBuilder<ButtonBuilder>[] {
 		const row = new ActionRowBuilder<ButtonBuilder>();
 		const buttons: ButtonBuilder[] = [];
 

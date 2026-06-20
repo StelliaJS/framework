@@ -9,7 +9,7 @@ import {
 	StringSelectMenuOptionBuilder
 } from "discord.js";
 
-export interface PaginatorSelectMenuConfiguration {
+interface PaginatorSelectMenuConfiguration {
 	customId: string;
 	options: APISelectMenuOption[];
 	placeholder?: string;

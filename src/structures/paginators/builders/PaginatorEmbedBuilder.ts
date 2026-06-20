@@ -1,4 +1,4 @@
-import { type APIEmbed, EmbedBuilder } from "discord.js";
+import { type APIEmbed } from "discord.js";
 import { PaginatorEmbed, type PaginatorEmbedComponents } from "@structures/paginators/components/PaginatorEmbed.js";
 
 export class PaginatorEmbedBuilder {
