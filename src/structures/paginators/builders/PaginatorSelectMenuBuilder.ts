@@ -1,8 +1,5 @@
 import { type APISelectMenuOption, type ComponentEmojiResolvable } from "discord.js";
-import {
-	type PaginatorComponents,
-	PaginatorSelectMenu
-} from "@structures/paginators/components/PaginatorSelectMenu.js";
+import { type PaginatorSelectMenuComponents, PaginatorSelectMenu } from "@structures/paginators/components/PaginatorSelectMenu.js";
 
 export class PaginatorSelectMenuBuilder {
 	private customId: string;
@@ -65,7 +62,7 @@ export class PaginatorSelectMenuBuilder {
 		return this;
 	}
 
-	build(): PaginatorComponents {
+	build(): PaginatorSelectMenuComponents {
 		if (!this.customId) {
 			throw new Error("PaginatorSelectMenuBuilder: customId is required.");
 		}
