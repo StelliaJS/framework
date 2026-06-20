@@ -28,7 +28,7 @@ export default defineConfig([
 			}
 		},
 		rules: {
-			"import-x/namespace": "off",
+			"key-spacing": ["error", { beforeColon: false, afterColon: true }],
 			"import-x/no-unresolved": "error",
 			"import-x/no-duplicates": "error",
 			"import-x/newline-after-import": ["error", { count: 1 }],
@@ -49,6 +49,7 @@ export default defineConfig([
 					}
 				}
 			],
+			"@typescript-eslint/no-namespace": "off",
 			"@typescript-eslint/explicit-function-return-type": "off",
 			"@typescript-eslint/no-explicit-any": "warn",
 			"@typescript-eslint/consistent-type-imports": [
