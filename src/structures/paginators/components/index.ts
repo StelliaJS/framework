@@ -1,3 +1,3 @@
-export * from "@structures/paginators/components/PaginatorContainer.js";
-export * from "@structures/paginators/components/PaginatorEmbed.js";
-export * from "@structures/paginators/components/PaginatorSelectMenu.js";
+export * from "@structures/paginators/components/PaginatorContainerComponent.js";
+export * from "@structures/paginators/components/PaginatorEmbedComponent.js";
+export * from "@structures/paginators/components/PaginatorSelectMenuComponent.js";
