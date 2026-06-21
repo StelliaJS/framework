@@ -1,54 +1,52 @@
 import {
 	ActionRowBuilder,
-	type APIEmbed,
 	ButtonBuilder,
 	type ButtonInteraction,
 	ButtonStyle,
+	type ComponentEmojiResolvable,
 	ComponentType,
 	type Message,
+	type MessageEditOptions,
 	type RepliableInteraction
 } from "discord.js";
+import { logger } from "@utils/index.js";
 
-interface PaginatorEmbedConfiguration {
-	pages: APIEmbed[];
+export interface BasePaginatorComponentConfiguration<T extends unknown[]> {
+	pages: T;
 	timeout?: number;
 	firstPageLabel?: string;
 	previousPageLabel?: string;
 	nextPageLabel?: string;
 	lastPageLabel?: string;
-	firstPageEmoji?: string;
-	previousPageEmoji?: string;
-	nextPageEmoji?: string;
-	lastPageEmoji?: string;
+	firstPageEmoji?: ComponentEmojiResolvable;
+	previousPageEmoji?: ComponentEmojiResolvable;
+	nextPageEmoji?: ComponentEmojiResolvable;
+	lastPageEmoji?: ComponentEmojiResolvable;
 	showFirstLastButtons?: boolean;
 	filterUserId?: string;
 }
 
-export interface PaginatorEmbedComponents {
-	embeds: APIEmbed[];
-	components: ActionRowBuilder<ButtonBuilder>[];
-	attachCollector: (message: Message, interaction?: RepliableInteraction, filterUserId?: string) => void;
-}
+export abstract class BasePaginatorComponent<T extends unknown[]> {
+	protected abstract readonly paginatorInteractionCustomIds: {
+		first: string;
+		previous: string;
+		next: string;
+		last: string;
+	};
 
-const FIRST_PAGE_ID = "__paginator_embed_first__";
-const PREV_PAGE_ID = "__paginator_embed_prev__";
-const NEXT_PAGE_ID = "__paginator_embed_next__";
-const LAST_PAGE_ID = "__paginator_embed_last__";
+	protected readonly pages: T;
+	protected readonly timeout: number;
+	protected readonly firstPageLabel: string;
+	protected readonly previousPageLabel: string;
+	protected readonly nextPageLabel: string;
+	protected readonly lastPageLabel: string;
+	protected readonly firstPageEmoji?: ComponentEmojiResolvable;
+	protected readonly previousPageEmoji?: ComponentEmojiResolvable;
+	protected readonly nextPageEmoji?: ComponentEmojiResolvable;
+	protected readonly lastPageEmoji?: ComponentEmojiResolvable;
+	protected readonly showFirstLastButtons: boolean;
 
-export class PaginatorEmbed {
-	private readonly pages: APIEmbed[];
-	private readonly timeout: number;
-	private readonly firstPageLabel: string;
-	private readonly previousPageLabel: string;
-	private readonly nextPageLabel: string;
-	private readonly lastPageLabel: string;
-	private readonly firstPageEmoji?: string;
-	private readonly previousPageEmoji?: string;
-	private readonly nextPageEmoji?: string;
-	private readonly lastPageEmoji?: string;
-	private readonly showFirstLastButtons: boolean;
-
-	private currentPage = 0;
+	protected currentPage = 0;
 
 	constructor({
 		pages,
@@ -62,9 +60,10 @@ export class PaginatorEmbed {
 		nextPageEmoji,
 		lastPageEmoji,
 		showFirstLastButtons = true
-	}: PaginatorEmbedConfiguration) {
+	}: BasePaginatorComponentConfiguration<T>) {
 		if (pages.length === 0) {
-			throw new Error("PaginatorEmbed: at least one page is required.");
+			logger.error("Paginator: at least one page is required");
+			return;
 		}
 
 		this.pages = pages;
@@ -80,19 +79,9 @@ export class PaginatorEmbed {
 		this.showFirstLastButtons = showFirstLastButtons;
 	}
 
-	build(): PaginatorEmbedComponents {
-		this.currentPage = 0;
+	protected abstract buildUpdatePayload(disabled?: boolean): MessageEditOptions;
 
-		return {
-			embeds: [this.buildCurrentEmbed()],
-			components: this.isPaginated ? this.buildPaginatorComponents() : [],
-			attachCollector: (message: Message, interaction?: RepliableInteraction, filterUserId?: string) => {
-				this.attachCollector(message, interaction, filterUserId);
-			}
-		};
-	}
-
-	private attachCollector(message: Message, interaction?: RepliableInteraction, filterUserId?: string): void {
+	protected attachCollector(message: Message, interaction?: RepliableInteraction, filterUserId?: string): void {
 		if (!this.isPaginated) {
 			return;
 		}
@@ -104,34 +93,15 @@ export class PaginatorEmbed {
 		});
 
 		collector.on("collect", async (buttonInteraction: ButtonInteraction) => {
-			switch (buttonInteraction.customId) {
-				case FIRST_PAGE_ID:
-					this.currentPage = 0;
-					break;
-				case PREV_PAGE_ID:
-					this.currentPage = Math.max(0, this.currentPage - 1);
-					break;
-				case NEXT_PAGE_ID:
-					this.currentPage = Math.min(this.pages.length - 1, this.currentPage + 1);
-					break;
-				case LAST_PAGE_ID:
-					this.currentPage = this.pages.length - 1;
-					break;
-				default:
-					return;
+			if (!this.handleNavigation(buttonInteraction.customId)) {
+				return;
 			}
 
-			await buttonInteraction.update({
-				embeds: [this.buildCurrentEmbed()],
-				components: this.buildPaginatorComponents()
-			});
+			await buttonInteraction.update(this.buildUpdatePayload());
 		});
 
 		collector.on("end", async () => {
-			const disabledPayload = {
-				embeds: [this.buildCurrentEmbed()],
-				components: this.buildPaginatorComponents(true)
-			};
+			const disabledPayload = this.buildUpdatePayload(true);
 
 			if (interaction) {
 				await interaction.editReply(disabledPayload).catch(console.error);
@@ -141,17 +111,37 @@ export class PaginatorEmbed {
 		});
 	}
 
-	private buildCurrentEmbed(): APIEmbed {
-		return this.pages[this.currentPage];
+	protected buildPaginatorRow(disabled = false): ActionRowBuilder<ButtonBuilder> {
+		return new ActionRowBuilder<ButtonBuilder>().addComponents(this.buildPaginatorButtons(disabled));
 	}
 
-	private buildPaginatorComponents(disabled = false): ActionRowBuilder<ButtonBuilder>[] {
-		const row = new ActionRowBuilder<ButtonBuilder>();
+	protected handleNavigation(customId: string): boolean {
+		switch (customId) {
+			case this.paginatorInteractionCustomIds.first:
+				this.currentPage = 0;
+				break;
+			case this.paginatorInteractionCustomIds.previous:
+				this.currentPage = Math.max(0, this.currentPage - 1);
+				break;
+			case this.paginatorInteractionCustomIds.next:
+				this.currentPage = Math.min(this.pages.length - 1, this.currentPage + 1);
+				break;
+			case this.paginatorInteractionCustomIds.last:
+				this.currentPage = this.pages.length - 1;
+				break;
+			default:
+				return false;
+		}
+
+		return true;
+	}
+
+	protected buildPaginatorButtons(disabled = false): ButtonBuilder[] {
 		const buttons: ButtonBuilder[] = [];
 
 		if (this.showFirstLastButtons && this.pages.length > 2) {
 			const firstButton = new ButtonBuilder()
-				.setCustomId(FIRST_PAGE_ID)
+				.setCustomId(this.paginatorInteractionCustomIds.first)
 				.setStyle(ButtonStyle.Secondary)
 				.setDisabled(disabled || this.isFirstPage);
 
@@ -165,7 +155,7 @@ export class PaginatorEmbed {
 		}
 
 		const previousButton = new ButtonBuilder()
-			.setCustomId(PREV_PAGE_ID)
+			.setCustomId(this.paginatorInteractionCustomIds.previous)
 			.setStyle(ButtonStyle.Primary)
 			.setDisabled(disabled || this.isFirstPage);
 
@@ -178,7 +168,7 @@ export class PaginatorEmbed {
 		buttons.push(previousButton);
 
 		const nextButton = new ButtonBuilder()
-			.setCustomId(NEXT_PAGE_ID)
+			.setCustomId(this.paginatorInteractionCustomIds.next)
 			.setStyle(ButtonStyle.Primary)
 			.setDisabled(disabled || this.isLastPage);
 
@@ -192,7 +182,7 @@ export class PaginatorEmbed {
 
 		if (this.showFirstLastButtons && this.pages.length > 2) {
 			const lastButton = new ButtonBuilder()
-				.setCustomId(LAST_PAGE_ID)
+				.setCustomId(this.paginatorInteractionCustomIds.last)
 				.setStyle(ButtonStyle.Secondary)
 				.setDisabled(disabled || this.isLastPage);
 
@@ -205,18 +195,18 @@ export class PaginatorEmbed {
 			buttons.push(lastButton);
 		}
 
-		return [row.addComponents(buttons)];
+		return buttons;
 	}
 
-	private get isPaginated(): boolean {
+	protected get isPaginated(): boolean {
 		return this.pages.length > 1;
 	}
 
-	private get isFirstPage(): boolean {
+	protected get isFirstPage(): boolean {
 		return this.currentPage === 0;
 	}
 
-	private get isLastPage(): boolean {
+	protected get isLastPage(): boolean {
 		return this.currentPage === this.pages.length - 1;
 	}
 }

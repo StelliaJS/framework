@@ -1,5 +1,5 @@
 export * from "@utils/ComponentUtils.js";
-export * from "utils/ContentUtils.js";
+export * from "@utils/ContentUtils.js";
 export * from "@utils/error.js";
 export * from "@utils/files.js";
 export * from "@utils/logger.js";

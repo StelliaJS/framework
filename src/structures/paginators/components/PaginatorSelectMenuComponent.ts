@@ -5,7 +5,7 @@ import {
 	ComponentType,
 	type Message,
 	type RepliableInteraction,
-	StringSelectMenuBuilder,
+	StringSelectMenuBuilder, type StringSelectMenuInteraction,
 	StringSelectMenuOptionBuilder
 } from "discord.js";
 
@@ -23,13 +23,13 @@ interface PaginatorSelectMenuConfiguration {
 
 export interface PaginatorSelectMenuComponents {
 	components: ActionRowBuilder<StringSelectMenuBuilder>[];
-	attachCollector: (message: Message, interaction: RepliableInteraction, filterUserId?: string) => void;
+	attachCollector: (message: Message, interaction?: RepliableInteraction, filterUserId?: string) => void;
 }
 
 const NEXT_PAGE_VALUE = "__paginator_next__";
-const PREV_PAGE_VALUE = "__paginator_prev__";
+const PREV_PAGE_VALUE = "__paginator_previous__";
 
-export class PaginatorSelectMenu {
+export class PaginatorSelectMenuComponent {
 	private readonly customId: string;
 	private readonly options: APISelectMenuOption[];
 	private readonly chunks: APISelectMenuOption[][];
@@ -79,7 +79,7 @@ export class PaginatorSelectMenu {
 
 		return {
 			components: this.buildComponents(),
-			attachCollector: (message: Message, interaction: RepliableInteraction, filterUserId?: string) => {
+			attachCollector: (message: Message, interaction?: RepliableInteraction, filterUserId?: string) => {
 				this.attachCollector(message, interaction, filterUserId);
 			}
 		};
@@ -92,7 +92,7 @@ export class PaginatorSelectMenu {
 			time: this.timeout
 		});
 
-		collector.on("collect", async (selectInteraction) => {
+		collector.on("collect", async (selectInteraction: StringSelectMenuInteraction<"cached">) => {
 			const [value] = selectInteraction.values;
 			if (value === NEXT_PAGE_VALUE || value === PREV_PAGE_VALUE) {
 				this.currentChunk += value === NEXT_PAGE_VALUE ? 1 : -1;
