@@ -12,7 +12,7 @@ jobs:
       npm_tag: ${{ steps.create_tag.outputs.NPM_TAG }}
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Create tag and define NPM environment
         id: create_tag
