@@ -1,4 +1,4 @@
-import { type Snowflake } from "discord.js";
+import { type ApplicationEmoji, type Snowflake } from "discord.js";
 import {
 	type AutoCompleteManager,
 	type ButtonManager,
@@ -67,3 +67,7 @@ export interface GuildConfiguration {
 	guild: BaseGuildConfiguration;
 }
 export type GuildConfigurationType = GuildConfiguration | null;
+
+export type CustomEmojis<EmojiEnum extends Record<string, string>> = {
+	[Key in keyof EmojiEnum]: ApplicationEmoji;
+};

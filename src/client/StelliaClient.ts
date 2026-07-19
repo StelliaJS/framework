@@ -15,6 +15,7 @@ import {
 } from "@managers/index.js";
 import {
 	type ClientEnvironment,
+	type CustomEmojis,
 	type GuildConfiguration,
 	type GuildsConfiguration,
 	type Manager,
@@ -22,16 +23,22 @@ import {
 } from "@typescript/index.js";
 import { logger } from "@utils/index.js";
 
-export class StelliaClient<Ready extends boolean = boolean> extends Client<Ready> {
+export class StelliaClient<Ready extends boolean = boolean, EmojiEnum extends Record<string, string> = Record<string, string>> extends Client<Ready> {
 	private utils: StelliaUtils;
 	public readonly managers: Managers = {};
 	public readonly environment?: ClientEnvironment;
+	public customEmojis: CustomEmojis<EmojiEnum> = {} as CustomEmojis<EmojiEnum>;
+	public readonly emojiEnum?: EmojiEnum;
 
 	private constructor(clientOptions: ClientOptions, stelliaOptions?: StelliaOptions) {
 		super(clientOptions);
 
 		if (stelliaOptions?.environment) {
 			this.environment = stelliaOptions.environment;
+		}
+
+		if (stelliaOptions?.emojis) {
+			this.emojiEnum = stelliaOptions.emojis as EmojiEnum;
 		}
 
 		process.on("unhandledRejection", (error: Error) => {
@@ -43,8 +50,8 @@ export class StelliaClient<Ready extends boolean = boolean> extends Client<Ready
 		});
 	}
 
-	public static async create(clientOptions: ClientOptions, stelliaOptions?: StelliaOptions): Promise<StelliaClient> {
-		const client = new StelliaClient(clientOptions, stelliaOptions);
+	public static async create<EmojiEnum extends Record<string, string> = Record<string, string>>(clientOptions: ClientOptions, stelliaOptions?: StelliaOptions<EmojiEnum>): Promise<StelliaClient<boolean, EmojiEnum>> {
+		const client = new StelliaClient<boolean, EmojiEnum>(clientOptions, stelliaOptions);
 		await client.initializeAsyncFields(stelliaOptions);
 
 		return client;
@@ -66,6 +73,10 @@ export class StelliaClient<Ready extends boolean = boolean> extends Client<Ready
 
 	public initializeCommands = async (): Promise<void> => {
 		await this.utils.initializeCommands();
+	};
+
+	public initializeCustomEmojis = async (): Promise<void> => {
+		await this.utils.initializeCustomEmojis();
 	};
 
 	public getGuildsConfiguration = async <CustomGuildsConfiguration extends GuildsConfiguration>(): Promise<CustomGuildsConfiguration> => {
@@ -157,7 +168,7 @@ export class StelliaClient<Ready extends boolean = boolean> extends Client<Ready
 	};
 }
 
-interface StelliaOptions {
+interface StelliaOptions<EmojiEnum extends Record<string, string> = Record<string, string>> {
 	managers?: {
 		autoCompletes?: ManagerOptions;
 		buttons?: ManagerOptions;
@@ -168,4 +179,5 @@ interface StelliaOptions {
 		modals?: ManagerOptions;
 	};
 	environment?: ClientEnvironment;
+	emojis?: EmojiEnum;
 }
