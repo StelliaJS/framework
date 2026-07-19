@@ -1,4 +1,5 @@
 export * from "@managers/BaseManager.js";
+export * from "@managers/SimpleManager.js";
 export * from "@managers/AutoCompleteManager.js";
 export * from "@managers/ButtonManager.js";
 export * from "@managers/CommandManager.js";
