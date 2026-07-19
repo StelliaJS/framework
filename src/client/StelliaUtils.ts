@@ -30,10 +30,16 @@ import {
 	type SelectMenuStructureWithGuildConfiguration,
 	type SelectMenuStructureWithoutGuildConfiguration
 } from "@structures/index.js";
-import { type GuildConfiguration, type GuildsConfiguration, InteractionType, type StelliaLocale } from "@typescript/index.js";
+import {
+	type CustomEmojis,
+	type GuildConfiguration,
+	type GuildsConfiguration,
+	InteractionType,
+	type StelliaLocale
+} from "@typescript/index.js";
 import { logger } from "@utils/index.js";
 
-export class StelliaUtils {
+export class StelliaUtils<EmojiEnum extends Record<string, string> = Record<string, string>> {
 	public readonly client: StelliaClient;
 	private readonly interactionHandlers: Map<InteractionType, (interaction: Interaction<"cached">) => Promise<void>>;
 	private guildsConfiguration: GuildsConfiguration;
@@ -72,6 +78,40 @@ export class StelliaUtils {
 			} catch (error: unknown) {
 				logger.errorWithInformation("Error while registering application commands", error);
 			}
+		}
+	};
+
+	public initializeCustomEmojis = async (): Promise<void> => {
+		const emojiEnum = this.client.emojiEnum;
+		if (!emojiEnum) {
+			return;
+		}
+
+		if (!this.client.application) {
+			logger.warn("Application not available, cannot resolve custom emojis");
+			return;
+		}
+
+		try {
+			const applicationEmojis = await this.client.application.emojis.fetch();
+			const customEmojis = {} as CustomEmojis<EmojiEnum>;
+			const typedEmojiEnum = emojiEnum as Record<keyof EmojiEnum, string>;
+
+			for (const key of Object.keys(emojiEnum) as (keyof EmojiEnum)[]) {
+				const emojiName = typedEmojiEnum[key];
+				const emoji = applicationEmojis.find((appEmoji) => appEmoji.name === emojiName);
+				if (!emoji) {
+					logger.warn(`Custom emoji "${emojiName}" not found on this application`);
+					continue;
+				}
+
+				customEmojis[key] = emoji;
+			}
+
+			this.client.customEmojis = customEmojis;
+			logger.success("Custom emojis resolved successfully");
+		} catch (error: unknown) {
+			logger.errorWithInformation("Error while resolving custom emojis", error);
 		}
 	};
 
