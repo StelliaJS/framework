@@ -1,14 +1,6 @@
-import { Collection } from "discord.js";
+import { type Awaitable, Collection } from "discord.js";
 import { type StelliaClient } from "@client/index.js";
 import { BaseManager } from "@managers/index.js";
-import {
-	type ClientEventsArgs,
-	type EventStructure,
-	type EventStructureWithAllGuildsConfiguration,
-	type EventStructureWithConfiguration,
-	type EventStructureWithGuildConfiguration,
-	type EventStructureWithoutGuildConfiguration
-} from "@structures/index.js";
 import {
 	type GuildConfigurationType,
 	type GuildsConfiguration,
@@ -16,6 +8,9 @@ import {
 	type StructureCustomId
 } from "@typescript/index.js";
 import { logger, requiredFiles } from "@utils/index.js";
+import { type EventStructure, type EventStructureWithGuildConfiguration } from "structures/index.js";
+
+type UnsafeEventExecute = (client: StelliaClient, ...args: unknown[]) => Awaitable<unknown>;
 
 export class EventManager extends BaseManager<EventStructure> {
 	private events: Collection<StructureCustomId, EventStructure> = new Collection();
@@ -70,7 +65,7 @@ export class EventManager extends BaseManager<EventStructure> {
 
 	private async loadEventWithGuildConfiguration(eventStructure: EventStructure) {
 		const { name, once } = eventStructure.data;
-		const event = eventStructure as EventStructureWithGuildConfiguration;
+		const event = eventStructure as EventStructureWithGuildConfiguration<any>;
 
 		if (once) {
 			this.client.once(name, (...args) => this.eventHandler(event, ...args));
@@ -79,50 +74,72 @@ export class EventManager extends BaseManager<EventStructure> {
 		}
 	}
 
-	private readonly eventHandler = (event: EventStructureWithConfiguration, ...args: ClientEventsArgs) => {
-		const mainArgument = args[0];
-		const guildConfiguration = this.getGuildConfiguration(mainArgument);
-		if (guildConfiguration) {
-			const eventStructure = event as EventStructureWithGuildConfiguration;
-			return eventStructure.execute(this.client, guildConfiguration, ...args);
-		}
+	private readonly eventHandler = async (event: EventStructureWithGuildConfiguration<any>, ...args: unknown[]): Promise<void> => {
+		try {
+			const execute = event.execute as UnsafeEventExecute;
+			const mainArgument = args[0];
+			const guildConfiguration = this.getGuildConfiguration(mainArgument);
 
-		const eventStructure = event as EventStructureWithAllGuildsConfiguration;
-		return eventStructure.execute(this.client, this.guildsConfiguration, ...args);
+			if (guildConfiguration) {
+				await execute(this.client, guildConfiguration, ...args);
+				return;
+			}
+
+			await execute(this.client, this.guildsConfiguration, ...args);
+		} catch (error: unknown) {
+			logger.errorWithInformation(`Error while executing event "${String(event.data.name)}"`, error);
+		}
 	};
 
 	private async loadEventWithoutGuildConfiguration(eventStructure: EventStructure): Promise<void> {
 		const { name, once } = eventStructure.data;
-		const event = eventStructure as EventStructureWithoutGuildConfiguration;
+		const execute = eventStructure.execute as UnsafeEventExecute;
+
+		const handler = async (...args: unknown[]): Promise<void> => {
+			try {
+				await execute(this.client, ...args);
+			} catch (error: unknown) {
+				logger.errorWithInformation(`Error while executing event "${String(name)}"`, error);
+			}
+		};
 
 		if (once) {
-			this.client.once(name, (...args) => event.execute(this.client, ...args));
+			this.client.once(name, handler);
 		} else {
-			this.client.on(name, (...args) => event.execute(this.client, ...args));
+			this.client.on(name, handler);
 		}
 	}
 
-	private getGuildConfiguration(mainArgument: ClientEventsArgs[0]): GuildConfigurationType | undefined {
-		if (mainArgument && typeof mainArgument === "object") {
-			if ("guildId" in mainArgument && mainArgument.guildId) {
-				return this.client.getGuildConfiguration(mainArgument.guildId);
-			}
-			if ("guild" in mainArgument && mainArgument.guild) {
-				return this.client.getGuildConfiguration(mainArgument.guild.id);
-			}
-			if (
-				"message" in mainArgument &&
-				mainArgument.message &&
-				typeof mainArgument.message === "object" &&
-				"guild" in mainArgument.message &&
-				mainArgument.message.guild &&
-				"id" in mainArgument.message.guild
-			) {
-				return this.client.getGuildConfiguration(mainArgument.message.guild.id);
+	private getGuildConfiguration(mainArgument: unknown): GuildConfigurationType | undefined {
+		const guildId = this.extractGuildId(mainArgument);
+		return guildId ? this.client.getGuildConfiguration(guildId) : undefined;
+	}
+
+	private extractGuildId(mainArgument: unknown): string | undefined {
+		if (!mainArgument || typeof mainArgument !== "object") {
+			return undefined;
+		}
+
+		if ("guildId" in mainArgument && typeof mainArgument.guildId === "string") {
+			return mainArgument.guildId;
+		}
+
+		if ("guild" in mainArgument && this.isObjectWithStringId(mainArgument.guild)) {
+			return mainArgument.guild.id;
+		}
+
+		if ("message" in mainArgument && typeof mainArgument.message === "object" && mainArgument.message !== null) {
+			const message = mainArgument.message as Record<string, unknown>;
+			if ("guild" in message && this.isObjectWithStringId(message.guild)) {
+				return message.guild.id;
 			}
 		}
 
 		return undefined;
+	}
+
+	private isObjectWithStringId(value: unknown): value is { id: string } {
+		return typeof value === "object" && value !== null && "id" in value && typeof (value as Record<string, unknown>).id === "string";
 	}
 
 	private async initializeGuildsConfiguration(): Promise<void> {

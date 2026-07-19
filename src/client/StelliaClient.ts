@@ -23,7 +23,12 @@ import {
 } from "@typescript/index.js";
 import { logger } from "@utils/index.js";
 
-export class StelliaClient<Ready extends boolean = boolean, EmojiEnum extends Record<string, string> = Record<string, string>> extends Client<Ready> {
+export class StelliaClient<
+	Ready extends boolean = boolean,
+	EmojiEnum extends Record<string, string> = Record<string, string>,
+	TConfig extends GuildConfiguration = GuildConfiguration,
+	TGuildsConfig extends GuildsConfiguration = GuildsConfiguration
+> extends Client<Ready> {
 	private utils: StelliaUtils;
 	public readonly managers: Managers = {};
 	public readonly environment?: ClientEnvironment;
@@ -50,8 +55,15 @@ export class StelliaClient<Ready extends boolean = boolean, EmojiEnum extends Re
 		});
 	}
 
-	public static async create<EmojiEnum extends Record<string, string> = Record<string, string>>(clientOptions: ClientOptions, stelliaOptions?: StelliaOptions<EmojiEnum>): Promise<StelliaClient<boolean, EmojiEnum>> {
-		const client = new StelliaClient<boolean, EmojiEnum>(clientOptions, stelliaOptions);
+	public static async create<
+		EmojiEnum extends Record<string, string> = Record<string, string>,
+		TConfig extends GuildConfiguration = GuildConfiguration,
+		TGuildsConfig extends GuildsConfiguration = GuildsConfiguration
+	>(
+		clientOptions: ClientOptions,
+		stelliaOptions?: StelliaOptions<EmojiEnum>
+	): Promise<StelliaClient<boolean, EmojiEnum, TConfig, TGuildsConfig>> {
+		const client = new StelliaClient<boolean, EmojiEnum, TConfig, TGuildsConfig>(clientOptions, stelliaOptions);
 		await client.initializeAsyncFields(stelliaOptions);
 
 		return client;
@@ -79,7 +91,7 @@ export class StelliaClient<Ready extends boolean = boolean, EmojiEnum extends Re
 		await this.utils.initializeCustomEmojis();
 	};
 
-	public getGuildsConfiguration = async <CustomGuildsConfiguration extends GuildsConfiguration>(): Promise<CustomGuildsConfiguration> => {
+	public getGuildsConfiguration = async (): Promise<TGuildsConfig> => {
 		const chosenEnvironment = process.argv.find((arg) => arg.startsWith("--config"))?.split("=")[1];
 		if (!chosenEnvironment) {
 			throw new Error("Environment not provided");
@@ -111,8 +123,8 @@ export class StelliaClient<Ready extends boolean = boolean, EmojiEnum extends Re
 		});
 	};
 
-	public getGuildConfiguration = <CustomGuildConfiguration extends GuildConfiguration>(guildId: string): CustomGuildConfiguration | null => {
-		return this.utils.getGuildConfiguration(guildId);
+	public getGuildConfiguration = (guildId: string): TConfig | null => {
+		return this.utils.getGuildConfiguration(guildId) as TConfig | null;
 	};
 
 	public handleInteraction = async (interaction: Interaction<"cached">): Promise<void> => {
