@@ -105,7 +105,7 @@ export class StelliaUtils<EmojiEnum extends Record<string, string> = Record<stri
 					continue;
 				}
 
-				customEmojis[key] = emoji;
+				customEmojis[emojiName] = emoji;
 			}
 
 			this.client.customEmojis = customEmojis;
