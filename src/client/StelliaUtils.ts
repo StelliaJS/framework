@@ -1,6 +1,7 @@
 import {
 	type AnySelectMenuInteraction,
 	ApplicationCommandType,
+	type ApplicationEmoji,
 	type AutocompleteInteraction,
 	type ButtonInteraction,
 	type ChatInputCommandInteraction,
@@ -115,7 +116,13 @@ export class StelliaUtils<EmojiEnum extends Record<string, string> = Record<stri
 		}
 	};
 
-	public getGuildConfiguration = <CustomGuildConfiguration extends GuildConfiguration>(guildId: string): CustomGuildConfiguration | null => {
+	public getCustomEmoji = (emojiName: string): ApplicationEmoji | undefined => {
+		return this.client.customEmojis[emojiName];
+	};
+
+	public getGuildConfiguration = <CustomGuildConfiguration extends GuildConfiguration>(
+		guildId: string
+	): CustomGuildConfiguration | null => {
 		if (!this.client.environment?.areGuildsConfigurationEnabled || !this.guildsConfiguration) {
 			return null;
 		}
@@ -297,7 +304,9 @@ export class StelliaUtils<EmojiEnum extends Record<string, string> = Record<stri
 				return;
 			}
 
-			const selectMenu = selectMenuManager.getByCustomId(selectMenuInteraction.customId) || selectMenuManager.getByRegex(selectMenuInteraction.customId);
+			const selectMenu =
+				selectMenuManager.getByCustomId(selectMenuInteraction.customId) ||
+				selectMenuManager.getByRegex(selectMenuInteraction.customId);
 			if (!selectMenu) {
 				return;
 			}
@@ -320,7 +329,9 @@ export class StelliaUtils<EmojiEnum extends Record<string, string> = Record<stri
 		}
 	};
 
-	private readonly handleMessageContextMenuInteraction = async (interaction: MessageContextMenuCommandInteraction<"cached">): Promise<void> => {
+	private readonly handleMessageContextMenuInteraction = async (
+		interaction: MessageContextMenuCommandInteraction<"cached">
+	): Promise<void> => {
 		try {
 			const contextMenuManager = this.client.managers.contextMenus;
 			if (!contextMenuManager) {

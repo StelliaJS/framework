@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
-import { Client, type ClientOptions, type Interaction } from "discord.js";
+import { type ApplicationEmoji, Client, type ClientOptions, type Interaction } from "discord.js";
 import { StelliaUtils } from "@client/index.js";
 import {
 	AutoCompleteManager,
@@ -89,6 +89,10 @@ export class StelliaClient<
 
 	public initializeCustomEmojis = async (): Promise<void> => {
 		await this.utils.initializeCustomEmojis();
+	};
+
+	public getCustomEmoji = (emojiName: keyof EmojiEnum): ApplicationEmoji | undefined => {
+		return this.utils.getCustomEmoji(String(emojiName));
 	};
 
 	public getGuildsConfiguration = async (): Promise<TGuildsConfig> => {
