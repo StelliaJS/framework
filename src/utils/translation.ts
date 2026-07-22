@@ -1,7 +1,7 @@
 import { type i18n } from "i18next";
 import { type StelliaLocale } from "@typescript/index.js";
 
-type TranslateArgs = Record<string, unknown>;
+export type TranslateArgs = Record<string, unknown>;
 
 let _instance: i18n;
 
