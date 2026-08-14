@@ -1,16 +1,29 @@
-import { type Awaitable, type ClientEvents } from "discord.js";
+import { type Awaitable, type ClientEvents, type Events } from "discord.js";
 import { type StelliaClient } from "@client/index.js";
 import { type GuildConfigurationType, type GuildsConfiguration } from "@typescript/index.js";
 
 export type EventKeys = keyof ClientEvents;
 
-export type EventExecute<K extends EventKeys, ExtraArgs extends unknown[] = []> = (client: StelliaClient, ...args: [...ExtraArgs, ...ClientEvents[K]]) => Awaitable<unknown>;
+type PreReadyEventKeys =
+	Events.Debug
+	| Events.Warn
+	| Events.Raw
+	| Events.ShardError
+	| Events.ShardDisconnect
+	| Events.ShardReconnecting
+	| Events.Invalidated;
+
+type ClientReadyFor<K extends EventKeys> = K extends PreReadyEventKeys ? boolean : true;
+
+export type EventExecute<K extends EventKeys, ExtraArgs extends unknown[] = []> = (
+	client: StelliaClient<ClientReadyFor<K>>,
+	...args: [...ExtraArgs, ...ClientEvents[K]]
+) => Awaitable<unknown>;
 
 export interface EventDataStructure<K extends EventKeys> {
 	name: K;
 	once?: boolean;
 }
-
 export interface EventStructureWithoutGuildConfiguration<K extends EventKeys> {
 	data: EventDataStructure<K>;
 	execute: EventExecute<K>;
