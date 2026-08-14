@@ -65,7 +65,7 @@ export class EventManager extends BaseManager<EventStructure> {
 
 	private async loadEventWithGuildConfiguration(eventStructure: EventStructure) {
 		const { name, once } = eventStructure.data;
-		const event = eventStructure as EventStructureWithGuildConfiguration<any>;
+		const event = eventStructure as EventStructureWithGuildConfiguration<any, any>;
 
 		if (once) {
 			this.client.once(name, (...args) => this.eventHandler(event, ...args));
@@ -74,7 +74,7 @@ export class EventManager extends BaseManager<EventStructure> {
 		}
 	}
 
-	private readonly eventHandler = async (event: EventStructureWithGuildConfiguration<any>, ...args: unknown[]): Promise<void> => {
+	private readonly eventHandler = async (event: EventStructureWithGuildConfiguration<any, any>, ...args: unknown[]): Promise<void> => {
 		try {
 			const execute = event.execute as UnsafeEventExecute;
 			const mainArgument = args[0];
