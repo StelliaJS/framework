@@ -15,15 +15,13 @@ type PreReadyEventKeys =
 
 type ClientReadyFor<K extends EventKeys> = K extends PreReadyEventKeys ? boolean : true;
 
-export type EventExecute<K extends EventKeys, ExtraArgs extends unknown[] = []> = (
-	client: StelliaClient<ClientReadyFor<K>>,
-	...args: [...ExtraArgs, ...ClientEvents[K]]
-) => Awaitable<unknown>;
+export type EventExecute<K extends EventKeys, ExtraArgs extends unknown[] = []> = (client: StelliaClient<ClientReadyFor<K>>, ...args: [...ExtraArgs, ...ClientEvents[K]]) => Awaitable<unknown>;
 
 export interface EventDataStructure<K extends EventKeys> {
 	name: K;
 	once?: boolean;
 }
+
 export interface EventStructureWithoutGuildConfiguration<K extends EventKeys> {
 	data: EventDataStructure<K>;
 	execute: EventExecute<K>;
@@ -39,18 +37,18 @@ export interface EventStructureWithAllGuildsConfiguration<K extends EventKeys, T
 	execute: EventExecute<K, [TGuildsConfig]>;
 }
 
-export function defineEvent<K extends EventKeys>(event: EventStructureWithoutGuildConfiguration<K>) {
+export function defineEvent<K extends EventKeys>(event: EventStructureWithoutGuildConfiguration<K>): EventStructureWithoutGuildConfiguration<K> {
 	return event;
 }
 
 export function createGuildEventFactory<TConfig extends GuildConfigurationType = GuildConfigurationType>() {
-	return function <K extends EventKeys>(event: EventStructureWithGuildConfiguration<K, TConfig>) {
+	return function <K extends EventKeys>(event: EventStructureWithGuildConfiguration<K, TConfig>): EventStructureWithGuildConfiguration<K, TConfig> {
 		return event;
 	};
 }
 
 export function createAllGuildsEventFactory<TGuildsConfig extends GuildsConfiguration = GuildsConfiguration>() {
-	return function <K extends EventKeys>(event: EventStructureWithAllGuildsConfiguration<K, TGuildsConfig>) {
+	return function <K extends EventKeys>(event: EventStructureWithAllGuildsConfiguration<K, TGuildsConfig>): EventStructureWithAllGuildsConfiguration<K, TGuildsConfig> {
 		return event;
 	};
 }

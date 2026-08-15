@@ -5,7 +5,7 @@ export type TranslateArgs = Record<string, unknown>;
 
 let _instance: i18n;
 
-export const initTranslations = (instance: i18n) => {
+export const initTranslations = (instance: i18n): void => {
 	_instance = instance;
 };
 

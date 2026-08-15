@@ -101,7 +101,12 @@ export class StelliaClient<
 			throw new Error("Environment not provided");
 		}
 
-		const srcPath = path.dirname(path.resolve(process.argv[1]));
+		const entryPoint = process.argv[1];
+		if (!entryPoint) {
+			throw new Error("Unable to resolve the entry point from process.argv[1]");
+		}
+
+		const srcPath = path.dirname(path.resolve(entryPoint));
 		const filePath = path.join(srcPath, "..", "stellia.json");
 		return new Promise((resolve, reject) => {
 			fs.readFile(filePath, async (err, data) => {
