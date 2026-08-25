@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       i18next:
-        specifier: 26.3.6
-        version: 26.3.6(typescript@7.0.2)
+        specifier: 26.4.0
+        version: 26.4.0(typescript@7.0.2)
       log-symbols:
         specifier: ^7.0.1
         version: 7.0.1
@@ -770,8 +770,8 @@ packages:
   hookable@6.1.1:
     resolution: {integrity: sha512-U9LYDy1CwhMCnprUfeAZWZGByVbhd54hwepegYTK7Pi5NvqEj63ifz5z+xukznehT7i6NIZRu89Ay1AZmRsLEQ==}
 
-  i18next@26.3.6:
-    resolution: {integrity: sha512-Bu5Z2nAXgfVyM8xvW3jk9EKRIuX37PudsrBViThNFx7CR7aaYTpP01cxNB/E4c4UUzTDiAZRstEhsRfPOL/8xA==}
+  i18next@26.4.0:
+    resolution: {integrity: sha512-rsmK5bFqsD1AetSFSIa43wtNR4WpvvH4p0tLEsTxkC7QTrfdFm06nbQ95bh8Og4wwaCnUEcm9DVYL2cgxitiQg==}
     peerDependencies:
       typescript: ^5 || ^6 || ^7
     peerDependenciesMeta:
@@ -1399,7 +1399,7 @@ snapshots:
 
   hookable@6.1.1: {}
 
-  i18next@26.3.6(typescript@7.0.2):
+  i18next@26.4.0(typescript@7.0.2):
     optionalDependencies:
       typescript: 7.0.2
 
