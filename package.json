@@ -1,6 +1,6 @@
 {
 	"name": "@stelliajs/framework",
-	"version": "1.9.3",
+	"version": "1.10.0",
 	"description": "A framework for simplifying the creation of discord bots",
 	"keywords": [
 		"bot",
