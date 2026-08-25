@@ -1,8 +1,11 @@
 import { type ContainerBuilder } from "discord.js";
 import { BasePaginatorBuilder } from "structures/paginators/builders/BasePaginatorBuilder.js";
-import { PaginatorContainerComponent, type PaginatorContainerComponents } from "structures/paginators/components/PaginatorContainerComponent.js";
+import {
+	PaginatorContainerComponent,
+	type PaginatorContainerComponents
+} from "structures/paginators/components/PaginatorContainerComponent.js";
 
-export class PaginatorContainerBuilder extends BasePaginatorBuilder<ContainerBuilder[]>{
+export class PaginatorContainerBuilder extends BasePaginatorBuilder<ContainerBuilder[]> {
 	build(): PaginatorContainerComponents {
 		return new PaginatorContainerComponent({
 			pages: this.pages,

@@ -8,7 +8,11 @@ import { logger, requiredFiles } from "@utils/index.js";
 export abstract class SimpleManager<TStructure extends AnyInteractionStructure> extends BaseManager<TStructure> {
 	protected items: Collection<StructureCustomId, TStructure> = new Collection();
 
-	protected constructor(client: StelliaClient, directoryPath: string, private readonly label: string) {
+	protected constructor(
+		client: StelliaClient,
+		directoryPath: string,
+		private readonly label: string
+	) {
 		super(client, directoryPath);
 	}
 

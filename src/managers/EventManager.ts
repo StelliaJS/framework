@@ -1,4 +1,5 @@
 import { type Awaitable, Collection } from "discord.js";
+import { type EventStructure, type EventStructureWithGuildConfiguration } from "structures/index.js";
 import { type StelliaClient } from "@client/index.js";
 import { BaseManager } from "@managers/index.js";
 import {
@@ -8,7 +9,6 @@ import {
 	type StructureCustomId
 } from "@typescript/index.js";
 import { logger, requiredFiles } from "@utils/index.js";
-import { type EventStructure, type EventStructureWithGuildConfiguration } from "structures/index.js";
 
 type UnsafeEventExecute = (client: StelliaClient, ...args: unknown[]) => Awaitable<unknown>;
 

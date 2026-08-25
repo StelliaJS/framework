@@ -9,5 +9,5 @@ export default defineConfig({
 	dts: {
 		oxc: true
 	},
-	unused: false,
+	unused: false
 });

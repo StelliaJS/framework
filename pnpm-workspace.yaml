@@ -1,7 +1,7 @@
 packages:
-  - "."
+    - "."
 
 allowBuilds:
-  unrs-resolver: true
+    unrs-resolver: true
 
 minimumReleaseAge: 0

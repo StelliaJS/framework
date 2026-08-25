@@ -48,7 +48,7 @@ export abstract class BasePaginatorComponent<T extends unknown[]> {
 
 	protected currentPage = 0;
 
-	constructor({
+	protected constructor({
 		pages,
 		timeout = 60_000,
 		firstPageLabel = "First",
