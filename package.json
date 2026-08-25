@@ -44,7 +44,7 @@
 	},
 	"peerDependencies": {
 		"discord.js": "^14.27.0",
-		"i18next": "26.3.6"
+		"i18next": "26.4.0"
 	},
 	"engines": {
 		"node": ">=24.0.0"
