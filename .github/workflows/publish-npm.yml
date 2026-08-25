@@ -1,43 +1,43 @@
 name: NPM Publish
 on:
-  workflow_call:
-    inputs:
-      version:
-        description: "The version to publish"
-        required: true
-        type: string
-      npm_tag:
-        description: "The npm dist-tag to publish under"
-        required: true
-        type: string
+    workflow_call:
+        inputs:
+            version:
+                description: "The version to publish"
+                required: true
+                type: string
+            npm_tag:
+                description: "The npm dist-tag to publish under"
+                required: true
+                type: string
 
 jobs:
-  publish:
-    runs-on: ubuntu-latest
-    permissions:
-      id-token: write
+    publish:
+        runs-on: ubuntu-latest
+        permissions:
+            id-token: write
 
-    steps:
-      - uses: actions/checkout@v7
-        with:
-          ref: ${{ inputs.version }}
+        steps:
+            - uses: actions/checkout@v7
+              with:
+                  ref: ${{ inputs.version }}
 
-      - uses: actions/setup-node@v7
-        with:
-          node-version: "24.x"
-          registry-url: "https://registry.npmjs.org"
+            - uses: actions/setup-node@v7
+              with:
+                  node-version: "24.x"
+                  registry-url: "https://registry.npmjs.org"
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v6
+            - name: Install pnpm
+              uses: pnpm/action-setup@v6
 
-      - name: Install dependencies
-        run: pnpm i
+            - name: Install dependencies
+              run: pnpm i
 
-      - name: Build
-        run: pnpm run build
+            - name: Build
+              run: pnpm run build
 
-      - name: Set dynamic package version
-        run: npm version ${{ inputs.version }} --no-git-tag-version --allow-same-version
+            - name: Set dynamic package version
+              run: npm version ${{ inputs.version }} --no-git-tag-version --allow-same-version
 
-      - name: Publish to npm
-        run: npm publish --access public --tag ${{ inputs.npm_tag }}
+            - name: Publish to npm
+              run: npm publish --access public --tag ${{ inputs.npm_tag }}

@@ -1,8 +1,6 @@
 import { type APIEmbed } from "discord.js";
 import { BasePaginatorBuilder } from "structures/paginators/builders/BasePaginatorBuilder.js";
-import {
-	PaginatorEmbedComponent, type PaginatorEmbedComponents
-} from "structures/paginators/components/PaginatorEmbedComponent.js";
+import { PaginatorEmbedComponent, type PaginatorEmbedComponents } from "structures/paginators/components/PaginatorEmbedComponent.js";
 
 export class PaginatorEmbedBuilder extends BasePaginatorBuilder<APIEmbed[]> {
 	build(): PaginatorEmbedComponents {
@@ -17,7 +15,7 @@ export class PaginatorEmbedBuilder extends BasePaginatorBuilder<APIEmbed[]> {
 			previousPageEmoji: this.previousPageEmoji,
 			nextPageEmoji: this.nextPageEmoji,
 			lastPageEmoji: this.lastPageEmoji,
-			showFirstLastButtons: this.showFirstLastButtons,
+			showFirstLastButtons: this.showFirstLastButtons
 		}).build();
 	}
 }

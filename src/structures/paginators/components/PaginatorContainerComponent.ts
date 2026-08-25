@@ -9,10 +9,11 @@ import {
 	SeparatorSpacingSize
 } from "discord.js";
 import {
-	BasePaginatorComponent, type BasePaginatorComponentConfiguration
+	BasePaginatorComponent,
+	type BasePaginatorComponentConfiguration
 } from "structures/paginators/components/BasePaginatorComponent.js";
 
-interface PaginatorContainerConfiguration extends BasePaginatorComponentConfiguration<ContainerBuilder[]> {}
+type PaginatorContainerConfiguration = BasePaginatorComponentConfiguration<ContainerBuilder[]>;
 
 export interface PaginatorContainerComponents {
 	components: BaseMessageOptions["components"];

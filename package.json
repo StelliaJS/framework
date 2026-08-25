@@ -1,21 +1,16 @@
 {
 	"name": "@stelliajs/framework",
 	"version": "1.9.3",
-	"type": "module",
 	"description": "A framework for simplifying the creation of discord bots",
-	"author": "Tweenty_",
-	"license": "ISC",
-	"packageManager": "pnpm@11.20.0",
-	"engines": {
-		"node": ">=24.0.0"
-	},
 	"keywords": [
-		"discord",
 		"bot",
+		"discord",
 		"discordjs",
-		"typescript",
-		"framework"
+		"framework",
+		"typescript"
 	],
+	"license": "ISC",
+	"author": "Tweenty_",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/StelliaJS/framework.git"
@@ -23,6 +18,7 @@
 	"files": [
 		"dist"
 	],
+	"type": "module",
 	"exports": {
 		".": {
 			"types": "./dist/index.d.mts",
@@ -32,28 +28,26 @@
 	},
 	"scripts": {
 		"build": "tsdown",
-		"lint": "eslint src",
-		"format": "prettier --write ./src/**/*.ts"
-	},
-	"peerDependencies": {
-		"discord.js": "^14.27.0",
-		"i18next": "26.3.6"
+		"lint": "oxfmt --check && oxlint src",
+		"format": "oxfmt && oxlint src --fix --fix-suggestions"
 	},
 	"dependencies": {
 		"log-symbols": "^7.0.1"
 	},
 	"devDependencies": {
-		"@eslint/js": "^10.0.1",
 		"discord.js": "^14.27.0",
-		"eslint": "^10.8.1",
-		"eslint-config-prettier": "^10.1.8",
-		"eslint-import-resolver-typescript": "^4.4.5",
-		"eslint-plugin-import-x": "^4.17.1",
-		"globals": "^17.11.0",
-		"jiti": "^2.7.0",
-		"prettier": "^3.9.6",
+		"oxfmt": "^0.65.0",
+		"oxlint": "^1.80.0",
+		"oxlint-tsgolint": "^7.0.2001",
 		"tsdown": "^0.22.14",
-		"typescript": "^7.0.2",
-		"typescript-eslint": "^8.67.0"
-	}
+		"typescript": "^7.0.2"
+	},
+	"peerDependencies": {
+		"discord.js": "^14.27.0",
+		"i18next": "26.3.6"
+	},
+	"engines": {
+		"node": ">=24.0.0"
+	},
+	"packageManager": "pnpm@11.23.0"
 }

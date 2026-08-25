@@ -1,54 +1,54 @@
 name: Release Package
 on:
-  workflow_dispatch:
+    workflow_dispatch:
 
 jobs:
-  tag-release:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    outputs:
-      version_tag: ${{ steps.create_tag.outputs.TAG }}
-      npm_tag: ${{ steps.create_tag.outputs.NPM_TAG }}
+    tag-release:
+        runs-on: ubuntu-latest
+        permissions:
+            contents: write
+        outputs:
+            version_tag: ${{ steps.create_tag.outputs.TAG }}
+            npm_tag: ${{ steps.create_tag.outputs.NPM_TAG }}
 
-    steps:
-      - uses: actions/checkout@v7
+        steps:
+            - uses: actions/checkout@v7
 
-      - name: Create tag and define NPM environment
-        id: create_tag
-        run: |
-          VERSION=$(jq -r '.version' package.json)
-          
-          if [ "${{ github.ref }}" = "refs/heads/main" ]; then
-            TAG="${VERSION}"
-            NPM_TAG="latest"
-          else
-            SHA=$(git rev-parse --short HEAD)
-            TAG="${VERSION}-dev-${SHA}"
-            NPM_TAG="dev"
-          fi
-          
-          git tag "$TAG"
-          git push origin "$TAG"
-          
-          echo "TAG=$TAG" >> "$GITHUB_OUTPUT"
-          echo "NPM_TAG=$NPM_TAG" >> "$GITHUB_OUTPUT"
+            - name: Create tag and define NPM environment
+              id: create_tag
+              run: |
+                  VERSION=$(jq -r '.version' package.json)
 
-      - name: Create GitHub Release
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          TAG="${{ steps.create_tag.outputs.TAG }}"
-          
-          if [ "${{ github.ref }}" = "refs/heads/main" ]; then
-            gh release create "$TAG" --title "$TAG" --generate-notes
-          else
-            gh release create "$TAG" --title "$TAG" --generate-notes --prerelease
-          fi
+                  if [ "${{ github.ref }}" = "refs/heads/main" ]; then
+                    TAG="${VERSION}"
+                    NPM_TAG="latest"
+                  else
+                    SHA=$(git rev-parse --short HEAD)
+                    TAG="${VERSION}-dev-${SHA}"
+                    NPM_TAG="dev"
+                  fi
 
-  publish-npm:
-    needs: tag-release
-    uses: ./.github/workflows/publish-npm.yml
-    with:
-      version: ${{ needs.tag-release.outputs.version_tag }}
-      npm_tag: ${{ needs.tag-release.outputs.npm_tag }}
+                  git tag "$TAG"
+                  git push origin "$TAG"
+
+                  echo "TAG=$TAG" >> "$GITHUB_OUTPUT"
+                  echo "NPM_TAG=$NPM_TAG" >> "$GITHUB_OUTPUT"
+
+            - name: Create GitHub Release
+              env:
+                  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              run: |
+                  TAG="${{ steps.create_tag.outputs.TAG }}"
+
+                  if [ "${{ github.ref }}" = "refs/heads/main" ]; then
+                    gh release create "$TAG" --title "$TAG" --generate-notes
+                  else
+                    gh release create "$TAG" --title "$TAG" --generate-notes --prerelease
+                  fi
+
+    publish-npm:
+        needs: tag-release
+        uses: ./.github/workflows/publish-npm.yml
+        with:
+            version: ${{ needs.tag-release.outputs.version_tag }}
+            npm_tag: ${{ needs.tag-release.outputs.npm_tag }}

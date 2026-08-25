@@ -50,72 +50,75 @@ Recommended architecture for StelliaJS project.
 ### Simple client with environment
 
 #### Client initialization
+
 ```ts
 import { StelliaClient } from "@stelliajs/framework";
 import { GatewayIntentBits, Partials } from "discord.js";
 
 (async () => {
-    const client = new StelliaClient({
-        intents: [
-            GatewayIntentBits.Guilds,
-            GatewayIntentBits.GuildMessages,
-            GatewayIntentBits.MessageContent,
-            GatewayIntentBits.GuildMembers
-        ],
-        partials: [Partials.Message, Partials.GuildMember]
-    },
-    {
-        managers: {
-            autoCompletes: {
-                directoryPath: "./interactions/autoCompletes"
-            },
-            buttons: {
-                directoryPath: "./interactions/buttons"
-            },
-            commands: {
-                directoryPath: "./commands/slash"
-            },
-            contextMenus: {
-                directoryPath: "./commands/contextMenus"
-            },
-            events: {
-                directoryPath: "./events"
-            },
-            modals: {
-                directoryPath: "./interactions/modals"
-            },
-            selectMenus: {
-                directoryPath: "./interactions/selectMenus"
-            }
-        },
-        environment: {
-            areGuildsConfigurationEnabled: true
-        }
-    });
+	const client = new StelliaClient(
+		{
+			intents: [
+				GatewayIntentBits.Guilds,
+				GatewayIntentBits.GuildMessages,
+				GatewayIntentBits.MessageContent,
+				GatewayIntentBits.GuildMembers
+			],
+			partials: [Partials.Message, Partials.GuildMember]
+		},
+		{
+			managers: {
+				autoCompletes: {
+					directoryPath: "./interactions/autoCompletes"
+				},
+				buttons: {
+					directoryPath: "./interactions/buttons"
+				},
+				commands: {
+					directoryPath: "./commands/slash"
+				},
+				contextMenus: {
+					directoryPath: "./commands/contextMenus"
+				},
+				events: {
+					directoryPath: "./events"
+				},
+				modals: {
+					directoryPath: "./interactions/modals"
+				},
+				selectMenus: {
+					directoryPath: "./interactions/selectMenus"
+				}
+			},
+			environment: {
+				areGuildsConfigurationEnabled: true
+			}
+		}
+	);
 
-    await client.connect(process.env.TOKEN);
+	await client.connect(process.env.TOKEN);
 })();
 
 // If you need internationalisation:
 import { initTranslations } from "@stelliajs/framework";
 
 await use(Backend).init(
-    {
-        lng: StelliaLocale.English, // StelliaLocale is an enum with all the supported languages by Discord
-        backend: {
-            // With namespace: path.join(import.meta.dirname, "../locales/{{lng}}/{{ns}}.json")
-            loadPath: path.join(import.meta.dirname, "../locales/{{lng}}.json")
-        },
-        fallbackLng: StelliaLocale.English,
-        supportedLngs: Object.values(AmariLocale),
-        preload: Object.values(AmariLocale)
-        // ns: ["common", "commands", "errors"]
-    },
-    (error) => {
-        if (error) {
-            console.error(error);
-        }
-    }
+	{
+		lng: StelliaLocale.English, // StelliaLocale is an enum with all the supported languages by Discord
+		backend: {
+			// With namespace: path.join(import.meta.dirname, "../locales/{{lng}}/{{ns}}.json")
+			loadPath: path.join(import.meta.dirname, "../locales/{{lng}}.json")
+		},
+		fallbackLng: StelliaLocale.English,
+		supportedLngs: Object.values(AmariLocale),
+		preload: Object.values(AmariLocale)
+		// ns: ["common", "commands", "errors"]
+	},
+	(error) => {
+		if (error) {
+			console.error(error);
+		}
+	}
 );
 initTranslations(i18next);
 ```
@@ -123,34 +126,29 @@ initTranslations(i18next);
 #### Environment model
 
 ```ts
-import {
-    BaseGeneralConfiguration,
-    BaseGuildConfiguration,
-    GuildConfiguration,
-    GuildsConfiguration
-} from "@stelliajs/framework";
+import { BaseGeneralConfiguration, BaseGuildConfiguration, GuildConfiguration, GuildsConfiguration } from "@stelliajs/framework";
 import { Snowflake } from "discord.js";
 
 interface MyBotGeneralConfiguration extends BaseGeneralConfiguration {
-    botName: string;
+	botName: string;
 }
 interface MyBotSpecificGuildConfiguration extends BaseGuildConfiguration {
-    channels: {
-        logs: Snowflake;
-        welcome: Snowflake;
-    };
+	channels: {
+		logs: Snowflake;
+		welcome: Snowflake;
+	};
 }
 
 export interface MyBotGuildConfiguration extends GuildConfiguration {
-    general: MyBotGeneralConfiguration;
-    guild: MyBotSpecificGuildConfiguration;
+	general: MyBotGeneralConfiguration;
+	guild: MyBotSpecificGuildConfiguration;
 }
 
 export interface MyBotGuildsConfiguration extends GuildsConfiguration {
-    general: MyBotGeneralConfiguration;
-    guilds: {
-        [guildId: Snowflake]: MyBotSpecificGuildConfiguration;
-    };
+	general: MyBotGeneralConfiguration;
+	guilds: {
+		[guildId: Snowflake]: MyBotSpecificGuildConfiguration;
+	};
 }
 ```
 
@@ -164,14 +162,15 @@ import { Events } from "discord.js";
 import { type MyBotGuildsConfiguration } from "@environments/environment.model.ts";
 
 export default {
-    data: {
-        name: Events.ClientReady,
-        once: true
-    },
-    async execute(client: StelliaClient<true>, guildsConfiguration: MyBotGuildsConfiguration) { // <true> ensures that the client is Ready
-        console.log(`Logged in as ${client.user.tag}`);
-        await client.initializeCommands(); // Used to initialise registered commands
-    }
+	data: {
+		name: Events.ClientReady,
+		once: true
+	},
+	async execute(client: StelliaClient<true>, guildsConfiguration: MyBotGuildsConfiguration) {
+		// <true> ensures that the client is Ready
+		console.log(`Logged in as ${client.user.tag}`);
+		await client.initializeCommands(); // Used to initialise registered commands
+	}
 } satisfies EventStructure;
 ```
 
@@ -183,15 +182,15 @@ import { Events, type Interaction } from "discord.js";
 import { type MyBotGuildConfiguration } from "@environments/environment.model.ts";
 
 export default {
-    data: {
-        name: Events.InteractionCreate,
-        once: false
-    },
-    async execute(client: StelliaClient<true>, guildConfiguration: MyBotGuildConfiguration, interaction: Interaction) {
-        if (interaction.inCachedGuild()) {
-            await client.handleInteraction(interaction); // Automatic interaction handling
-        }
-    }
+	data: {
+		name: Events.InteractionCreate,
+		once: false
+	},
+	async execute(client: StelliaClient<true>, guildConfiguration: MyBotGuildConfiguration, interaction: Interaction) {
+		if (interaction.inCachedGuild()) {
+			await client.handleInteraction(interaction); // Automatic interaction handling
+		}
+	}
 } satisfies EventStructure;
 ```
 
@@ -203,17 +202,17 @@ import { type ChatInputCommandInteraction, SlashCommandBuilder } from "discord.j
 import { type MyBotGuildConfiguration } from "@environments/environment.model.ts";
 
 export default {
-    data: {
-        command: new SlashCommandBuilder()
-            .setName("ping"),
-        reply: {
-            autoDefer: true, // Defer the reply to avoid the interaction failing after 3 seconds
-            ephemeral: true, // The reply will be visible only by the user who triggered the interaction
-        }
-    },
-    async execute(client: StelliaClient, guildConfiguration: MyBotGuildConfiguration, interaction: ChatInputCommandInteraction<"cached">) { // All interactions are cached
-        await interaction.editReply("Pong!");
-    }
+	data: {
+		command: new SlashCommandBuilder().setName("ping"),
+		reply: {
+			autoDefer: true, // Defer the reply to avoid the interaction failing after 3 seconds
+			ephemeral: true // The reply will be visible only by the user who triggered the interaction
+		}
+	},
+	async execute(client: StelliaClient, guildConfiguration: MyBotGuildConfiguration, interaction: ChatInputCommandInteraction<"cached">) {
+		// All interactions are cached
+		await interaction.editReply("Pong!");
+	}
 } satisfies CommandStructure;
 ```
 

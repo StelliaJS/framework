@@ -5,7 +5,8 @@ import {
 	ComponentType,
 	type Message,
 	type RepliableInteraction,
-	StringSelectMenuBuilder, type StringSelectMenuInteraction,
+	StringSelectMenuBuilder,
+	type StringSelectMenuInteraction,
 	StringSelectMenuOptionBuilder
 } from "discord.js";
 
@@ -145,9 +146,7 @@ export class PaginatorSelectMenuComponent {
 		}
 
 		for (const page of chunk) {
-			const option = new StringSelectMenuOptionBuilder()
-				.setLabel(page.label)
-				.setValue(page.value);
+			const option = new StringSelectMenuOptionBuilder().setLabel(page.label).setValue(page.value);
 
 			if (page.description) {
 				option.setDescription(page.description);

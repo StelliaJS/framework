@@ -7,10 +7,11 @@ import {
 	type RepliableInteraction
 } from "discord.js";
 import {
-	BasePaginatorComponent, type BasePaginatorComponentConfiguration
+	BasePaginatorComponent,
+	type BasePaginatorComponentConfiguration
 } from "structures/paginators/components/BasePaginatorComponent.js";
 
-interface PaginatorEmbedConfiguration extends BasePaginatorComponentConfiguration<APIEmbed[]> {}
+type PaginatorEmbedConfiguration = BasePaginatorComponentConfiguration<APIEmbed[]>;
 
 export interface PaginatorEmbedComponents {
 	embeds: APIEmbed[];
