@@ -75,6 +75,6 @@ export class PaginatorEmbedComponent extends BasePaginatorComponent<APIEmbed[]> 
 	}
 
 	private buildCurrentEmbed(): APIEmbed {
-		return this.pages[this.currentPage];
+		return this.pages[this.currentPage] as APIEmbed;
 	}
 }
