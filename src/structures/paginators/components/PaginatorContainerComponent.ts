@@ -75,7 +75,7 @@ export class PaginatorContainerComponent extends BasePaginatorComponent<Containe
 	}
 
 	private buildCurrentContainer(disabled = false): ContainerBuilder {
-		const originalContainer = this.pages[this.currentPage];
+		const originalContainer = this.pages[this.currentPage] as ContainerBuilder;
 		if (!this.isPaginated) {
 			return originalContainer;
 		}
