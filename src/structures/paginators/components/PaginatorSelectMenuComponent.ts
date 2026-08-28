@@ -133,7 +133,7 @@ export class PaginatorSelectMenuComponent {
 	}
 
 	private buildPageRow(disabled = false): ActionRowBuilder<StringSelectMenuBuilder> {
-		const chunk = this.chunks[this.currentChunk];
+		const chunk = this.chunks[this.currentChunk] as APISelectMenuOption[];
 		const options: StringSelectMenuOptionBuilder[] = [];
 
 		if (this.isPaginated && !this.isFirstChunk) {
