@@ -162,6 +162,10 @@ export class StelliaUtils<EmojiEnum extends Record<string, string> = Record<stri
 	}
 
 	private readonly handleAutoCompleteInteraction = async (interaction: Interaction<"cached">): Promise<void> => {
+		if (!this.client.isReady()) {
+			return;
+		}
+
 		try {
 			const autoCompleteInteraction = interaction as AutocompleteInteraction<"cached">;
 			const autoCompleteManager = this.client.managers.autoCompletes;
@@ -189,6 +193,10 @@ export class StelliaUtils<EmojiEnum extends Record<string, string> = Record<stri
 	};
 
 	private readonly handleButtonInteraction = async (interaction: Interaction<"cached">): Promise<void> => {
+		if (!this.client.isReady()) {
+			return;
+		}
+
 		try {
 			const buttonInteraction = interaction as ButtonInteraction<"cached">;
 			const buttonManager = this.client.managers.buttons;
@@ -220,6 +228,10 @@ export class StelliaUtils<EmojiEnum extends Record<string, string> = Record<stri
 	};
 
 	private readonly handleCommandInteraction = async (interaction: Interaction<"cached">): Promise<void> => {
+		if (!this.client.isReady()) {
+			return;
+		}
+
 		try {
 			const commandInteraction = interaction as ChatInputCommandInteraction<"cached">;
 			const commandManager = this.client.managers.commands;
@@ -266,6 +278,10 @@ export class StelliaUtils<EmojiEnum extends Record<string, string> = Record<stri
 	};
 
 	private readonly handleModalInteraction = async (interaction: Interaction<"cached">): Promise<void> => {
+		if (!this.client.isReady()) {
+			return;
+		}
+
 		try {
 			const modalInteraction = interaction as ModalSubmitInteraction<"cached">;
 			const modalManager = this.client.managers.modals;
@@ -297,6 +313,10 @@ export class StelliaUtils<EmojiEnum extends Record<string, string> = Record<stri
 	};
 
 	private readonly handleSelectMenuInteraction = async (interaction: Interaction<"cached">): Promise<void> => {
+		if (!this.client.isReady()) {
+			return;
+		}
+
 		try {
 			const selectMenuInteraction = interaction as AnySelectMenuInteraction<"cached">;
 			const selectMenuManager = this.client.managers.selectMenus;
@@ -332,6 +352,10 @@ export class StelliaUtils<EmojiEnum extends Record<string, string> = Record<stri
 	private readonly handleMessageContextMenuInteraction = async (
 		interaction: MessageContextMenuCommandInteraction<"cached">
 	): Promise<void> => {
+		if (!this.client.isReady()) {
+			return;
+		}
+
 		try {
 			const contextMenuManager = this.client.managers.contextMenus;
 			if (!contextMenuManager) {
@@ -362,6 +386,10 @@ export class StelliaUtils<EmojiEnum extends Record<string, string> = Record<stri
 	};
 
 	private readonly handleUserContextMenuInteraction = async (interaction: UserContextMenuCommandInteraction<"cached">): Promise<void> => {
+		if (!this.client.isReady()) {
+			return;
+		}
+
 		try {
 			const contextMenuManager = this.client.managers.contextMenus;
 			if (!contextMenuManager) {
