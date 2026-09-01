@@ -1,6 +1,6 @@
 {
 	"name": "@stelliajs/framework",
-	"version": "1.11.0",
+	"version": "1.11.1",
 	"description": "A framework for simplifying the creation of discord bots",
 	"keywords": [
 		"bot",
@@ -44,7 +44,7 @@
 	},
 	"peerDependencies": {
 		"discord.js": "^14.27.0",
-		"i18next": "26.4.0"
+		"i18next": "26.4.1"
 	},
 	"engines": {
 		"node": ">=24.0.0"
