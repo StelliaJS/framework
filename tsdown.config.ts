@@ -7,7 +7,7 @@ export default defineConfig({
 	target: "es2025",
 	clean: true,
 	dts: {
-		oxc: true
+		generator: "oxc"
 	},
 	unused: false
 });
